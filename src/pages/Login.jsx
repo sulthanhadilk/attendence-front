@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import { API_ENDPOINTS, apiRequest, setAuthToken } from '../utils/api'
 
 export default function Login() {
-  const [identifier, setIdentifier] = useState('')
+  const [email, setEmail] = useState('')
+  const [rollNo, setRollNo] = useState('')
   const [password, setPassword] = useState('')
+  const [loginType, setLoginType] = useState('email') // 'email' or 'rollno'
   const [msg, setMsg] = useState('')
   const [loading, setLoading] = useState(false)
-  
-  const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000'
 
   const submit = async (e) => {
     e.preventDefault()
@@ -15,10 +15,20 @@ export default function Login() {
     setMsg('')
     
     try {
-      const res = await axios.post(API + '/api/auth/login', { identifier, password })
-      const { token, user } = res.data
+      const loginData = {
+        password,
+        ...(loginType === 'email' ? { email } : { roll_no: rollNo })
+      }
       
-      localStorage.setItem('token', token)
+      const response = await apiRequest(API_ENDPOINTS.LOGIN, {
+        method: 'POST',
+        body: JSON.stringify(loginData)
+      })
+      
+      const { token, user } = response
+      
+      setAuthToken(token)
+      localStorage.setItem('user', JSON.stringify(user))
       localStorage.setItem('role', user.role)
       
       // Redirect based on role
@@ -26,7 +36,7 @@ export default function Login() {
       if (user.role === 'teacher') window.location = '/teacher'
       if (user.role === 'student') window.location = '/student'
     } catch (err) {
-      setMsg(err.response?.data?.msg || err.message)
+      setMsg(err.message || 'Login failed')
     } finally {
       setLoading(false)
     }
@@ -39,23 +49,55 @@ export default function Login() {
           <div className="login-logo">
             <i className="fas fa-graduation-cap"></i>
           </div>
-          <h1 className="login-title">EduTrack</h1>
-          <p className="login-subtitle">College Attendance Management System</p>
+          <h1 className="login-title">Islamic College</h1>
+          <p className="login-subtitle">Attendance & Exam Management System</p>
         </div>
 
         <form onSubmit={submit}>
           <div className="form-group">
+            <label className="form-label">Login Method</label>
+            <div className="login-toggle">
+              <button 
+                type="button"
+                className={`toggle-btn ${loginType === 'email' ? 'active' : ''}`}
+                onClick={() => setLoginType('email')}
+              >
+                <i className="fas fa-envelope"></i> Email
+              </button>
+              <button 
+                type="button"
+                className={`toggle-btn ${loginType === 'rollno' ? 'active' : ''}`}
+                onClick={() => setLoginType('rollno')}
+              >
+                <i className="fas fa-id-card"></i> Roll No
+              </button>
+            </div>
+          </div>
+
+          <div className="form-group">
             <label className="form-label">
-              <i className="fas fa-user"></i> Student ID / Email
+              <i className={`fas ${loginType === 'email' ? 'fa-envelope' : 'fa-id-card'}`}></i> 
+              {loginType === 'email' ? 'Email Address' : 'Roll Number'}
             </label>
-            <input 
-              type="text"
-              className="form-input"
-              value={identifier} 
-              onChange={e => setIdentifier(e.target.value)} 
-              placeholder="Enter your student ID or email"
-              required
-            />
+            {loginType === 'email' ? (
+              <input 
+                type="email"
+                className="form-input"
+                value={email} 
+                onChange={e => setEmail(e.target.value)} 
+                placeholder="Enter your email address"
+                required
+              />
+            ) : (
+              <input 
+                type="text"
+                className="form-input"
+                value={rollNo} 
+                onChange={e => setRollNo(e.target.value.toUpperCase())} 
+                placeholder="Enter your roll number (e.g., BCA24A001)"
+                required
+              />
+            )}
           </div>
 
           <div className="form-group">
@@ -111,9 +153,9 @@ export default function Login() {
           <div className="mt-3 text-muted">
             <p><strong>Demo Credentials:</strong></p>
             <div style={{ fontSize: '0.875rem', lineHeight: '1.4' }}>
-              <div><strong>Admin:</strong> admin@college.edu / admin123</div>
-              <div><strong>Teacher:</strong> teacher@college.edu / teacher123</div>
-              <div><strong>Student:</strong> 2023001 / student123</div>
+              <div><strong>Admin:</strong> admin@islamiccollege.edu / admin123</div>
+              <div><strong>Teacher:</strong> hassan@islamiccollege.edu / teacher123</div>
+              <div><strong>Student:</strong> BCA24A001 / student123</div>
             </div>
           </div>
         </div>

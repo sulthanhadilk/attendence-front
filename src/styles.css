@@ -342,6 +342,47 @@ body {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
+/* ===== LOGIN TOGGLE BUTTONS ===== */
+.login-toggle {
+  display: flex;
+  background: var(--gray-100);
+  border-radius: var(--radius-md);
+  padding: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.toggle-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.toggle-btn:hover {
+  color: var(--gray-700);
+  background: var(--white);
+}
+
+.toggle-btn.active {
+  background: var(--white);
+  color: var(--primary-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.toggle-btn i {
+  font-size: 1rem;
+}
+
 /* ===== BUTTON STYLES ===== */
 .btn {
   display: inline-flex;

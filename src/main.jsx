@@ -7,15 +7,17 @@ import TeacherDashboard from './pages/TeacherDashboard'
 import StudentDashboard from './pages/StudentDashboard'
 import './styles.css'
 
-function App(){
+function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login/>}/>
-        <Route path="/admin" element={<AdminDashboard/>}/>
-        <Route path="/teacher" element={<TeacherDashboard/>}/>
-        <Route path="/student" element={<StudentDashboard/>}/>
-      </Routes>
+      <div className="app">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/teacher" element={<TeacherDashboard />} />
+          <Route path="/student" element={<StudentDashboard />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   )
 }

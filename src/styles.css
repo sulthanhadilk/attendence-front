@@ -1,0 +1,7 @@
+body{ font-family: Arial, sans-serif; margin:20px; background:#f7f7f7; color:#222; }
+.container{ max-width:900px; margin:0 auto; background:white; padding:20px; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.05);}
+nav{ margin-bottom:16px;}
+input,select,textarea{ padding:8px; margin:6px 0; width:100%; box-sizing:border-box;}
+button{ padding:8px 12px; margin-top:8px; }
+table{ width:100%; border-collapse:collapse; margin-top:12px;}
+table th, table td{ border:1px solid #ddd; padding:8px; text-align:left;}

@@ -29,7 +29,11 @@ export const API_ENDPOINTS = {
   STUDENT_ATTENDANCE: `${API_BASE_URL}/api/student/attendance`,
   STUDENT_FINES: `${API_BASE_URL}/api/student/fines`,
   STUDENT_RESULTS: `${API_BASE_URL}/api/student/results`,
-  STUDENT_PROFILE: `${API_BASE_URL}/api/student/profile`
+  STUDENT_PROFILE: `${API_BASE_URL}/api/student/profile`,
+  
+  // AI endpoints
+  AI_BASE: `${API_BASE_URL}/api/ai`,
+  STUDENTS: `${API_BASE_URL}/api/admin/students`
 };
 
 // API helper functions

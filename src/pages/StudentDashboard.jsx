@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Header from '../components/Header'
+import AIChatbot from '../components/AIChatbot'
+import AIPredictionDashboard from '../components/AIPredictionDashboard'
 
 const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000'
 
@@ -80,6 +82,24 @@ export default function StudentDashboard() {
     if (percentage >= 75) return 'fa-exclamation-triangle'
     return 'fa-times-circle'
   }
+
+  // AI Features states
+  const [showChatbot, setShowChatbot] = useState(false)
+  const [showAIPrediction, setShowAIPrediction] = useState(false)
+  const [userInfo, setUserInfo] = useState({ id: null })
+
+  useEffect(() => {
+    // Get user info from token or API
+    const token = localStorage.getItem('token')
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]))
+        setUserInfo({ id: payload.userId || payload.id })
+      } catch (err) {
+        console.error('Error parsing token:', err)
+      }
+    }
+  }, [])
 
   return (
     <div className="page-container fade-in">
@@ -311,6 +331,37 @@ export default function StudentDashboard() {
           </div>
         )}
 
+        {/* AI Features Section */}
+        <div className="card mt-4">
+          <div className="card-header">
+            <h3 className="card-title">
+              <i className="fas fa-robot"></i> AI-Powered Features
+            </h3>
+          </div>
+          <div className="card-body">
+            <div className="dashboard-grid">
+              <button 
+                className="btn btn-gradient-primary"
+                onClick={() => setShowAIPrediction(true)}
+              >
+                <i className="fas fa-brain"></i>
+                AI Smart Analysis
+              </button>
+              <button 
+                className="btn btn-gradient-success"
+                onClick={() => setShowChatbot(true)}
+              >
+                <i className="fas fa-comments"></i>
+                Ask AI Assistant
+              </button>
+            </div>
+            <p className="text-muted mt-3 mb-0">
+              <i className="fas fa-info-circle"></i> 
+              Get intelligent insights about your academic performance and personalized recommendations
+            </p>
+          </div>
+        </div>
+
         {/* Quick Actions */}
         <div className="card mt-4">
           <div className="card-header">
@@ -340,6 +391,45 @@ export default function StudentDashboard() {
           </div>
         </div>
       </div>
+
+      {/* AI Components */}
+      <AIChatbot 
+        isOpen={showChatbot}
+        onClose={() => setShowChatbot(false)}
+        userRole="student"
+      />
+
+      {showAIPrediction && (
+        <div className="ai-prediction-modal">
+          <div className="modal-overlay" onClick={() => setShowAIPrediction(false)}></div>
+          <div className="modal-content">
+            <div className="modal-header">
+              <h2>AI Smart Analysis</h2>
+              <button 
+                className="modal-close"
+                onClick={() => setShowAIPrediction(false)}
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+            <div className="modal-body">
+              <AIPredictionDashboard 
+                studentId={userInfo.id}
+                userRole="student"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating AI Button */}
+      <button 
+        className="ai-floating-btn pulse"
+        onClick={() => setShowChatbot(true)}
+        title="Ask AI Assistant"
+      >
+        <i className="fas fa-robot"></i>
+      </button>
     </div>
   )
 }

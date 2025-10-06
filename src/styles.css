@@ -1,3 +1,6 @@
+/* ===== IMPORTS ===== */
+@import './styles/ai-components.css';
+
 /* ===== CSS RESET & BASE STYLES ===== */
 * {
   margin: 0;

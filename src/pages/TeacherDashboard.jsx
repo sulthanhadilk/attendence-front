@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Header from '../components/Header'
+import AIChatbot from '../components/AIChatbot'
+import AIPredictionDashboard from '../components/AIPredictionDashboard'
+import AIReportGenerator from '../components/AIReportGenerator'
 
 const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000'
 
@@ -103,6 +106,11 @@ export default function TeacherDashboard() {
   }
 
   const clearMessage = () => setMsg('')
+
+  // AI Features states
+  const [showChatbot, setShowChatbot] = useState(false)
+  const [showAIPrediction, setShowAIPrediction] = useState(false)
+  const [showAIReports, setShowAIReports] = useState(false)
 
   const addStudentEntry = () => {
     try {
@@ -408,7 +416,101 @@ export default function TeacherDashboard() {
             </div>
           </div>
         </div>
+
+        {/* AI Features Section */}
+        <div className="card mt-4">
+          <div className="card-header">
+            <h3 className="card-title">
+              <i className="fas fa-robot"></i> AI Teaching Assistant
+            </h3>
+          </div>
+          <div className="card-body">
+            <div className="dashboard-grid">
+              <button 
+                className="btn btn-gradient-primary"
+                onClick={() => setShowAIPrediction(true)}
+              >
+                <i className="fas fa-brain"></i>
+                Student Analytics
+              </button>
+              <button 
+                className="btn btn-gradient-success"
+                onClick={() => setShowAIReports(true)}
+              >
+                <i className="fas fa-file-alt"></i>
+                AI Reports
+              </button>
+              <button 
+                className="btn btn-gradient-info"
+                onClick={() => setShowChatbot(true)}
+              >
+                <i className="fas fa-comments"></i>
+                AI Assistant
+              </button>
+            </div>
+            <p className="text-muted mt-3 mb-0">
+              <i className="fas fa-info-circle"></i> 
+              Get AI insights on student performance and automated class reports
+            </p>
+          </div>
+        </div>
       </div>
+
+      {/* AI Components */}
+      <AIChatbot 
+        isOpen={showChatbot}
+        onClose={() => setShowChatbot(false)}
+        userRole="teacher"
+      />
+
+      {showAIPrediction && (
+        <div className="ai-prediction-modal">
+          <div className="modal-overlay" onClick={() => setShowAIPrediction(false)}></div>
+          <div className="modal-content large">
+            <div className="modal-header">
+              <h2>AI Student Analytics</h2>
+              <button 
+                className="modal-close"
+                onClick={() => setShowAIPrediction(false)}
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+            <div className="modal-body">
+              <AIPredictionDashboard userRole="teacher" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showAIReports && (
+        <div className="ai-prediction-modal">
+          <div className="modal-overlay" onClick={() => setShowAIReports(false)}></div>
+          <div className="modal-content large">
+            <div className="modal-header">
+              <h2>AI Report Generator</h2>
+              <button 
+                className="modal-close"
+                onClick={() => setShowAIReports(false)}
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+            <div className="modal-body">
+              <AIReportGenerator userRole="teacher" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating AI Button */}
+      <button 
+        className="ai-floating-btn pulse"
+        onClick={() => setShowChatbot(true)}
+        title="Ask AI Assistant"
+      >
+        <i className="fas fa-robot"></i>
+      </button>
     </div>
   )
 }

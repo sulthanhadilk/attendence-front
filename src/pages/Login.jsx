@@ -151,11 +151,10 @@ export default function Login() {
           </div>
           
           <div className="mt-3 text-muted">
-            <p><strong>Demo Credentials:</strong></p>
+            <p><strong>Admin Login:</strong></p>
             <div style={{ fontSize: '0.875rem', lineHeight: '1.4' }}>
-              <div><strong>Admin:</strong> admin@islamiccollege.edu / admin123</div>
-              <div><strong>Teacher:</strong> hassan@islamiccollege.edu / teacher123</div>
-              <div><strong>Student:</strong> BCA24A001 / student123</div>
+              <div><strong>Email:</strong> Sulusulthan230@gmail.com</div>
+              <div><strong>Password:</strong> Sulu@123</div>
             </div>
           </div>
         </div>

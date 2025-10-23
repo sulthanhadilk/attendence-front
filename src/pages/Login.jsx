@@ -3,9 +3,7 @@ import { API_ENDPOINTS, apiRequest, setAuthToken } from '../utils/api'
 
 export default function Login() {
   const [email, setEmail] = useState('')
-  const [rollNo, setRollNo] = useState('')
   const [password, setPassword] = useState('')
-  const [loginType, setLoginType] = useState('email') // 'email' or 'rollno'
   const [msg, setMsg] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -16,8 +14,8 @@ export default function Login() {
     
     try {
       const loginData = {
-        password,
-        ...(loginType === 'email' ? { email } : { roll_no: rollNo })
+        email,
+        password
       }
       
       const response = await apiRequest(API_ENDPOINTS.LOGIN, {
@@ -31,10 +29,12 @@ export default function Login() {
       localStorage.setItem('user', JSON.stringify(user))
       localStorage.setItem('role', user.role)
       
-      // Redirect based on role
-      if (user.role === 'admin') window.location = '/admin'
-      if (user.role === 'teacher') window.location = '/teacher'
-      if (user.role === 'student') window.location = '/student'
+      // Only admin access allowed
+      if (user.role === 'admin') {
+        window.location = '/admin'
+      } else {
+        throw new Error('Access denied. Admin access only.')
+      }
     } catch (err) {
       setMsg(err.message || 'Login failed')
     } finally {
@@ -55,49 +55,17 @@ export default function Login() {
 
         <form onSubmit={submit}>
           <div className="form-group">
-            <label className="form-label">Login Method</label>
-            <div className="login-toggle">
-              <button 
-                type="button"
-                className={`toggle-btn ${loginType === 'email' ? 'active' : ''}`}
-                onClick={() => setLoginType('email')}
-              >
-                <i className="fas fa-envelope"></i> Email
-              </button>
-              <button 
-                type="button"
-                className={`toggle-btn ${loginType === 'rollno' ? 'active' : ''}`}
-                onClick={() => setLoginType('rollno')}
-              >
-                <i className="fas fa-id-card"></i> Roll No
-              </button>
-            </div>
-          </div>
-
-          <div className="form-group">
             <label className="form-label">
-              <i className={`fas ${loginType === 'email' ? 'fa-envelope' : 'fa-id-card'}`}></i> 
-              {loginType === 'email' ? 'Email Address' : 'Roll Number'}
+              <i className="fas fa-envelope"></i> Email Address
             </label>
-            {loginType === 'email' ? (
-              <input 
-                type="email"
-                className="form-input"
-                value={email} 
-                onChange={e => setEmail(e.target.value)} 
-                placeholder="Enter your email address"
-                required
-              />
-            ) : (
-              <input 
-                type="text"
-                className="form-input"
-                value={rollNo} 
-                onChange={e => setRollNo(e.target.value.toUpperCase())} 
-                placeholder="Enter your roll number (e.g., BCA24A001)"
-                required
-              />
-            )}
+            <input 
+              type="email"
+              className="form-input"
+              value={email} 
+              onChange={e => setEmail(e.target.value)} 
+              placeholder="Enter admin email address"
+              required
+            />
           </div>
 
           <div className="form-group">
@@ -142,16 +110,16 @@ export default function Login() {
 
         <div className="card-footer text-center mt-4">
           <div className="alert alert-info">
-            <i className="fas fa-info-circle"></i>
+            <i className="fas fa-shield-alt"></i>
             <div>
-              <strong>Getting Started:</strong><br />
-              Students use Roll Number • Faculty/Admin use Email<br />
-              Contact administrator for account setup
+              <strong>Admin Access Only</strong><br />
+              This system is restricted to administrators only.<br />
+              Contact system administrator for access.
             </div>
           </div>
           
           <div className="mt-3 text-muted">
-            <p><strong>Admin Login:</strong></p>
+            <p><strong>System Administrator:</strong></p>
             <div style={{ fontSize: '0.875rem', lineHeight: '1.4' }}>
               <div><strong>Email:</strong> Sulusulthan230@gmail.com</div>
               <div><strong>Password:</strong> Sulu@123</div>

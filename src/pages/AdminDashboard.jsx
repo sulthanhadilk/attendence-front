@@ -90,6 +90,13 @@ export default function AdminDashboard() {
         role 
       }
       
+      // Remove undefined fields to avoid sending them
+      Object.keys(userData).forEach(key => {
+        if (userData[key] === undefined || userData[key] === '') {
+          delete userData[key];
+        }
+      });
+      
       const res = await axios.post(API + '/api/admin/create-user', userData, { headers })
       setMsg(`✅ User created successfully! ID: ${res.data.user._id}`)
       

@@ -175,7 +175,7 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <div className="stats-value">{stats.todayAttendance}%</div>
-                <div className="stats-label">Today's Attendance</div>
+                <div className="stats-label">Today&apos;s Attendance</div>
               </div>
             </div>
           </div>

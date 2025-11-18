@@ -19,7 +19,7 @@ const ProtectedRoute = ({ children, requiredRole = 'admin' }) => {
     }
     
     return children;
-  } catch (error) {
+  } catch (_error) {
     // Invalid user data in localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('user');

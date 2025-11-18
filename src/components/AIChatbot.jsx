@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { apiRequest, API_ENDPOINTS } from '../utils/api';
 
-const AIChatbot = ({ isOpen, onClose, userRole }) => {
+const AIChatbot = ({ isOpen, onClose, _userRole }) => {
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -51,7 +51,7 @@ const AIChatbot = ({ isOpen, onClose, userRole }) => {
       };
 
       setMessages(prev => [...prev, botMessage]);
-    } catch (error) {
+    } catch (_error) {
       const errorMessage = {
         id: Date.now() + 1,
         text: "I'm having trouble responding right now. Please try again later.",

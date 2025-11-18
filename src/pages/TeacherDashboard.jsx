@@ -153,7 +153,7 @@ export default function TeacherDashboard() {
               </div>
               <div>
                 <div className="stats-value">{stats.todayClasses}</div>
-                <div className="stats-label">Today's Classes</div>
+                <div className="stats-label">Today&apos;s Classes</div>
               </div>
             </div>
           </div>
@@ -259,11 +259,11 @@ export default function TeacherDashboard() {
                     value={entries} 
                     onChange={e => setEntries(e.target.value)} 
                     rows={8}
-                    placeholder='[{"student_id":"2023001", "status":"present"}]'
+                    placeholder='[{&quot;student_id&quot;:&quot;2023001&quot;, &quot;status&quot;:&quot;present&quot;}]'
                     style={{ fontFamily: 'monospace', fontSize: '0.875rem' }}
                   />
                   <small className="text-muted">
-                    Format: JSON array with student_id and status ("present" or "absent")
+                    Format: JSON array with student_id and status (&quot;present&quot; or &quot;absent&quot;)
                   </small>
                 </div>
 

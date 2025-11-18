@@ -6,7 +6,7 @@
   "installCommand": "npm install",
   "devCommand": "npm run dev",
   "env": {
-    "VITE_API_URL": "https://islamic-college-backend.onrender.com"
+    "VITE_API_URL": "https://attendance-back.onrender.com"
   },
   "rewrites": [
     {

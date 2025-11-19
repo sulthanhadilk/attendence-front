@@ -21,9 +21,12 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(false)
   
   // Student profile states
+  const storedUser = (() => {
+    try { return JSON.parse(localStorage.getItem('user')) || null } catch { return null }
+  })()
   const [profile, setProfile] = useState({
-    name: 'Student',
-    rollNo: '',
+    name: storedUser?.name || '',
+    rollNo: storedUser?.roll_no || '',
     totalAttendance: 0,
     currentMonth: 0,
     totalFines: 0,
@@ -44,6 +47,7 @@ export default function StudentDashboard() {
   const [userInfo, setUserInfo] = useState({ id: null })
 
   useEffect(() => {
+    // Preload name/roll from localStorage (already set in initial state)
     loadProfile()
     // Get user info from token
     const token = localStorage.getItem('token')
@@ -64,25 +68,24 @@ export default function StudentDashboard() {
       
       // Check if we have valid student data
       if (res.data && res.data.student) {
-        setProfile({
-          name: res.data.student.user_id?.name || '',
-          rollNo: res.data.student.user_id?.roll_no || res.data.student.roll_number || '',
-          class: res.data.student.class_id?.name || '',
+        setProfile(prev => ({
+          ...prev,
+          name: res.data.student.user_id?.name || prev.name,
+          rollNo: res.data.student.user_id?.roll_no || res.data.student.roll_number || prev.rollNo,
+          class: res.data.student.class_id?.name || prev.class || '',
           totalAttendance: res.data.attendancePercentage || 0,
           currentMonth: res.data.monthlyAttendance || 0,
           totalFines: res.data.totalFines || 0,
           subjects: res.data.subjects || [],
           guardianInfo: res.data.student.guardian_info || {},
           studentDetails: res.data.student
-        });
+        }));
       } else {
         setMsg('⚠️ No student profile found. Please complete your profile.');
-        setProfile(prev => ({ ...prev, name: '', rollNo: '', class: '', subjects: [] }));
       }
     } catch (err) {
       console.error('Error loading profile:', err);
-      setMsg('❌ Failed to load profile.');
-      setProfile(prev => ({ ...prev, name: '', rollNo: '', class: '', subjects: [] }));
+      setMsg('❌ Failed to load profile. Using basic account info.');
     } finally {
       setLoading(false);
     }

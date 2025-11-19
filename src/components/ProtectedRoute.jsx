@@ -1,31 +1,44 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import React from 'react'
+import { useLocation, Navigate } from 'react-router-dom'
 
 const ProtectedRoute = ({ children, requiredRole = 'admin' }) => {
-  const token = localStorage.getItem('token');
-  const user = localStorage.getItem('user');
-  
-  // For development, allow access and let the component handle auth
-  if (!token || !user) {
-    console.log('No token/user found, allowing component to handle auth');
-    return children;
-  }
-  
-  try {
-    const userData = JSON.parse(user);
-    
-    // Check if user has the required role
-    if (userData.role !== requiredRole) {
-      console.log('Role mismatch, allowing component to handle auth');
-      return children;
-    }
-    
-    return children;
-  } catch (_error) {
-    // Invalid user data - let component handle it
-    console.log('Invalid user data, allowing component to handle auth');
-    return children;
-  }
-};
+  const token = localStorage.getItem('token')
+  const userRaw = localStorage.getItem('user')
+  const location = useLocation()
 
-export default ProtectedRoute;
+  // Missing auth entirely
+  if (!token || !userRaw) {
+    return (
+      <div className="page-container fade-in">
+        <div className="container">
+          <div className="alert alert-warning">
+            ⚠️ Authentication required. Please login to access this page.
+          </div>
+          <a className="btn btn-primary" href="/">Go to Login</a>
+        </div>
+      </div>
+    )
+  }
+
+  try {
+    const user = JSON.parse(userRaw)
+    if (requiredRole && user.role !== requiredRole) {
+      return (
+        <div className="page-container fade-in">
+          <div className="container">
+            <div className="alert alert-error">
+              ❌ Access denied: {requiredRole} role required.
+            </div>
+            <a className="btn btn-secondary" href="/">Switch Account</a>
+          </div>
+        </div>
+      )
+    }
+    return children
+  } catch (e) {
+    console.error('Invalid user data', e)
+    return <Navigate to="/" replace state={{ from: location }} />
+  }
+}
+
+export default ProtectedRoute

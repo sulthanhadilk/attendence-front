@@ -6,6 +6,8 @@ import QuickActions from '../components/admin/QuickActions'
 import UserManagementModal from '../components/admin/modals/UserManagementModal'
 import ReportsModal from '../components/admin/modals/ReportsModal'
 import SettingsModal from '../components/admin/modals/SettingsModal'
+import FinesModal from '../components/admin/modals/FinesModal'
+import TimetableModal from '../components/admin/modals/TimetableModal'
 import AISection from '../components/admin/AISection'
 
 const AIChatbot = lazy(()=> import('../components/AIChatbot'))
@@ -19,6 +21,8 @@ export default function AdminDashboard(){
   const [showUsers,setShowUsers]=useState(false)
   const [showReports,setShowReports]=useState(false)
   const [showSettings,setShowSettings]=useState(false)
+  const [showFines,setShowFines]=useState(false)
+  const [showTimetable,setShowTimetable]=useState(false)
   const [showChatbot,setShowChatbot]=useState(false)
   const [showPrediction,setShowPrediction]=useState(false)
   const [showAIReports,setShowAIReports]=useState(false)
@@ -94,13 +98,15 @@ export default function AdminDashboard(){
         <AISection onShowPrediction={()=>setShowPrediction(true)} onShowReports={()=>setShowAIReports(true)} onShowChatbot={()=>setShowChatbot(true)} />
 
         {/* Quick Actions */}
-        <QuickActions onExport={handleExport} onShowReports={()=>setShowReports(true)} onShowUsers={()=>{ setShowUsers(true); fetchStudents(); fetchTeachers(); }} onShowSettings={()=>setShowSettings(true)} exporting={exporting} disabled={!token} />
+        <QuickActions onExport={handleExport} onShowReports={()=>setShowReports(true)} onShowUsers={()=>{ setShowUsers(true); fetchStudents(); fetchTeachers(); }} onShowSettings={()=>setShowSettings(true)} onShowFines={()=>setShowFines(true)} onShowTimetable={()=>setShowTimetable(true)} exporting={exporting} disabled={!token} />
       </div>
 
       {/* Modals */}
       <UserManagementModal open={showUsers} onClose={()=>setShowUsers(false)} students={students} teachers={teachers} onRefreshStudents={fetchStudents} onRefreshTeachers={fetchTeachers} loading={loading} />
       <ReportsModal open={showReports} onClose={()=>setShowReports(false)} onLoadAttendance={fetchAttendanceReport} reportData={reportData} onExportAttendance={handleExport} onShowAIReports={()=>setShowAIReports(true)} />
       <SettingsModal open={showSettings} onClose={()=>setShowSettings(false)} onSampleAttendance={markSampleAttendance} />
+      <FinesModal open={showFines} onClose={()=>setShowFines(false)} />
+      <TimetableModal open={showTimetable} onClose={()=>setShowTimetable(false)} />
 
       {/* AI Modals */}
       <Suspense fallback={<div className="modal-overlay"><div className="modal-content"><div className="spinner"/> Loading AI...</div></div>}>
@@ -110,7 +116,7 @@ export default function AdminDashboard(){
             <div className="modal-overlay" onClick={()=>setShowPrediction(false)} />
             <div className="modal-content large">
               <div className="modal-header"><h2>AI Student Analysis & Predictions</h2><button className="modal-close" onClick={()=>setShowPrediction(false)}><i className="fas fa-times"/></button></div>
-              <div className="modal-body"><AIPredictionDashboard userRole="admin"/></div>
+              <div className="modalbody"><AIPredictionDashboard userRole="admin"/></div>
             </div>
           </div>
         )}

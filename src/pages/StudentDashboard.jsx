@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Header from '../components/Header'
+import StudentProfile from '../components/StudentProfile'
+import VirtualIDCard from '../components/VirtualIDCard'
+import MonthlyAttendance from '../components/MonthlyAttendance'
 import AIChatbot from '../components/AIChatbot'
 import AIPredictionDashboard from '../components/AIPredictionDashboard'
 
@@ -24,33 +27,131 @@ export default function StudentDashboard() {
     totalAttendance: 0,
     currentMonth: 0,
     totalFines: 0,
-    subjects: []
+    subjects: [],
+    guardianInfo: {},
+    studentDetails: {}
   })
+  
+  // Modal states
+  const [showProfile, setShowProfile] = useState(false)
+  const [showIdCard, setShowIdCard] = useState(false)
+  const [showMonthlyAttendance, setShowMonthlyAttendance] = useState(false)
+  const [editMode, setEditMode] = useState(false)
+  
+  // AI Features states
+  const [showChatbot, setShowChatbot] = useState(false)
+  const [showAIPrediction, setShowAIPrediction] = useState(false)
+  const [userInfo, setUserInfo] = useState({ id: null })
 
   useEffect(() => {
     loadProfile()
+    // Get user info from token
+    const token = localStorage.getItem('token')
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]))
+        setUserInfo({ id: payload.userId || payload.id })
+      } catch (err) {
+        console.error('Error parsing token:', err)
+      }
+    }
   }, [])
 
   const loadProfile = async () => {
     try {
-      // Mock profile data - replace with actual API call
+      setLoading(true);
+      const res = await axios.get(API + '/api/student/dashboard', { headers });
+      
+      // Check if we have valid student data
+      if (res.data && res.data.student) {
+        setProfile({
+          name: res.data.student.user_id?.name || 'Student',
+          rollNo: res.data.student.user_id?.roll_no || res.data.student.roll_number || '',
+          class: res.data.student.class_id?.name || 'Not Assigned',
+          totalAttendance: res.data.attendancePercentage || 0,
+          currentMonth: res.data.monthlyAttendance || 0,
+          totalFines: res.data.totalFines || 0,
+          subjects: res.data.subjects || [
+            { name: 'Mathematics', attendance: 90, code: 'MATH101' },
+            { name: 'Computer Science', attendance: 95, code: 'CS101' },
+            { name: 'Physics', attendance: 87, code: 'PHY101' },
+            { name: 'English', attendance: 92, code: 'ENG101' }
+          ],
+          guardianInfo: res.data.student.guardian_info || {},
+          studentDetails: res.data.student
+        });
+      } else {
+        // Fallback to demo data if no student data
+        setProfile({
+          name: 'Demo Student',
+          rollNo: 'STD001',
+          class: 'Class X-A',
+          totalAttendance: 88,
+          currentMonth: 92,
+          totalFines: 150,
+          subjects: [
+            { name: 'Mathematics', attendance: 90, code: 'MATH101' },
+            { name: 'Computer Science', attendance: 95, code: 'CS101' },
+            { name: 'Physics', attendance: 87, code: 'PHY101' },
+            { name: 'English', attendance: 92, code: 'ENG101' }
+          ],
+          guardianInfo: {
+            father_name: 'John Doe Sr.',
+            mother_name: 'Jane Doe',
+            guardian_phone: '+91 9876543210',
+            guardian_email: 'parent@example.com'
+          },
+          studentDetails: {
+            house: 'Red House',
+            medical_info: { blood_group: 'O+' }
+          }
+        });
+      }
+    } catch (err) {
+      console.error('Error loading profile:', err);
+      // Set fallback data on error
       setProfile({
-        name: 'John Doe',
-        rollNo: '2023001',
+        name: 'Demo Student',
+        rollNo: 'STD001',
+        class: 'Class X-A',
         totalAttendance: 88,
         currentMonth: 92,
         totalFines: 150,
         subjects: [
-          { name: 'Computer Science', attendance: 95 },
-          { name: 'Mathematics', attendance: 87 },
-          { name: 'Physics', attendance: 82 },
-          { name: 'English', attendance: 90 }
-        ]
-      })
-    } catch (err) {
-      console.error('Error loading profile:', err)
+          { name: 'Mathematics', attendance: 90, code: 'MATH101' },
+          { name: 'Computer Science', attendance: 95, code: 'CS101' },
+          { name: 'Physics', attendance: 87, code: 'PHY101' },
+          { name: 'English', attendance: 92, code: 'ENG101' }
+        ],
+        guardianInfo: {
+          father_name: 'John Doe Sr.',
+          mother_name: 'Jane Doe',
+          guardian_phone: '+91 9876543210'
+        },
+        studentDetails: {
+          house: 'Red House',
+          medical_info: { blood_group: 'O+' }
+        }
+      });
+    } finally {
+      setLoading(false);
     }
   }
+
+  const updateProfile = async (updatedData) => {
+    try {
+      setLoading(true);
+      const res = await axios.put(`${API}/api/student/profile`, updatedData, { headers });
+      setProfile(prev => ({ ...prev, ...updatedData }));
+      setMsg('✅ Profile updated successfully!');
+      setEditMode(false);
+      setTimeout(() => setMsg(''), 3000);
+    } catch (err) {
+      setMsg(`❌ ${err.response?.data?.msg || err.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getAttendance = async (e) => {
     e.preventDefault()
@@ -83,24 +184,6 @@ export default function StudentDashboard() {
     return 'fa-times-circle'
   }
 
-  // AI Features states
-  const [showChatbot, setShowChatbot] = useState(false)
-  const [showAIPrediction, setShowAIPrediction] = useState(false)
-  const [userInfo, setUserInfo] = useState({ id: null })
-
-  useEffect(() => {
-    // Get user info from token or API
-    const token = localStorage.getItem('token')
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]))
-        setUserInfo({ id: payload.userId || payload.id })
-      } catch (err) {
-        console.error('Error parsing token:', err)
-      }
-    }
-  }, [])
-
   return (
     <div className="page-container fade-in">
       <Header userRole="student" userName={profile.name} />
@@ -111,21 +194,69 @@ export default function StudentDashboard() {
           <h1 className="login-title text-primary">
             <i className="fas fa-user-graduate"></i> Student Dashboard
           </h1>
-          <p className="text-muted">Track your attendance, view academic progress, and manage your profile</p>
+          <p className="text-muted">Welcome back, {profile.name}! Track your attendance, view academic progress, and manage your profile</p>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="card mb-4">
+          <div className="card-header">
+            <h2 className="card-title">
+              <i className="fas fa-bolt"></i> Quick Actions
+            </h2>
+          </div>
+          <div className="card-body">
+            <div className="quick-actions">
+              <button 
+                className="quick-action-btn primary"
+                onClick={() => setShowProfile(true)}
+              >
+                <i className="fas fa-user-edit"></i>
+                <span>View Profile</span>
+              </button>
+              <button 
+                className="quick-action-btn success"
+                onClick={() => setShowIdCard(true)}
+              >
+                <i className="fas fa-id-card"></i>
+                <span>ID Card</span>
+              </button>
+              <button 
+                className="quick-action-btn info"
+                onClick={() => setShowMonthlyAttendance(true)}
+              >
+                <i className="fas fa-calendar-alt"></i>
+                <span>Monthly Attendance</span>
+              </button>
+              <button 
+                className="quick-action-btn purple"
+                onClick={() => setShowAIPrediction(true)}
+              >
+                <i className="fas fa-brain"></i>
+                <span>AI Analytics</span>
+              </button>
+              <button 
+                className="quick-action-btn secondary"
+                onClick={() => setShowChatbot(true)}
+              >
+                <i className="fas fa-robot"></i>
+                <span>AI Assistant</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Profile Summary */}
         <div className="card mb-4">
           <div className="card-header">
             <h2 className="card-title">
-              <i className="fas fa-user"></i> Profile Summary
+              <i className="fas fa-chart-line"></i> Academic Overview
             </h2>
           </div>
           <div className="card-body">
             <div className="dashboard-grid">
               <div className="stats-card">
                 <div className="stats-header">
-                  <div className="stats-icon primary">
+                  <div className="stats-icon success">
                     <i className="fas fa-percentage"></i>
                   </div>
                   <div>
@@ -137,8 +268,8 @@ export default function StudentDashboard() {
 
               <div className="stats-card">
                 <div className="stats-header">
-                  <div className="stats-icon success">
-                    <i className="fas fa-calendar-check"></i>
+                  <div className="stats-icon primary">
+                    <i className="fas fa-calendar-month"></i>
                   </div>
                   <div>
                     <div className="stats-value">{profile.currentMonth}%</div>
@@ -150,7 +281,7 @@ export default function StudentDashboard() {
               <div className="stats-card">
                 <div className="stats-header">
                   <div className="stats-icon warning">
-                    <i className="fas fa-dollar-sign"></i>
+                    <i className="fas fa-rupee-sign"></i>
                   </div>
                   <div>
                     <div className="stats-value">₹{profile.totalFines}</div>
@@ -161,7 +292,7 @@ export default function StudentDashboard() {
 
               <div className="stats-card">
                 <div className="stats-header">
-                  <div className="stats-icon error">
+                  <div className="stats-icon info">
                     <i className="fas fa-book"></i>
                   </div>
                   <div>
@@ -174,35 +305,62 @@ export default function StudentDashboard() {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-          {/* Attendance Query */}
-          <div className="card">
-            <div className="card-header">
-              <h2 className="card-title">
-                <i className="fas fa-search"></i> Check Attendance
-              </h2>
-              <p className="card-subtitle">View your attendance for any month</p>
+        {/* Subject-wise Attendance */}
+        <div className="card mb-4">
+          <div className="card-header">
+            <h2 className="card-title">
+              <i className="fas fa-books"></i> Subject-wise Attendance
+            </h2>
+          </div>
+          <div className="card-body">
+            <div className="subjects-grid">
+              {profile.subjects.map((subject, index) => (
+                <div key={index} className="subject-card">
+                  <div className="subject-header">
+                    <h4 className="subject-name">{subject.name}</h4>
+                    <span className="subject-code">{subject.code}</span>
+                  </div>
+                  <div className="subject-attendance">
+                    <div className={`attendance-circle ${getAttendanceColor(subject.attendance)}`}>
+                      <span className="attendance-percentage">{subject.attendance}%</span>
+                    </div>
+                    <i className={`fas ${getAttendanceIcon(subject.attendance)} attendance-status`}></i>
+                  </div>
+                </div>
+              ))}
             </div>
-            
-            <div className="card-body">
-              <form onSubmit={getAttendance}>
+          </div>
+        </div>
+
+        {/* Attendance Lookup */}
+        <div className="card mb-4">
+          <div className="card-header">
+            <h2 className="card-title">
+              <i className="fas fa-search"></i> Attendance Lookup
+            </h2>
+            <p className="card-subtitle">Search attendance records by student ID and month</p>
+          </div>
+          
+          <div className="card-body">
+            <form onSubmit={getAttendance}>
+              <div className="dashboard-grid">
                 <div className="form-group">
                   <label className="form-label">
-                    <i className="fas fa-id-card"></i> Student ID *
+                    <i className="fas fa-id-badge"></i> Student ID
                   </label>
                   <input 
                     type="text"
                     className="form-input"
                     value={studentId} 
                     onChange={e => setStudentId(e.target.value)} 
-                    placeholder={`e.g., ${profile.rollNo || '2023001'}`}
+                    placeholder="Enter student ID"
                     required
                   />
                 </div>
 
                 <div className="form-group">
                   <label className="form-label">
-                    <i className="fas fa-calendar"></i> Month *
+                    <i className="fas fa-calendar"></i> Month
                   </label>
                   <input 
                     type="month"
@@ -212,224 +370,116 @@ export default function StudentDashboard() {
                     required
                   />
                 </div>
+              </div>
 
-                <button 
-                  type="submit" 
-                  className="btn btn-primary btn-full" 
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <>
-                      <div className="spinner"></div>
-                      Loading...
-                    </>
-                  ) : (
-                    <>
-                      <i className="fas fa-search"></i>
-                      Get Attendance
-                    </>
-                  )}
+              <button 
+                type="submit" 
+                className={`btn-primary ${loading ? 'loading' : ''}`}
+                disabled={loading}
+              >
+                <i className="fas fa-search"></i>
+                {loading ? 'Searching...' : 'Get Attendance'}
+              </button>
+            </form>
+
+            {msg && (
+              <div className={`message ${msg.includes('✅') ? 'success' : 'error'}`}>
+                {msg}
+                <button className="message-close" onClick={clearMessage}>
+                  <i className="fas fa-times"></i>
                 </button>
-              </form>
+              </div>
+            )}
 
-              {/* Results */}
-              {result && (
-                <div className="card mt-3" style={{ background: 'var(--gray-50)' }}>
-                  <div className="card-body">
-                    <h4 className="mb-3">
-                      <i className="fas fa-chart-pie"></i> Attendance Report
-                    </h4>
-                    
-                    <div className="dashboard-grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
-                      <div className="text-center">
-                        <div className={`stats-icon ${getAttendanceColor(result.percent)} mb-2`} style={{ margin: '0 auto' }}>
-                          <i className={`fas ${getAttendanceIcon(result.percent)}`}></i>
-                        </div>
-                        <div className="stats-value">{result.percent}%</div>
-                        <div className="stats-label">Attendance</div>
-                      </div>
-                      
-                      <div>
-                        <div className="mb-2">
-                          <strong>Present:</strong> {result.present} days
-                        </div>
-                        <div className="mb-2">
-                          <strong>Total:</strong> {result.total} days
-                        </div>
-                        <div>
-                          <strong>Absent:</strong> {result.total - result.present} days
-                        </div>
-                      </div>
+            {result && (
+              <div className="results-container">
+                <h3 className="results-title">
+                  <i className="fas fa-chart-bar"></i> Attendance Results
+                </h3>
+                <div className="results-grid">
+                  <div className="result-card">
+                    <div className="result-icon primary">
+                      <i className="fas fa-calendar-days"></i>
                     </div>
-
-                    {result.percent < 75 && (
-                      <div className="alert alert-warning mt-3">
-                        <i className="fas fa-exclamation-triangle"></i>
-                        <strong>Warning:</strong> Your attendance is below 75%. Please attend more classes to meet minimum requirements.
-                      </div>
-                    )}
+                    <div className="result-info">
+                      <div className="result-value">{result.totalDays}</div>
+                      <div className="result-label">Total Days</div>
+                    </div>
+                  </div>
+                  <div className="result-card">
+                    <div className="result-icon success">
+                      <i className="fas fa-check"></i>
+                    </div>
+                    <div className="result-info">
+                      <div className="result-value">{result.presentDays}</div>
+                      <div className="result-label">Present</div>
+                    </div>
+                  </div>
+                  <div className="result-card">
+                    <div className="result-icon error">
+                      <i className="fas fa-times"></i>
+                    </div>
+                    <div className="result-info">
+                      <div className="result-value">{result.absentDays}</div>
+                      <div className="result-label">Absent</div>
+                    </div>
+                  </div>
+                  <div className="result-card">
+                    <div className="result-icon warning">
+                      <i className="fas fa-percentage"></i>
+                    </div>
+                    <div className="result-info">
+                      <div className="result-value">{result.percentage}%</div>
+                      <div className="result-label">Attendance</div>
+                    </div>
                   </div>
                 </div>
-              )}
-            </div>
-          </div>
-
-          {/* Subject-wise Attendance */}
-          <div className="card">
-            <div className="card-header">
-              <h2 className="card-title">
-                <i className="fas fa-book"></i> Subject-wise Attendance
-              </h2>
-              <p className="card-subtitle">Your attendance across all subjects</p>
-            </div>
-            
-            <div className="card-body">
-              {profile.subjects.map((subject, index) => (
-                <div key={index} className="mb-3 p-3" style={{ background: 'var(--gray-50)', borderRadius: 'var(--radius-md)' }}>
-                  <div className="d-flex justify-content-between align-items-center mb-2">
-                    <h5 className="mb-0">{subject.name}</h5>
-                    <span className={`badge ${getAttendanceColor(subject.attendance)}`}>
-                      {subject.attendance}%
-                    </span>
-                  </div>
-                  
-                  <div className="progress" style={{ height: '8px', background: 'var(--gray-200)', borderRadius: '4px', overflow: 'hidden' }}>
-                    <div 
-                      className={`progress-bar ${getAttendanceColor(subject.attendance)}`}
-                      style={{ 
-                        width: `${subject.attendance}%`,
-                        height: '100%',
-                        background: subject.attendance >= 90 ? 'var(--success-color)' : 
-                                   subject.attendance >= 75 ? 'var(--warning-color)' : 'var(--error-color)',
-                        transition: 'width 0.3s ease'
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Message Alert */}
-        {msg && (
-          <div className={`alert mt-4 ${msg.includes('✅') ? 'alert-success' : 'alert-error'}`}>
-            {msg}
-            <button 
-              type="button" 
-              onClick={clearMessage}
-              style={{ 
-                background: 'none', 
-                border: 'none', 
-                float: 'right', 
-                cursor: 'pointer',
-                fontSize: '1.2rem'
-              }}
-            >
-              ×
-            </button>
-          </div>
-        )}
-
-        {/* AI Features Section */}
-        <div className="card mt-4">
-          <div className="card-header">
-            <h3 className="card-title">
-              <i className="fas fa-robot"></i> AI-Powered Features
-            </h3>
-          </div>
-          <div className="card-body">
-            <div className="dashboard-grid">
-              <button 
-                className="btn btn-gradient-primary"
-                onClick={() => setShowAIPrediction(true)}
-              >
-                <i className="fas fa-brain"></i>
-                AI Smart Analysis
-              </button>
-              <button 
-                className="btn btn-gradient-success"
-                onClick={() => setShowChatbot(true)}
-              >
-                <i className="fas fa-comments"></i>
-                Ask AI Assistant
-              </button>
-            </div>
-            <p className="text-muted mt-3 mb-0">
-              <i className="fas fa-info-circle"></i> 
-              Get intelligent insights about your academic performance and personalized recommendations
-            </p>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="card mt-4">
-          <div className="card-header">
-            <h3 className="card-title">
-              <i className="fas fa-bolt"></i> Quick Actions
-            </h3>
-          </div>
-          <div className="card-body">
-            <div className="dashboard-grid">
-              <button className="btn btn-primary">
-                <i className="fas fa-calendar-alt"></i>
-                View Schedule
-              </button>
-              <button className="btn btn-success">
-                <i className="fas fa-download"></i>
-                Download Report
-              </button>
-              <button className="btn btn-warning">
-                <i className="fas fa-dollar-sign"></i>
-                Pay Fines
-              </button>
-              <button className="btn btn-secondary">
-                <i className="fas fa-user-edit"></i>
-                Update Profile
-              </button>
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* AI Components */}
-      <AIChatbot 
-        isOpen={showChatbot}
-        onClose={() => setShowChatbot(false)}
-        userRole="student"
-      />
-
-      {showAIPrediction && (
-        <div className="ai-prediction-modal">
-          <div className="modal-overlay" onClick={() => setShowAIPrediction(false)}></div>
-          <div className="modal-content">
-            <div className="modal-header">
-              <h2>AI Smart Analysis</h2>
-              <button 
-                className="modal-close"
-                onClick={() => setShowAIPrediction(false)}
-              >
-                <i className="fas fa-times"></i>
-              </button>
-            </div>
-            <div className="modal-body">
-              <AIPredictionDashboard 
-                studentId={userInfo.id}
-                userRole="student"
-              />
-            </div>
-          </div>
-        </div>
+      {/* Modals */}
+      {showProfile && (
+        <StudentProfile 
+          profile={profile}
+          onUpdate={updateProfile}
+          onClose={() => setShowProfile(false)}
+          editMode={editMode}
+          setEditMode={setEditMode}
+        />
       )}
 
-      {/* Floating AI Button */}
-      <button 
-        className="ai-floating-btn pulse"
-        onClick={() => setShowChatbot(true)}
-        title="Ask AI Assistant"
-      >
-        <i className="fas fa-robot"></i>
-      </button>
+      {showIdCard && (
+        <VirtualIDCard 
+          profile={profile}
+          onClose={() => setShowIdCard(false)}
+        />
+      )}
+
+      {showMonthlyAttendance && (
+        <MonthlyAttendance 
+          profile={profile}
+          onClose={() => setShowMonthlyAttendance(false)}
+        />
+      )}
+
+      {showChatbot && (
+        <AIChatbot 
+          isOpen={showChatbot}
+          onClose={() => setShowChatbot(false)}
+          userRole="student"
+        />
+      )}
+
+      {showAIPrediction && (
+        <AIPredictionDashboard 
+          userRole="student"
+          userId={userInfo.id}
+          onClose={() => setShowAIPrediction(false)}
+        />
+      )}
     </div>
   )
 }

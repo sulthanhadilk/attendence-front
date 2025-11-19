@@ -43,7 +43,8 @@ const VirtualIDCard = ({ profile, onClose }) => {
     ctx.fillText(`Name: ${profile.name}`, 30, 230);
     ctx.fillText(`Roll No: ${profile.rollNo}`, 30, 260);
     ctx.fillText(`Class: ${profile.class || 'Not Assigned'}`, 30, 290);
-    ctx.fillText(`House: ${profile.studentDetails?.house || 'Not Assigned'}`, 30, 320);
+    const addr = profile.studentDetails?.address ? [profile.studentDetails.address.street, profile.studentDetails.address.city].filter(Boolean).join(', ') : '';
+    ctx.fillText(`Address: ${addr || 'Not Provided'}`, 30, 320);
     
     // Add QR code placeholder
     ctx.fillStyle = '#e2e8f0';
@@ -115,8 +116,8 @@ const VirtualIDCard = ({ profile, onClose }) => {
                   <span className="value">{profile.class || 'Not Assigned'}</span>
                 </div>
                 <div className="detail-row">
-                  <span className="label">House:</span>
-                  <span className="value">{profile.studentDetails?.house || 'Not Assigned'}</span>
+                  <span className="label">Address:</span>
+                  <span className="value">{profile.studentDetails?.address ? [profile.studentDetails.address.street, profile.studentDetails.address.city].filter(Boolean).join(', ') : 'Not Provided'}</span>
                 </div>
                 <div className="detail-row">
                   <span className="label">Blood Group:</span>

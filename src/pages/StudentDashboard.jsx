@@ -65,74 +65,24 @@ export default function StudentDashboard() {
       // Check if we have valid student data
       if (res.data && res.data.student) {
         setProfile({
-          name: res.data.student.user_id?.name || 'Student',
+          name: res.data.student.user_id?.name || '',
           rollNo: res.data.student.user_id?.roll_no || res.data.student.roll_number || '',
-          class: res.data.student.class_id?.name || 'Not Assigned',
+          class: res.data.student.class_id?.name || '',
           totalAttendance: res.data.attendancePercentage || 0,
           currentMonth: res.data.monthlyAttendance || 0,
           totalFines: res.data.totalFines || 0,
-          subjects: res.data.subjects || [
-            { name: 'Mathematics', attendance: 90, code: 'MATH101' },
-            { name: 'Computer Science', attendance: 95, code: 'CS101' },
-            { name: 'Physics', attendance: 87, code: 'PHY101' },
-            { name: 'English', attendance: 92, code: 'ENG101' }
-          ],
+          subjects: res.data.subjects || [],
           guardianInfo: res.data.student.guardian_info || {},
           studentDetails: res.data.student
         });
       } else {
-        // Fallback to demo data if no student data
-        setProfile({
-          name: 'Demo Student',
-          rollNo: 'STD001',
-          class: 'Class X-A',
-          totalAttendance: 88,
-          currentMonth: 92,
-          totalFines: 150,
-          subjects: [
-            { name: 'Mathematics', attendance: 90, code: 'MATH101' },
-            { name: 'Computer Science', attendance: 95, code: 'CS101' },
-            { name: 'Physics', attendance: 87, code: 'PHY101' },
-            { name: 'English', attendance: 92, code: 'ENG101' }
-          ],
-          guardianInfo: {
-            father_name: 'John Doe Sr.',
-            mother_name: 'Jane Doe',
-            guardian_phone: '+91 9876543210',
-            guardian_email: 'parent@example.com'
-          },
-          studentDetails: {
-            house: 'Red House',
-            medical_info: { blood_group: 'O+' }
-          }
-        });
+        setMsg('⚠️ No student profile found. Please complete your profile.');
+        setProfile(prev => ({ ...prev, name: '', rollNo: '', class: '', subjects: [] }));
       }
     } catch (err) {
       console.error('Error loading profile:', err);
-      // Set fallback data on error
-      setProfile({
-        name: 'Demo Student',
-        rollNo: 'STD001',
-        class: 'Class X-A',
-        totalAttendance: 88,
-        currentMonth: 92,
-        totalFines: 150,
-        subjects: [
-          { name: 'Mathematics', attendance: 90, code: 'MATH101' },
-          { name: 'Computer Science', attendance: 95, code: 'CS101' },
-          { name: 'Physics', attendance: 87, code: 'PHY101' },
-          { name: 'English', attendance: 92, code: 'ENG101' }
-        ],
-        guardianInfo: {
-          father_name: 'John Doe Sr.',
-          mother_name: 'Jane Doe',
-          guardian_phone: '+91 9876543210'
-        },
-        studentDetails: {
-          house: 'Red House',
-          medical_info: { blood_group: 'O+' }
-        }
-      });
+      setMsg('❌ Failed to load profile.');
+      setProfile(prev => ({ ...prev, name: '', rollNo: '', class: '', subjects: [] }));
     } finally {
       setLoading(false);
     }

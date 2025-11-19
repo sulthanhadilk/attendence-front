@@ -125,24 +125,49 @@ const StudentProfile = ({ profile, onUpdate, onClose, editMode, setEditMode }) =
             </div>
           </div>
 
-          {/* House Information */}
+          {/* Address / Residence */}
           <div className="profile-section">
-            <h4><i className="fas fa-home"></i> House Information</h4>
+            <h4><i className="fas fa-home"></i> Address / Residence</h4>
             <div className="form-grid">
-              <div className="form-group">
-                <label>House</label>
-                <select 
-                  value={formData.house} 
-                  onChange={(e) => handleInputChange(null, 'house', e.target.value)}
+              <div className="form-group full-width">
+                <label>Address Line / Landmark</label>
+                <input 
+                  type="text" 
+                  value={formData.address.street} 
+                  onChange={(e) => handleInputChange('address', 'street', e.target.value)}
                   disabled={!editMode}
-                  className="form-input"
-                >
-                  <option value="">Select House</option>
-                  <option value="red">Red House</option>
-                  <option value="blue">Blue House</option>
-                  <option value="green">Green House</option>
-                  <option value="yellow">Yellow House</option>
-                </select>
+                  className="form-input" 
+                  placeholder="House / Street / Landmark"/>
+              </div>
+              <div className="form-group">
+                <label>City</label>
+                <input 
+                  type="text" 
+                  value={formData.address.city} 
+                  onChange={(e) => handleInputChange('address', 'city', e.target.value)}
+                  disabled={!editMode}
+                  className="form-input" 
+                  placeholder="City"/>
+              </div>
+              <div className="form-group">
+                <label>State</label>
+                <input 
+                  type="text" 
+                  value={formData.address.state} 
+                  onChange={(e) => handleInputChange('address', 'state', e.target.value)}
+                  disabled={!editMode}
+                  className="form-input" 
+                  placeholder="State"/>
+              </div>
+              <div className="form-group">
+                <label>Pincode</label>
+                <input 
+                  type="text" 
+                  value={formData.address.pincode} 
+                  onChange={(e) => handleInputChange('address', 'pincode', e.target.value)}
+                  disabled={!editMode}
+                  className="form-input" 
+                  placeholder="Pincode"/>
               </div>
             </div>
           </div>
@@ -209,56 +234,7 @@ const StudentProfile = ({ profile, onUpdate, onClose, editMode, setEditMode }) =
             </div>
           </div>
 
-          {/* Address Information */}
-          <div className="profile-section">
-            <h4><i className="fas fa-map-marker-alt"></i> Address</h4>
-            <div className="form-grid">
-              <div className="form-group full-width">
-                <label>Street Address</label>
-                <input 
-                  type="text" 
-                  value={formData.address.street} 
-                  onChange={(e) => handleInputChange('address', 'street', e.target.value)}
-                  disabled={!editMode}
-                  className="form-input" 
-                  placeholder="Street address"
-                />
-              </div>
-              <div className="form-group">
-                <label>City</label>
-                <input 
-                  type="text" 
-                  value={formData.address.city} 
-                  onChange={(e) => handleInputChange('address', 'city', e.target.value)}
-                  disabled={!editMode}
-                  className="form-input" 
-                  placeholder="City"
-                />
-              </div>
-              <div className="form-group">
-                <label>State</label>
-                <input 
-                  type="text" 
-                  value={formData.address.state} 
-                  onChange={(e) => handleInputChange('address', 'state', e.target.value)}
-                  disabled={!editMode}
-                  className="form-input" 
-                  placeholder="State"
-                />
-              </div>
-              <div className="form-group">
-                <label>Pincode</label>
-                <input 
-                  type="text" 
-                  value={formData.address.pincode} 
-                  onChange={(e) => handleInputChange('address', 'pincode', e.target.value)}
-                  disabled={!editMode}
-                  className="form-input" 
-                  placeholder="Pincode"
-                />
-              </div>
-            </div>
-          </div>
+          {/* (Removed separate address block; merged above) */}
 
           {/* Medical Information */}
           <div className="profile-section">

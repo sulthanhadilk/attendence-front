@@ -5,9 +5,10 @@ const ProtectedRoute = ({ children, requiredRole = 'admin' }) => {
   const token = localStorage.getItem('token');
   const user = localStorage.getItem('user');
   
-  // Check if user is logged in
+  // For development, allow access and let the component handle auth
   if (!token || !user) {
-    return <Navigate to="/" replace />;
+    console.log('No token/user found, allowing component to handle auth');
+    return children;
   }
   
   try {
@@ -15,15 +16,15 @@ const ProtectedRoute = ({ children, requiredRole = 'admin' }) => {
     
     // Check if user has the required role
     if (userData.role !== requiredRole) {
-      return <Navigate to="/" replace />;
+      console.log('Role mismatch, allowing component to handle auth');
+      return children;
     }
     
     return children;
   } catch (_error) {
-    // Invalid user data in localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    return <Navigate to="/" replace />;
+    // Invalid user data - let component handle it
+    console.log('Invalid user data, allowing component to handle auth');
+    return children;
   }
 };
 

@@ -16,11 +16,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route 
             path="/admin" 
-            element={
-              <ProtectedRoute requiredRole="admin">
-                <AdminDashboard />
-              </ProtectedRoute>
-            } 
+            element={<AdminDashboard />}
           />
           <Route 
             path="/teacher" 

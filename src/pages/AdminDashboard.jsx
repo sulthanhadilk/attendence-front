@@ -8,29 +8,32 @@ import AIReportGenerator from '../components/AIReportGenerator'
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 export default function AdminDashboard() {
-  const token = localStorage.getItem('token')
-  const headers = { Authorization: 'Bearer ' + token }
+  const [token, setToken] = useState(localStorage.getItem('token'))
+  const headers = token ? { Authorization: 'Bearer ' + token } : {}
   
   // Check authentication on component mount
   useEffect(() => {
     const user = localStorage.getItem('user');
-    if (!token || !user) {
-      window.location = '/';
+    const storedToken = localStorage.getItem('token');
+    
+    if (!storedToken || !user) {
+      // For now, just show a message instead of redirecting
+      setMsg('⚠️ Please login as admin to access this dashboard');
       return;
     }
     
     try {
       const userData = JSON.parse(user);
       if (userData.role !== 'admin') {
-        window.location = '/';
+        setMsg('⚠️ Admin access required');
         return;
       }
+      setToken(storedToken);
     } catch (error) {
-      localStorage.clear();
-      window.location = '/';
+      setMsg('⚠️ Invalid session. Please login again.');
       return;
     }
-  }, [token]);
+  }, []);
 
   // Logout function
   const handleLogout = () => {
@@ -60,6 +63,8 @@ export default function AdminDashboard() {
   useEffect(() => {
     // Load dashboard stats
     loadStats()
+    // Set token from localStorage
+    setToken(localStorage.getItem('token'))
   }, [])
 
   // Auto-load data when modals open

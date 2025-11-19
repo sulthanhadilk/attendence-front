@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
 import AdminDashboard from './pages/AdminDashboard'
 import TeacherDashboard from './pages/TeacherDashboard'
+import TeacherProfile from './pages/TeacherProfile'
 import StudentDashboard from './pages/StudentDashboard'
 import ProtectedRoute from './components/ProtectedRoute'
 import './styles.css'
@@ -27,6 +28,14 @@ function App() {
             element={
               <ProtectedRoute requiredRole="teacher">
                 <TeacherDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/teacher/profile" 
+            element={
+              <ProtectedRoute requiredRole="teacher">
+                <TeacherProfile />
               </ProtectedRoute>
             } 
           />

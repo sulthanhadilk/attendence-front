@@ -22,7 +22,23 @@ export default [
         window: 'readonly',
         document: 'readonly',
         console: 'readonly',
-        process: 'readonly'
+        process: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        fetch: 'readonly',
+        alert: 'readonly',
+        confirm: 'readonly',
+        prompt: 'readonly',
+        Blob: 'readonly',
+        URL: 'readonly',
+        File: 'readonly',
+        FileReader: 'readonly',
+        atob: 'readonly',
+        btoa: 'readonly',
+        FormData: 'readonly',
+        Request: 'readonly',
+        Response: 'readonly',
+        Headers: 'readonly'
       }
     },
     plugins: {

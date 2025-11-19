@@ -41,8 +41,11 @@ export const apiRequest = async (url, options = {}) => {
   const token = localStorage.getItem('token');
   
   const config = {
+    mode: 'cors',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
       ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     },
@@ -50,16 +53,28 @@ export const apiRequest = async (url, options = {}) => {
   };
 
   try {
+    console.log(`🌐 API Request: ${options.method || 'GET'} ${url}`);
     const response = await fetch(url, config);
     
     if (!response.ok) {
-      const error = await response.json();
+      let error;
+      try {
+        error = await response.json();
+      } catch (e) {
+        error = { msg: `HTTP error! status: ${response.status}` };
+      }
       throw new Error(error.msg || `HTTP error! status: ${response.status}`);
     }
     
     return await response.json();
   } catch (error) {
     console.error('API Request Error:', error);
+    
+    // Provide more specific error messages for common issues
+    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+      throw new Error('Unable to connect to server. Please check if the backend is running and accessible.');
+    }
+    
     throw error;
   }
 };

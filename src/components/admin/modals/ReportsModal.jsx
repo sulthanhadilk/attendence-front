@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ReportsModal({ open, onClose, onLoadAttendance, reportData, onExportAttendance }) {
+export default function ReportsModal({ open, onClose, onLoadAttendance, reportData, onExportAttendance, onShowAIReports }) {
   if (!open) return null;
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -13,6 +13,9 @@ export default function ReportsModal({ open, onClose, onLoadAttendance, reportDa
           <div className="dashboard-grid">
             <button className="btn btn-primary" onClick={onLoadAttendance}><i className="fas fa-calendar-check"/> Attendance Report</button>
             <button className="btn btn-warning" onClick={onExportAttendance}><i className="fas fa-download"/> Export Attendance</button>
+            {onShowAIReports && (
+              <button className="btn btn-info" onClick={onShowAIReports}><i className="fas fa-robot"/> AI Reports</button>
+            )}
           </div>
           {reportData && reportData.type==='attendance' && (
             <div className="mt-4">

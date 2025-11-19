@@ -99,7 +99,7 @@ export default function AdminDashboard(){
 
       {/* Modals */}
       <UserManagementModal open={showUsers} onClose={()=>setShowUsers(false)} students={students} teachers={teachers} onRefreshStudents={fetchStudents} onRefreshTeachers={fetchTeachers} loading={loading} />
-      <ReportsModal open={showReports} onClose={()=>setShowReports(false)} onLoadAttendance={fetchAttendanceReport} reportData={reportData} onExportAttendance={handleExport} />
+      <ReportsModal open={showReports} onClose={()=>setShowReports(false)} onLoadAttendance={fetchAttendanceReport} reportData={reportData} onExportAttendance={handleExport} onShowAIReports={()=>setShowAIReports(true)} />
       <SettingsModal open={showSettings} onClose={()=>setShowSettings(false)} onSampleAttendance={markSampleAttendance} />
 
       {/* AI Modals */}

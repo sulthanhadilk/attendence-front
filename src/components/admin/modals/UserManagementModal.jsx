@@ -48,7 +48,7 @@ export default function UserManagementModal({ open, onClose, students, teachers,
                       <div key={t._id} className="user-item">
                         <div className="user-info">
                           <strong>{t.user_id?.name || 'N/A'}</strong>
-                          <small>ID: {t.emp_id || 'N/A'}</small>
+                          <small>ID: {t.employee_id || t.user_id?.roll_no || 'N/A'}</small>
                         </div>
                         <span className="badge badge-info">Teacher</span>
                       </div>

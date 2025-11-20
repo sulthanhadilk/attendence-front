@@ -39,7 +39,7 @@ export default function TeacherProfile() {
       const data = await apiRequest(`${API_BASE_URL}/api/teacher/profile`, { headers })
       const { user, teacher } = data
       setForm({
-        staff_code: teacher.emp_id || '',
+        staff_code: teacher.employee_id || user.roll_no || '',
         name: user.name || '',
         date_of_birth: user.date_of_birth ? new Date(user.date_of_birth).toISOString().slice(0,10) : '',
         blood_group: teacher.blood_group || '',

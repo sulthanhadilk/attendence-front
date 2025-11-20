@@ -36,7 +36,7 @@ export default function AdminDashboard(){
     try{ const u=JSON.parse(raw); if(u.role!=='admin'){ setAuthMsg('⚠️ Admin role required. Limited view.'); return; } setToken(t); setAuthMsg(''); }catch{ setAuthMsg('⚠️ Session invalid. Please login again.'); }
   },[])
 
-  const { stats, students, teachers, reportData, loading, fetchStats, fetchStudents, fetchTeachers, fetchAttendanceReport, exportAttendance } = useAdminData(token)
+  const { stats, students, teachers, reportData, loading, fetchStats, fetchStudents, fetchTeachers, fetchAttendanceReport, exportAttendance, deleteStudent, deleteTeacher } = useAdminData(token)
 
   useEffect(()=>{ fetchStats() },[token])
 
@@ -102,7 +102,17 @@ export default function AdminDashboard(){
       </div>
 
       {/* Modals */}
-      <UserManagementModal open={showUsers} onClose={()=>setShowUsers(false)} students={students} teachers={teachers} onRefreshStudents={fetchStudents} onRefreshTeachers={fetchTeachers} loading={loading} />
+      <UserManagementModal 
+        open={showUsers} 
+        onClose={()=>setShowUsers(false)} 
+        students={students} 
+        teachers={teachers} 
+        onRefreshStudents={fetchStudents} 
+        onRefreshTeachers={fetchTeachers} 
+        onDeleteStudent={async (id)=>{ await deleteStudent(id); await fetchStudents(); setGlobalMsg('✅ Student deleted'); }}
+        onDeleteTeacher={async (id)=>{ await deleteTeacher(id); await fetchTeachers(); setGlobalMsg('✅ Teacher deleted'); }}
+        loading={loading} 
+      />
       <ReportsModal open={showReports} onClose={()=>setShowReports(false)} onLoadAttendance={fetchAttendanceReport} reportData={reportData} onExportAttendance={handleExport} onShowAIReports={()=>setShowAIReports(true)} />
       <SettingsModal open={showSettings} onClose={()=>setShowSettings(false)} onSampleAttendance={markSampleAttendance} />
       <FinesModal open={showFines} onClose={()=>setShowFines(false)} />

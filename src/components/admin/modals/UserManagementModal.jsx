@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-export default function UserManagementModal({ open, onClose, students, teachers, onRefreshStudents, onRefreshTeachers, loading }) {
+export default function UserManagementModal({ open, onClose, students, teachers, onRefreshStudents, onRefreshTeachers, onDeleteStudent, onDeleteTeacher, loading }) {
   if (!open) return null;
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -27,7 +27,15 @@ export default function UserManagementModal({ open, onClose, students, teachers,
                             <small>Roll: {s.user_id?.roll_no || 'N/A'}</small>
                             <small>Email: {s.user_id?.email || 'Not provided'}</small>
                           </div>
-                          <span className="badge badge-success">Student</span>
+                          <div style={{display:'flex', alignItems:'center', gap:8}}>
+                            <span className="badge badge-success">Student</span>
+                            {onDeleteStudent && (
+                              <button className="btn btn-danger btn-sm" title="Delete"
+                                onClick={()=>{ if(confirm('Delete this student?')) onDeleteStudent(s._id) }}>
+                                <i className="fas fa-trash"/>
+                              </button>
+                            )}
+                          </div>
                         </div>
                       ))}
                       {students.length>5 && <p className="text-muted">... and {students.length-5} more</p>}
@@ -48,9 +56,17 @@ export default function UserManagementModal({ open, onClose, students, teachers,
                       <div key={t._id} className="user-item">
                         <div className="user-info">
                           <strong>{t.user_id?.name || 'N/A'}</strong>
-                          <small>ID: {t.emp_id || 'N/A'}</small>
+                          <small>ID: {t.employee_id || t.user_id?.roll_no || 'N/A'}</small>
                         </div>
-                        <span className="badge badge-info">Teacher</span>
+                        <div style={{display:'flex', alignItems:'center', gap:8}}>
+                          <span className="badge badge-info">Teacher</span>
+                          {onDeleteTeacher && (
+                            <button className="btn btn-danger btn-sm" title="Delete"
+                              onClick={()=>{ if(confirm('Delete this teacher?')) onDeleteTeacher(t._id) }}>
+                              <i className="fas fa-trash"/>
+                            </button>
+                          )}
+                        </div>
                       </div>
                     ))}
                     {teachers.length>5 && <p className="text-muted">... and {teachers.length-5} more</p>}

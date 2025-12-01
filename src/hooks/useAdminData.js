@@ -78,6 +78,16 @@ export default function useAdminData(token) {
     }
   }, [token]);
 
+  const deleteStudent = useCallback(async (studentId) => {
+    if (!token) throw new Error('Not authenticated');
+    await axios.delete(`${API}/api/admin/students/${studentId}`, { headers: authHeader });
+  }, [token]);
+
+  const deleteTeacher = useCallback(async (teacherId) => {
+    if (!token) throw new Error('Not authenticated');
+    await axios.delete(`${API}/api/admin/teachers/${teacherId}`, { headers: authHeader });
+  }, [token]);
+
   return {
     stats,
     students,
@@ -89,5 +99,7 @@ export default function useAdminData(token) {
     fetchTeachers,
     fetchAttendanceReport,
     exportAttendance
+    , deleteStudent
+    , deleteTeacher
   };
 }

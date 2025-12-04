@@ -9,6 +9,7 @@ export default function Teachers(){
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', department: '', designation: 'Teacher' });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -32,6 +33,7 @@ export default function Teachers(){
   const handleAddTeacher = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
     try {
       const res = await fetch(`${API_BASE}/api/admin/teachers`, {
         method: 'POST',
@@ -45,7 +47,9 @@ export default function Teachers(){
       if (res.ok) {
         setFormData({ name: '', email: '', phone: '', department: '', designation: 'Teacher' });
         setShowForm(false);
+        setSuccess('Teacher created successfully!');
         fetchTeachers();
+        setTimeout(() => setSuccess(''), 3000);
       } else {
         setError(data.msg || 'Failed to create teacher');
       }
@@ -74,6 +78,7 @@ export default function Teachers(){
       <div className="flex-1">
         <AdminHeader title="Teachers Management" />
         <div className="p-4">
+          {success && <div className="bg-green-100 text-green-700 p-3 rounded mb-4">{success}</div>}
           <button onClick={() => setShowForm(!showForm)} className="bg-blue-600 text-white px-4 py-2 rounded mb-4 hover:bg-blue-700">
             {showForm ? 'Cancel' : '+ Add Teacher'}
           </button>

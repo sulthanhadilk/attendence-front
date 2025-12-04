@@ -8,6 +8,8 @@ export default function Students(){
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', roll_no: '', class_id: '' });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -21,7 +23,7 @@ export default function Students(){
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
-      setStudents(data.data || []);
+      setStudents(data || []);
     } catch (err) {
       console.error('Error fetching students:', err);
     }
@@ -30,6 +32,8 @@ export default function Students(){
 
   const handleAddStudent = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
     try {
       const res = await fetch(`${API_BASE}/api/admin/students`, {
         method: 'POST',
@@ -39,13 +43,19 @@ export default function Students(){
         },
         body: JSON.stringify(formData)
       });
+      const data = await res.json();
       if (res.ok) {
         setFormData({ name: '', email: '', roll_no: '', class_id: '' });
         setShowForm(false);
+        setSuccess('Student created successfully!');
         fetchStudents();
+        setTimeout(() => setSuccess(''), 3000);
+      } else {
+        setError(data.msg || 'Failed to create student');
       }
     } catch (err) {
       console.error('Error adding student:', err);
+      setError('Network error. Please try again.');
     }
   };
 
@@ -68,6 +78,7 @@ export default function Students(){
       <div className="flex-1">
         <AdminHeader title="Students Management" />
         <div className="p-4">
+          {success && <div className="bg-green-100 text-green-700 p-3 rounded mb-4">{success}</div>}
           <button onClick={() => setShowForm(!showForm)} className="bg-blue-600 text-white px-4 py-2 rounded mb-4 hover:bg-blue-700">
             {showForm ? 'Cancel' : '+ Add Student'}
           </button>
@@ -75,6 +86,7 @@ export default function Students(){
           {showForm && (
             <form onSubmit={handleAddStudent} className="bg-white p-4 rounded shadow mb-4">
               <h3 className="font-semibold mb-3">Add New Student</h3>
+              {error && <div className="bg-red-100 text-red-700 p-2 rounded mb-3">{error}</div>}
                 <input
                   type="text"
                   placeholder="Name"
@@ -130,10 +142,10 @@ export default function Students(){
                   ) : (
                     students.map(student => (
                       <tr key={student._id} className="border-t hover:bg-gray-50">
-                        <td className="px-4 py-2">{student.name || 'N/A'}</td>
-                        <td className="px-4 py-2">{student.email || 'N/A'}</td>
-                        <td className="px-4 py-2">{student.roll_no || 'N/A'}</td>
-                        <td className="px-4 py-2">{student.class_id || 'N/A'}</td>
+                        <td className="px-4 py-2">{student.user_id?.name || 'N/A'}</td>
+                        <td className="px-4 py-2">{student.user_id?.email || 'N/A'}</td>
+                        <td className="px-4 py-2">{student.user_id?.roll_no || 'N/A'}</td>
+                        <td className="px-4 py-2">{student.class_id?.name || student.class_id || 'N/A'}</td>
                         <td className="px-4 py-2">
                           <button onClick={() => handleDelete(student._id)} className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">Delete</button>
                         </td>

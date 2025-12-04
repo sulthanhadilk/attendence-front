@@ -1,4 +1,5 @@
 import React from 'react';
+
 export default function AdminHeader({ title, user }) {
   return (
     <div className="bg-indigo-600 text-white rounded-b-3xl p-4 shadow">
@@ -13,19 +14,4 @@ export default function AdminHeader({ title, user }) {
       </div>
     </div>
   );
-}import React from 'react'
-import Header from '../../components/Header'
-export default function AdminHeader({ title }) {
-  return (
-    <div className="mb-4">
-      <Header userRole="admin" userName="Administrator" />
-      {title && (
-        <div className="container">
-          <h1 className="login-title text-primary" style={{display:'flex',alignItems:'center',gap:8}}>
-            <i className="fas fa-tachometer-alt"></i> {title}
-          </h1>
-        </div>
-      )}
-    </div>
-  )
 }

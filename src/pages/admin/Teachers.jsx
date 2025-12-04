@@ -156,12 +156,6 @@ export default function Teachers(){
             <p className="text-gray-600">Loading teachers...</p>
           ) : (
             <div className="bg-white rounded shadow overflow-hidden">
-              {teachers.length === 0 && (
-                <div className="p-4 bg-yellow-50 border-b border-yellow-200">
-                  <p className="text-yellow-800">⚠️ Teacher list is empty but database may have records.</p>
-                  <p className="text-sm text-yellow-700 mt-1">If you're getting "email already exists" errors, there may be existing teachers in the database.</p>
-                </div>
-              )}
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>

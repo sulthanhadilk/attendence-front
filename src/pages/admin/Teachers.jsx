@@ -40,6 +40,7 @@ export default function Teachers(){
     e.preventDefault();
     setError('');
     setSuccess('');
+    console.log('Submitting teacher data:', formData);
     try {
       const res = await fetch(`${API_BASE}/api/admin/teachers`, {
         method: 'POST',
@@ -50,6 +51,8 @@ export default function Teachers(){
         body: JSON.stringify(formData)
       });
       const data = await res.json();
+      console.log('Response status:', res.status);
+      console.log('Response data:', data);
       if (res.ok) {
         setFormData({ name: '', email: '', phone: '', department: '', designation: 'Teacher' });
         setShowForm(false);
@@ -57,7 +60,8 @@ export default function Teachers(){
         fetchTeachers();
         setTimeout(() => setSuccess(''), 3000);
       } else {
-        setError(data.msg || 'Failed to create teacher');
+        setError(data.msg || data.message || 'Failed to create teacher');
+        console.error('Error response:', data);
       }
     } catch (err) {
       console.error('Error adding teacher:', err);

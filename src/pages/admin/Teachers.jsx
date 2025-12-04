@@ -110,45 +110,42 @@ export default function Teachers(){
                   </div>
                 )}
               </div>}
+              <div className="grid grid-cols-2 gap-3">
                 <input
                   type="text"
-                  placeholder="Name"
+                  placeholder="Full Name *"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   required
-                  className="border p-2 rounded w-full mb-2"
+                  className="border p-2 rounded"
                 />
                 <input
                   type="email"
-                  placeholder="Email"
+                  placeholder="Email *"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   required
-                  className="border p-2 rounded w-full mb-2"
+                  className="border p-2 rounded"
                 />
                 <input
                   type="text"
                   placeholder="Phone"
                   value={formData.phone}
                   onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  className="border p-2 rounded w-full mb-2"
+                  className="border p-2 rounded"
                 />
                 <input
                   type="text"
-                  placeholder="Department"
+                  placeholder="Department *"
                   value={formData.department}
                   onChange={(e) => setFormData({...formData, department: e.target.value})}
                   required
-                  className="border p-2 rounded w-full mb-2"
+                  className="border p-2 rounded"
                 />
-                <input
-                  type="text"
-                  placeholder="Designation (e.g., Teacher, HOD)"
-                  value={formData.designation}
-                  onChange={(e) => setFormData({...formData, designation: e.target.value})}
-                  className="border p-2 rounded w-full mb-2"
-                />
-                <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Create Teacher</button>
+              </div>
+              <p className="text-xs text-gray-500 mt-2">* Employee ID will be auto-generated (TCH001, TCH002, etc.)</p>
+              <p className="text-xs text-gray-500">* Default password: 123456</p>
+              <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mt-3">Create Teacher</button>
             </form>
           )}
 
@@ -159,10 +156,10 @@ export default function Teachers(){
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
+                    <th className="px-4 py-2 text-left">Employee ID</th>
                     <th className="px-4 py-2 text-left">Name</th>
                     <th className="px-4 py-2 text-left">Email</th>
                     <th className="px-4 py-2 text-left">Phone</th>
-                    <th className="px-4 py-2 text-left">Employee ID</th>
                     <th className="px-4 py-2 text-left">Department</th>
                     <th className="px-4 py-2 text-left">Actions</th>
                   </tr>
@@ -173,10 +170,10 @@ export default function Teachers(){
                   ) : (
                     teachers.map(teacher => (
                       <tr key={teacher._id} className="border-t hover:bg-gray-50">
+                        <td className="px-4 py-2 font-semibold text-blue-600">{teacher.employee_id || 'N/A'}</td>
                         <td className="px-4 py-2">{teacher.user_id?.name || 'N/A'}</td>
                         <td className="px-4 py-2">{teacher.user_id?.email || 'N/A'}</td>
-                        <td className="px-4 py-2">{teacher.user_id?.phone || 'N/A'}</td>
-                        <td className="px-4 py-2">{teacher.employee_id || 'N/A'}</td>
+                        <td className="px-4 py-2">{teacher.user_id?.phone || '-'}</td>
                         <td className="px-4 py-2">{teacher.department || 'N/A'}</td>
                         <td className="px-4 py-2">
                           <button onClick={() => handleDelete(teacher._id)} className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">Delete</button>

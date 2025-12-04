@@ -37,6 +37,7 @@ import StudentPersonalDetails from './pages/student/PersonalDetails'
 import StudentGuardianDetails from './pages/student/GuardianDetails'
 import StudentMyAccount from './pages/student/MyAccount'
 import StudentDepartments from './pages/student/Departments'
+import StudentProfile from './pages/student/Profile'
 // Teacher Module Pages
 import MarkAttendance from './pages/teacher/MarkAttendance'
 import AttendanceReport from './pages/teacher/AttendanceReport'

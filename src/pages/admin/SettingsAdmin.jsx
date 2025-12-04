@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import AdminHeader from '../../components/admin/AdminHeader';
 import AdminSidebar from '../../components/admin/AdminSidebar';
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 export default function SettingsAdmin(){
   const [settings, setSettings] = useState({
@@ -12,6 +13,9 @@ export default function SettingsAdmin(){
     maintenanceMode: false
   });
   const [saved, setSaved] = useState(false);
+  const [clearing, setClearing] = useState(false);
+  const [clearSuccess, setClearSuccess] = useState('');
+  const token = localStorage.getItem('token');
 
   const handleChange = (key, value) => {
     setSettings({...settings, [key]: value});
@@ -23,6 +27,30 @@ export default function SettingsAdmin(){
     localStorage.setItem('schoolSettings', JSON.stringify(settings));
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
+  };
+
+  const handleClearTestData = async () => {
+    if (!confirm('⚠️ WARNING: This will delete ALL teachers and students from the database. Admin accounts will be preserved. Are you sure?')) {
+      return;
+    }
+    setClearing(true);
+    setClearSuccess('');
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/debug/clear-test-data`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setClearSuccess(`✅ Successfully deleted ${data.deletedTeachers} teachers and ${data.deletedStudents} students`);
+        setTimeout(() => setClearSuccess(''), 5000);
+      } else {
+        alert('Error: ' + data.msg);
+      }
+    } catch (err) {
+      alert('Network error: ' + err.message);
+    }
+    setClearing(false);
   };
 
   return (
@@ -103,6 +131,32 @@ export default function SettingsAdmin(){
               </div>
 
               <button onClick={handleSave} className="btn btn-primary">Save Settings</button>
+            </div>
+          </div>
+
+          {/* Danger Zone */}
+          <div className="bg-white rounded shadow mt-4 border-2 border-red-200">
+            <div className="bg-red-50 px-4 py-3 border-b border-red-200">
+              <h3 className="text-lg font-semibold text-red-800">⚠️ Danger Zone</h3>
+            </div>
+            <div className="p-4">
+              {clearSuccess && (
+                <div className="bg-green-100 text-green-700 p-3 rounded mb-4">{clearSuccess}</div>
+              )}
+              <div className="mb-3">
+                <h4 className="font-semibold mb-2">Clear Test Data</h4>
+                <p className="text-sm text-gray-600 mb-3">
+                  This will permanently delete all teachers and students from the database. 
+                  Admin accounts will be preserved. Use this to start fresh or remove duplicate test data.
+                </p>
+                <button 
+                  onClick={handleClearTestData} 
+                  disabled={clearing}
+                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 disabled:bg-gray-400"
+                >
+                  {clearing ? 'Clearing...' : '🗑️ Clear All Test Data'}
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -11,7 +11,6 @@ export default function Teachers(){
     name: '', 
     email: '', 
     phone: '', 
-    department: '', 
     designation: 'Teacher',
     joining_date: ''
   });
@@ -65,7 +64,6 @@ export default function Teachers(){
           name: '', 
           email: '', 
           phone: '', 
-          department: '', 
           designation: 'Teacher',
           joining_date: ''
         });
@@ -157,32 +155,6 @@ export default function Teachers(){
                     onChange={(e) => setFormData({...formData, phone: e.target.value})}
                     className="border p-2 rounded w-full"
                   />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Department *</label>
-                  <select
-                    value={formData.department}
-                    onChange={(e) => setFormData({...formData, department: e.target.value})}
-                    required
-                    className="border p-2 rounded w-full"
-                  >
-                    <option value="">Select Department</option>
-                    <option value="Mathematics">Mathematics</option>
-                    <option value="Science">Science</option>
-                    <option value="English">English</option>
-                    <option value="Hindi">Hindi</option>
-                    <option value="Social Studies">Social Studies</option>
-                    <option value="Computer Science">Computer Science</option>
-                    <option value="Physics">Physics</option>
-                    <option value="Chemistry">Chemistry</option>
-                    <option value="Biology">Biology</option>
-                    <option value="Commerce">Commerce</option>
-                    <option value="Arts">Arts</option>
-                    <option value="Physical Education">Physical Education</option>
-                    <option value="Islamic Studies">Islamic Studies</option>
-                    <option value="Arabic">Arabic</option>
-                    <option value="Administration">Administration</option>
-                  </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Designation</label>

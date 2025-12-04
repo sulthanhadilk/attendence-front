@@ -11,7 +11,7 @@ export default function Teachers(){
     name: '', 
     email: '', 
     phone: '', 
-    designation: 'Teacher',
+    designation: 'Main Usthad',
     joining_date: ''
   });
   const [error, setError] = useState('');
@@ -64,7 +64,7 @@ export default function Teachers(){
           name: '', 
           email: '', 
           phone: '', 
-          designation: 'Teacher',
+          designation: 'Main Usthad',
           joining_date: ''
         });
         setShowForm(false);
@@ -167,19 +167,12 @@ export default function Teachers(){
                     required
                     className="border p-2 rounded w-full"
                   >
-                    <option value="Teacher">Teacher</option>
-                    <option value="Senior Teacher">Senior Teacher</option>
-                    <option value="Assistant Teacher">Assistant Teacher</option>
-                    <option value="Head of Department">Head of Department</option>
-                    <option value="Subject Coordinator">Subject Coordinator</option>
-                    <option value="Principal">Principal</option>
-                    <option value="Vice Principal">Vice Principal</option>
-                    <option value="Lab Assistant">Lab Assistant</option>
+                    <option value="Main Usthad">Main Usthad</option>
+                    <option value="Usthad 1">Usthad 1</option>
+                    <option value="Usthad 2">Usthad 2</option>
+                    <option value="Usthad 3">Usthad 3</option>
+                    <option value="Usthad 4">Usthad 4</option>
                     <option value="Librarian">Librarian</option>
-                    <option value="Counselor">Counselor</option>
-                    <option value="Sports Teacher">Sports Teacher</option>
-                    <option value="Art Teacher">Art Teacher</option>
-                    <option value="Music Teacher">Music Teacher</option>
                   </select>
                 </div>
                 <div>

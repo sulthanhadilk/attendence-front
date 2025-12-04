@@ -51,7 +51,7 @@ export default function Login() {
           </div>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="identifier" className="block text-sm font-medium text-black mb-2">
                 Email / Roll No / Staff Code
               </label>
               <div className="relative">
@@ -71,12 +71,12 @@ export default function Login() {
                   autoComplete="username"
                 />
               </div>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-gray-700">
                 Students: Use Roll No • Teachers: Use Staff Code • Admins: Use Email
               </p>
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-black mb-2">
                 Password
               </label>
               <div className="relative">
@@ -143,7 +143,7 @@ export default function Login() {
             {/* Demo credentials removed for production usage */}
           </div>
         </div>
-        <p className="mt-8 text-center text-sm text-gray-500">
+        <p className="mt-8 text-center text-sm text-gray-700">
           © 2025 Islamic College Management System. All rights reserved.
         </p>
       </div>

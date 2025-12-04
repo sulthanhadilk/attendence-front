@@ -97,7 +97,19 @@ export default function Teachers(){
           {showForm && (
             <form onSubmit={handleAddTeacher} className="bg-white p-4 rounded shadow mb-4">
               <h3 className="font-semibold mb-3">Add New Teacher</h3>
-              {error && <div className="bg-red-100 text-red-700 p-2 rounded mb-3">{error}</div>}
+              {error && <div className="bg-red-100 text-red-700 p-2 rounded mb-3">
+                {error}
+                {error.includes('already exists') && (
+                  <div className="mt-2 text-sm">
+                    <p>💡 This email is already registered. Try:</p>
+                    <ul className="list-disc ml-5 mt-1">
+                      <li>Using a different email address</li>
+                      <li>Check the teacher list below to see existing teachers</li>
+                      <li>Delete the existing teacher if needed</li>
+                    </ul>
+                  </div>
+                )}
+              </div>}
                 <input
                   type="text"
                   placeholder="Name"
@@ -144,6 +156,12 @@ export default function Teachers(){
             <p className="text-gray-600">Loading teachers...</p>
           ) : (
             <div className="bg-white rounded shadow overflow-hidden">
+              {teachers.length === 0 && (
+                <div className="p-4 bg-yellow-50 border-b border-yellow-200">
+                  <p className="text-yellow-800">⚠️ Teacher list is empty but database may have records.</p>
+                  <p className="text-sm text-yellow-700 mt-1">If you're getting "email already exists" errors, there may be existing teachers in the database.</p>
+                </div>
+              )}
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>

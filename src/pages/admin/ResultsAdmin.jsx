@@ -21,10 +21,10 @@ export default function ResultsAdmin(){
           </div>
 
           <div className="grid grid-cols-4 gap-4 mb-4">
-            <div className="bg-white p-4 rounded shadow"><div className="text-2xl font-bold text-green-600">78%</div><div className="text-sm text-gray-600">Average Score</div></div>
-            <div className="bg-white p-4 rounded shadow"><div className="text-2xl font-bold text-blue-600">92%</div><div className="text-sm text-gray-600">Highest Score</div></div>
-            <div className="bg-white p-4 rounded shadow"><div className="text-2xl font-bold text-yellow-600">45%</div><div className="text-sm text-gray-600">Lowest Score</div></div>
-            <div className="bg-white p-4 rounded shadow"><div className="text-2xl font-bold text-purple-600">85%</div><div className="text-sm text-gray-600">Pass Rate</div></div>
+            <div className="bg-white p-4 rounded shadow"><div className="text-2xl font-bold text-green-600">0%</div><div className="text-sm text-gray-600">Average Score</div></div>
+            <div className="bg-white p-4 rounded shadow"><div className="text-2xl font-bold text-blue-600">0%</div><div className="text-sm text-gray-600">Highest Score</div></div>
+            <div className="bg-white p-4 rounded shadow"><div className="text-2xl font-bold text-yellow-600">0%</div><div className="text-sm text-gray-600">Lowest Score</div></div>
+            <div className="bg-white p-4 rounded shadow"><div className="text-2xl font-bold text-purple-600">0%</div><div className="text-sm text-gray-600">Pass Rate</div></div>
           </div>
 
           <div className="bg-white rounded shadow"><div className="p-4 border-b font-semibold">Results by Class</div><div className="p-4 text-center text-gray-500">Select exam and class to view detailed results</div></div>

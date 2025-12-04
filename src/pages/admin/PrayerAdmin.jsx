@@ -5,6 +5,7 @@ import AdminSidebar from '../../components/admin/AdminSidebar';
 export default function PrayerAdmin(){
   const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [attendanceData] = useState([0, 0, 0, 0, 0]);
 
   return (
     <div className="flex">
@@ -21,11 +22,11 @@ export default function PrayerAdmin(){
           </div>
 
           <div className="grid grid-cols-5 gap-4">
-            {prayers.map(prayer => (
+            {prayers.map((prayer, index) => (
               <div key={prayer} className="bg-white p-4 rounded shadow text-center">
-                <div className="text-2xl font-bold text-blue-600">85%</div>
+                <div className="text-2xl font-bold text-blue-600">{attendanceData[index]}%</div>
                 <div className="text-sm text-gray-600 mt-2">{prayer}</div>
-                <div className="text-xs text-gray-400 mt-1">340/400</div>
+                <div className="text-xs text-gray-400 mt-1">0/0</div>
               </div>
             ))}
           </div>

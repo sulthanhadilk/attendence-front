@@ -3,7 +3,7 @@ import AdminHeader from '../../components/admin/AdminHeader';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 
 export default function NoticesAdmin(){
-  const [notices, setNotices] = useState([{id: 1, title: 'Holiday Announcement', content: 'School will be closed on December 25th', date: '2025-12-04', priority: 'High'},{id: 2, title: 'Parent-Teacher Meeting', content: 'Scheduled for next Friday', date: '2025-12-03', priority: 'Medium'}]);
+  const [notices, setNotices] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
   return (

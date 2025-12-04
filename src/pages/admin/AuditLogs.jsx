@@ -3,7 +3,7 @@ import AdminHeader from '../../components/admin/AdminHeader';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 
 export default function AuditLogs(){
-  const [logs] = useState([{id: 1, user: 'Admin', action: 'Created new teacher', timestamp: '2025-12-04 10:30:00', ip: '192.168.1.1'},{id: 2, user: 'Teacher John', action: 'Marked attendance', timestamp: '2025-12-04 09:15:00', ip: '192.168.1.5'}]);
+  const [logs] = useState([]);
 
   return (
     <div className="flex">

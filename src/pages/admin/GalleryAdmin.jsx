@@ -3,7 +3,7 @@ import AdminHeader from '../../components/admin/AdminHeader';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 
 export default function GalleryAdmin(){
-  const [albums, setAlbums] = useState([{id: 1, name: 'Sports Day 2025', photos: 45, date: '2025-11-15'},{id: 2, name: 'Annual Function', photos: 78, date: '2025-10-20'},{id: 3, name: 'Field Trip', photos: 32, date: '2025-09-10'}]);
+  const [albums, setAlbums] = useState([]);
 
   return (
     <div className="flex">

@@ -3,7 +3,7 @@ import AdminHeader from '../../components/admin/AdminHeader';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 
 export default function EventsAdmin(){
-  const [events, setEvents] = useState([{id: 1, name: 'Annual Sports Day', date: '2025-12-15', location: 'Main Ground', attendees: 500},{id: 2, name: 'Science Fair', date: '2025-12-20', location: 'Exhibition Hall', attendees: 300}]);
+  const [events, setEvents] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
   return (

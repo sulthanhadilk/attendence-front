@@ -34,19 +34,19 @@ export default function AttendanceAdmin(){
 
           <div className="grid grid-cols-4 gap-4 mb-4">
             <div className="bg-white p-4 rounded shadow">
-              <div className="text-3xl font-bold text-green-600">95%</div>
+              <div className="text-3xl font-bold text-green-600">0%</div>
               <div className="text-sm text-gray-600">Overall Attendance</div>
             </div>
             <div className="bg-white p-4 rounded shadow">
-              <div className="text-3xl font-bold text-blue-600">450</div>
+              <div className="text-3xl font-bold text-blue-600">0</div>
               <div className="text-sm text-gray-600">Present Today</div>
             </div>
             <div className="bg-white p-4 rounded shadow">
-              <div className="text-3xl font-bold text-red-600">25</div>
+              <div className="text-3xl font-bold text-red-600">0</div>
               <div className="text-sm text-gray-600">Absent Today</div>
             </div>
             <div className="bg-white p-4 rounded shadow">
-              <div className="text-3xl font-bold text-yellow-600">10</div>
+              <div className="text-3xl font-bold text-yellow-600">0</div>
               <div className="text-sm text-gray-600">Late Today</div>
             </div>
           </div>

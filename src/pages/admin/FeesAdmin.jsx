@@ -3,10 +3,7 @@ import AdminHeader from '../../components/admin/AdminHeader';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 
 export default function FeesAdmin(){
-  const [feeRecords, setFeeRecords] = useState([
-    { id: 1, student: 'John Doe', term: 'Fall 2025', amount: 5000, paid: 3000, due: 2000, status: 'Partial' },
-    { id: 2, student: 'Jane Smith', term: 'Fall 2025', amount: 5000, paid: 5000, due: 0, status: 'Paid' }
-  ]);
+  const [feeRecords, setFeeRecords] = useState([]);
 
   return (
     <div className="flex">

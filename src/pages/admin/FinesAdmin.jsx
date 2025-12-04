@@ -3,10 +3,7 @@ import AdminHeader from '../../components/admin/AdminHeader';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 
 export default function FinesAdmin(){
-  const [fines, setFines] = useState([
-    { id: 1, student: 'John Doe', reason: 'Late arrival', amount: 50, date: '2025-12-01', status: 'Pending' },
-    { id: 2, student: 'Jane Smith', reason: 'Uniform violation', amount: 30, date: '2025-12-02', status: 'Paid' }
-  ]);
+  const [fines, setFines] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
   return (

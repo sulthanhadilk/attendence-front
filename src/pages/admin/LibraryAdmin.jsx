@@ -3,7 +3,7 @@ import AdminHeader from '../../components/admin/AdminHeader';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 
 export default function LibraryAdmin(){
-  const [books, setBooks] = useState([{id: 1, title: 'Introduction to Computer Science', author: 'John Doe', isbn: '978-0-123456-78-9', available: 5, total: 10}]);
+  const [books, setBooks] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
   return (

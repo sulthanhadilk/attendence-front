@@ -3,7 +3,7 @@ import AdminHeader from '../../components/admin/AdminHeader';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 
 export default function ConductAdmin(){
-  const [records, setRecords] = useState([{id: 1, student: 'John Doe', type: 'Warning', reason: 'Late arrival', date: '2025-12-01', severity: 'Low'},{id: 2, student: 'Jane Smith', type: 'Commendation', reason: 'Excellent behavior', date: '2025-12-02', severity: 'Positive'}]);
+  const [records, setRecords] = useState([]);
 
   return (
     <div className="flex">

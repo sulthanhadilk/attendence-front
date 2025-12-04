@@ -1,6 +1,7 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
 import Login from './pages/Login'
 import AdminDashboard from './pages/admin/Dashboard'
 import AdminTeachers from './pages/admin/Teachers'
@@ -23,9 +24,20 @@ import GalleryAdmin from './pages/admin/GalleryAdmin'
 import SettingsAdmin from './pages/admin/SettingsAdmin'
 import AdminProfile from './pages/admin/AdminProfile'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
-import TeacherProfile from './pages/TeacherProfile'
-import StudentDashboard from './pages/StudentDashboard'
-import ProtectedRoute from './components/ProtectedRoute'
+import { ProtectedAdminRoute, ProtectedTeacherRoute, ProtectedStudentRoute } from './utils/ProtectedRoutes'
+
+// Student Module Pages
+import StudentDashboard from './pages/student/Dashboard'
+import StudentAttendance from './pages/student/Attendance'
+import StudentFees from './pages/student/Fees'
+import StudentAssessment from './pages/student/Assessment'
+import StudentLibrary from './pages/student/Library'
+import StudentIDCard from './pages/student/IDCard'
+import StudentMenu from './pages/student/Menu'
+import StudentPersonalDetails from './pages/student/PersonalDetails'
+import StudentGuardianDetails from './pages/student/GuardianDetails'
+import StudentMyAccount from './pages/student/MyAccount'
+import StudentDepartments from './pages/student/Departments'
 
 // Teacher Module Pages
 import MarkAttendance from './pages/teacher/MarkAttendance'
@@ -48,176 +60,268 @@ import './styles.css'
 function App() {
   return (
     <BrowserRouter>
-      <div className="app">
-        <Routes>
-          <Route path="/" element={<Login />} />
+      <AuthProvider>
+        <div className="app">
+          <Routes>
+            <Route path="/" element={<Login />} />
           <Route 
             path="/admin" 
             element={
-              <ProtectedRoute requiredRole="admin">
+              <ProtectedAdminRoute>
                 <AdminDashboard />
-              </ProtectedRoute>
+              </ProtectedAdminRoute>
             } 
           />
           {/* Admin Module Routes */}
-          <Route path="/admin/teachers" element={<ProtectedRoute requiredRole="admin"><AdminTeachers /></ProtectedRoute>} />
-          <Route path="/admin/students" element={<ProtectedRoute requiredRole="admin"><AdminStudents /></ProtectedRoute>} />
-          <Route path="/admin/classes" element={<ProtectedRoute requiredRole="admin"><AdminClasses /></ProtectedRoute>} />
-          <Route path="/admin/courses" element={<ProtectedRoute requiredRole="admin"><AdminCourses /></ProtectedRoute>} />
-          <Route path="/admin/timetable" element={<ProtectedRoute requiredRole="admin"><AdminTimetable /></ProtectedRoute>} />
-          <Route path="/admin/attendance" element={<ProtectedRoute requiredRole="admin"><AttendanceAdmin /></ProtectedRoute>} />
-          <Route path="/admin/prayer" element={<ProtectedRoute requiredRole="admin"><PrayerAdmin /></ProtectedRoute>} />
-          <Route path="/admin/fines" element={<ProtectedRoute requiredRole="admin"><FinesAdmin /></ProtectedRoute>} />
-          <Route path="/admin/fees" element={<ProtectedRoute requiredRole="admin"><FeesAdmin /></ProtectedRoute>} />
-          <Route path="/admin/results" element={<ProtectedRoute requiredRole="admin"><ResultsAdmin /></ProtectedRoute>} />
-          <Route path="/admin/library" element={<ProtectedRoute requiredRole="admin"><LibraryAdmin /></ProtectedRoute>} />
-          <Route path="/admin/conduct" element={<ProtectedRoute requiredRole="admin"><ConductAdmin /></ProtectedRoute>} />
-          <Route path="/admin/ai" element={<ProtectedRoute requiredRole="admin"><AIControls /></ProtectedRoute>} />
-          <Route path="/admin/audit" element={<ProtectedRoute requiredRole="admin"><AuditLogs /></ProtectedRoute>} />
-          <Route path="/admin/notices" element={<ProtectedRoute requiredRole="admin"><NoticesAdmin /></ProtectedRoute>} />
-          <Route path="/admin/events" element={<ProtectedRoute requiredRole="admin"><EventsAdmin /></ProtectedRoute>} />
-          <Route path="/admin/gallery" element={<ProtectedRoute requiredRole="admin"><GalleryAdmin /></ProtectedRoute>} />
-          <Route path="/admin/settings" element={<ProtectedRoute requiredRole="admin"><SettingsAdmin /></ProtectedRoute>} />
-          <Route path="/admin/profile" element={<ProtectedRoute requiredRole="admin"><AdminProfile /></ProtectedRoute>} />
+          <Route path="/admin/teachers" element={<ProtectedAdminRoute><AdminTeachers /></ProtectedAdminRoute>} />
+          <Route path="/admin/students" element={<ProtectedAdminRoute><AdminStudents /></ProtectedAdminRoute>} />
+          <Route path="/admin/classes" element={<ProtectedAdminRoute><AdminClasses /></ProtectedAdminRoute>} />
+          <Route path="/admin/courses" element={<ProtectedAdminRoute><AdminCourses /></ProtectedAdminRoute>} />
+          <Route path="/admin/timetable" element={<ProtectedAdminRoute><AdminTimetable /></ProtectedAdminRoute>} />
+          <Route path="/admin/attendance" element={<ProtectedAdminRoute><AttendanceAdmin /></ProtectedAdminRoute>} />
+          <Route path="/admin/prayer" element={<ProtectedAdminRoute><PrayerAdmin /></ProtectedAdminRoute>} />
+          <Route path="/admin/fines" element={<ProtectedAdminRoute><FinesAdmin /></ProtectedAdminRoute>} />
+          <Route path="/admin/fees" element={<ProtectedAdminRoute><FeesAdmin /></ProtectedAdminRoute>} />
+          <Route path="/admin/results" element={<ProtectedAdminRoute><ResultsAdmin /></ProtectedAdminRoute>} />
+          <Route path="/admin/library" element={<ProtectedAdminRoute><LibraryAdmin /></ProtectedAdminRoute>} />
+          <Route path="/admin/conduct" element={<ProtectedAdminRoute><ConductAdmin /></ProtectedAdminRoute>} />
+          <Route path="/admin/ai" element={<ProtectedAdminRoute><AIControls /></ProtectedAdminRoute>} />
+          <Route path="/admin/audit" element={<ProtectedAdminRoute><AuditLogs /></ProtectedAdminRoute>} />
+          <Route path="/admin/notices" element={<ProtectedAdminRoute><NoticesAdmin /></ProtectedAdminRoute>} />
+          <Route path="/admin/events" element={<ProtectedAdminRoute><EventsAdmin /></ProtectedAdminRoute>} />
+          <Route path="/admin/gallery" element={<ProtectedAdminRoute><GalleryAdmin /></ProtectedAdminRoute>} />
+          <Route path="/admin/settings" element={<ProtectedAdminRoute><SettingsAdmin /></ProtectedAdminRoute>} />
+          <Route path="/admin/profile" element={<ProtectedAdminRoute><AdminProfile /></ProtectedAdminRoute>} />
           <Route 
             path="/teacher" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <TeacherDashboard />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
-          <Route 
-            path="/teacher/profile" 
-            element={
-              <ProtectedRoute requiredRole="teacher">
-                <TeacherProfile />
-              </ProtectedRoute>
-            } 
-          />
+
           {/* Teacher Module Routes */}
           <Route 
             path="/teacher/attendance" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <MarkAttendance />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/teacher/attendance/report" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <AttendanceReport />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/teacher/prayer" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <PrayerAttendance />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/teacher/fines" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <Fines />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/teacher/exams" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <Exams />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/teacher/students" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <ClassStudents />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/teacher/conduct" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <Conduct />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/teacher/notifications" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <Notifications />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/teacher/activities" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <Activities />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/teacher/question-bank" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <QuestionBank />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/teacher/resources" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <Resources />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/teacher/clubs" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <Clubs />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/teacher/timetable" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <Timetable />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/teacher/due-sheet" 
             element={
-              <ProtectedRoute requiredRole="teacher">
+              <ProtectedTeacherRoute>
                 <DueSheet />
-              </ProtectedRoute>
+              </ProtectedTeacherRoute>
             } 
           />
           <Route 
             path="/student" 
             element={
-              <ProtectedRoute requiredRole="student">
+              <ProtectedStudentRoute>
                 <StudentDashboard />
-              </ProtectedRoute>
+              </ProtectedStudentRoute>
+            } 
+          />
+          {/* Student Module Routes */}
+          <Route 
+            path="/student/dashboard" 
+            element={
+              <ProtectedStudentRoute>
+                <StudentDashboard />
+              </ProtectedStudentRoute>
+            } 
+          />
+          <Route 
+            path="/student/attendance" 
+            element={
+              <ProtectedStudentRoute>
+                <StudentAttendance />
+              </ProtectedStudentRoute>
+            } 
+          />
+          <Route 
+            path="/student/fees" 
+            element={
+              <ProtectedStudentRoute>
+                <StudentFees />
+              </ProtectedStudentRoute>
+            } 
+          />
+          <Route 
+            path="/student/assessment" 
+            element={
+              <ProtectedStudentRoute>
+                <StudentAssessment />
+              </ProtectedStudentRoute>
+            } 
+          />
+          <Route 
+            path="/student/profile" 
+            element={
+              <ProtectedStudentRoute>
+                <StudentProfile />
+              </ProtectedStudentRoute>
+            } 
+          />
+          <Route 
+            path="/student/library" 
+            element={
+              <ProtectedStudentRoute>
+                <StudentLibrary />
+              </ProtectedStudentRoute>
+            } 
+          />
+          <Route 
+            path="/student/idcard" 
+            element={
+              <ProtectedStudentRoute>
+                <StudentIDCard />
+              </ProtectedStudentRoute>
+            } 
+          />
+          <Route 
+            path="/student/menu" 
+            element={
+              <ProtectedStudentRoute>
+                <StudentMenu />
+              </ProtectedStudentRoute>
+            } 
+          />
+          <Route 
+            path="/student/personal-details" 
+            element={
+              <ProtectedStudentRoute>
+                <StudentPersonalDetails />
+              </ProtectedStudentRoute>
+            } 
+          />
+          <Route 
+            path="/student/guardian-details" 
+            element={
+              <ProtectedStudentRoute>
+                <StudentGuardianDetails />
+              </ProtectedStudentRoute>
+            } 
+          />
+          <Route 
+            path="/student/account" 
+            element={
+              <ProtectedStudentRoute>
+                <StudentMyAccount />
+              </ProtectedStudentRoute>
+            } 
+          />
+          <Route 
+            path="/student/departments" 
+            element={
+              <ProtectedStudentRoute>
+                <StudentDepartments />
+              </ProtectedStudentRoute>
             } 
           />
         </Routes>
       </div>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

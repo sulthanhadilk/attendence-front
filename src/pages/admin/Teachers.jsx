@@ -11,7 +11,7 @@ export default function Teachers(){
     name: '', 
     email: '', 
     phone: '', 
-    designation: 'Teacher',
+    designation: 'Main Usthad',
     joining_date: ''
   });
   const [error, setError] = useState('');
@@ -64,7 +64,7 @@ export default function Teachers(){
           name: '', 
           email: '', 
           phone: '', 
-          designation: 'Teacher',
+          designation: 'Main Usthad',
           joining_date: ''
         });
         setShowForm(false);

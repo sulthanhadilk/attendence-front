@@ -13,8 +13,7 @@ export default function Teachers(){
     phone: '', 
     department: '', 
     designation: 'Teacher',
-    joining_date: '',
-    basic_salary: ''
+    joining_date: ''
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -68,8 +67,7 @@ export default function Teachers(){
           phone: '', 
           department: '', 
           designation: 'Teacher',
-          joining_date: '',
-          basic_salary: ''
+          joining_date: ''
         });
         setShowForm(false);
         setSuccess('Teacher created successfully!');
@@ -192,16 +190,6 @@ export default function Teachers(){
                     type="date"
                     value={formData.joining_date}
                     onChange={(e) => setFormData({...formData, joining_date: e.target.value})}
-                    className="border p-2 rounded w-full"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Basic Salary</label>
-                  <input
-                    type="number"
-                    placeholder="0"
-                    value={formData.basic_salary}
-                    onChange={(e) => setFormData({...formData, basic_salary: e.target.value})}
                     className="border p-2 rounded w-full"
                   />
                 </div>

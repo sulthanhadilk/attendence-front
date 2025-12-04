@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
   // Login function
   const login = async (identifier, password) => {
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
       const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }) => {
   // Logout function
   const logout = async () => {
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
       // Call backend logout endpoint (optional)
       if (token) {
         await fetch(`${API_BASE_URL}/api/auth/logout`, {

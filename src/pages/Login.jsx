@@ -35,8 +35,7 @@ export default function Login() {
       setLoading(false);
     }
   };
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('role', data.role);
+        // Storage is handled inside AuthContext.login
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
@@ -141,13 +140,7 @@ export default function Login() {
                 </div>
               </div>
             </div>
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-              <p className="text-xs font-semibold text-gray-700 mb-2">Demo Admin Login:</p>
-              <div className="text-xs text-gray-600 space-y-1">
-                <p><span className="font-medium">Email:</span> sulusulthan230@gmail.com</p>
-                <p><span className="font-medium">Password:</span> Sulu@123</p>
-              </div>
-            </div>
+            {/* Demo credentials removed for production usage */}
           </div>
         </div>
         <p className="mt-8 text-center text-sm text-gray-500">

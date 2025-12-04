@@ -160,18 +160,26 @@ export default function Teachers(){
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Designation</label>
+                  <label className="block text-sm font-medium mb-1">Designation *</label>
                   <select
                     value={formData.designation}
                     onChange={(e) => setFormData({...formData, designation: e.target.value})}
+                    required
                     className="border p-2 rounded w-full"
                   >
                     <option value="Teacher">Teacher</option>
                     <option value="Senior Teacher">Senior Teacher</option>
-                    <option value="Head of Department">Head of Department</option>
                     <option value="Assistant Teacher">Assistant Teacher</option>
+                    <option value="Head of Department">Head of Department</option>
+                    <option value="Subject Coordinator">Subject Coordinator</option>
                     <option value="Principal">Principal</option>
                     <option value="Vice Principal">Vice Principal</option>
+                    <option value="Lab Assistant">Lab Assistant</option>
+                    <option value="Librarian">Librarian</option>
+                    <option value="Counselor">Counselor</option>
+                    <option value="Sports Teacher">Sports Teacher</option>
+                    <option value="Art Teacher">Art Teacher</option>
+                    <option value="Music Teacher">Music Teacher</option>
                   </select>
                 </div>
                 <div>

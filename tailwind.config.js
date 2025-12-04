@@ -20,4 +20,7 @@ export default {
     },
   },
   plugins: [],
+  corePlugins: {
+    preflight: true,
+  },
 }

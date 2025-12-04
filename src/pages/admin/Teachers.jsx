@@ -68,20 +68,20 @@ export default function Teachers(){
       <div className="flex-1">
         <AdminHeader title="Teachers Management" />
         <div className="p-4">
-          <button onClick={() => setShowForm(!showForm)} className="btn btn-primary mb-4">
+          <button onClick={() => setShowForm(!showForm)} className="bg-blue-600 text-white px-4 py-2 rounded mb-4 hover:bg-blue-700">
             {showForm ? 'Cancel' : '+ Add Teacher'}
           </button>
           
           {showForm && (
-            <form onSubmit={handleAddTeacher} className="card mb-4">
-              <div className="card-body">
+            <form onSubmit={handleAddTeacher} className="bg-white p-4 rounded shadow mb-4">
+              <h3 className="font-semibold mb-3">Add New Teacher</h3>
                 <input
                   type="text"
                   placeholder="Name"
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   required
-                  className="form-control mb-2"
+                  className="border p-2 rounded w-full mb-2"
                 />
                 <input
                   type="email"
@@ -89,7 +89,7 @@ export default function Teachers(){
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   required
-                  className="form-control mb-2"
+                  className="border p-2 rounded w-full mb-2"
                 />
                 <input
                   type="text"
@@ -97,7 +97,7 @@ export default function Teachers(){
                   value={formData.staffCode}
                   onChange={(e) => setFormData({...formData, staffCode: e.target.value})}
                   required
-                  className="form-control mb-2"
+                  className="border p-2 rounded w-full mb-2"
                 />
                 <input
                   type="text"
@@ -105,39 +105,38 @@ export default function Teachers(){
                   value={formData.department}
                   onChange={(e) => setFormData({...formData, department: e.target.value})}
                   required
-                  className="form-control mb-2"
+                  className="border p-2 rounded w-full mb-2"
                 />
-                <button type="submit" className="btn btn-success">Create Teacher</button>
-              </div>
+                <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Create Teacher</button>
             </form>
           )}
 
           {loading ? (
-            <p>Loading teachers...</p>
+            <p className="text-gray-600">Loading teachers...</p>
           ) : (
-            <div className="table-responsive">
-              <table className="table">
-                <thead>
+            <div className="bg-white rounded shadow overflow-hidden">
+              <table className="w-full">
+                <thead className="bg-gray-50">
                   <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Staff Code</th>
-                    <th>Department</th>
-                    <th>Actions</th>
+                    <th className="px-4 py-2 text-left">Name</th>
+                    <th className="px-4 py-2 text-left">Email</th>
+                    <th className="px-4 py-2 text-left">Staff Code</th>
+                    <th className="px-4 py-2 text-left">Department</th>
+                    <th className="px-4 py-2 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {teachers.length === 0 ? (
-                    <tr><td colSpan="5">No teachers found</td></tr>
+                    <tr><td colSpan="5" className="px-4 py-8 text-center text-gray-500">No teachers found</td></tr>
                   ) : (
                     teachers.map(teacher => (
-                      <tr key={teacher._id}>
-                        <td>{teacher.name || 'N/A'}</td>
-                        <td>{teacher.email || 'N/A'}</td>
-                        <td>{teacher.staffCode || 'N/A'}</td>
-                        <td>{teacher.department || 'N/A'}</td>
-                        <td>
-                          <button onClick={() => handleDelete(teacher._id)} className="btn btn-sm btn-danger">Delete</button>
+                      <tr key={teacher._id} className="border-t hover:bg-gray-50">
+                        <td className="px-4 py-2">{teacher.name || 'N/A'}</td>
+                        <td className="px-4 py-2">{teacher.email || 'N/A'}</td>
+                        <td className="px-4 py-2">{teacher.staffCode || 'N/A'}</td>
+                        <td className="px-4 py-2">{teacher.department || 'N/A'}</td>
+                        <td className="px-4 py-2">
+                          <button onClick={() => handleDelete(teacher._id)} className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">Delete</button>
                         </td>
                       </tr>
                     ))

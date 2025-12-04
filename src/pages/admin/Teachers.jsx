@@ -7,7 +7,15 @@ export default function Teachers(){
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', department: '', designation: 'Teacher' });
+  const [formData, setFormData] = useState({ 
+    name: '', 
+    email: '', 
+    phone: '', 
+    department: '', 
+    designation: 'Teacher',
+    joining_date: '',
+    basic_salary: ''
+  });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const token = localStorage.getItem('token');
@@ -54,7 +62,15 @@ export default function Teachers(){
       console.log('Response status:', res.status);
       console.log('Response data:', data);
       if (res.ok) {
-        setFormData({ name: '', email: '', phone: '', department: '', designation: 'Teacher' });
+        setFormData({ 
+          name: '', 
+          email: '', 
+          phone: '', 
+          department: '', 
+          designation: 'Teacher',
+          joining_date: '',
+          basic_salary: ''
+        });
         setShowForm(false);
         setSuccess('Teacher created successfully!');
         fetchTeachers();
@@ -110,42 +126,95 @@ export default function Teachers(){
                   </div>
                 )}
               </div>}
+              
               <div className="grid grid-cols-2 gap-3">
-                <input
-                  type="text"
-                  placeholder="Full Name *"
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  required
-                  className="border p-2 rounded"
-                />
-                <input
-                  type="email"
-                  placeholder="Email *"
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  required
-                  className="border p-2 rounded"
-                />
-                <input
-                  type="text"
-                  placeholder="Phone"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  className="border p-2 rounded"
-                />
-                <input
-                  type="text"
-                  placeholder="Department *"
-                  value={formData.department}
-                  onChange={(e) => setFormData({...formData, department: e.target.value})}
-                  required
-                  className="border p-2 rounded"
-                />
+                <div>
+                  <label className="block text-sm font-medium mb-1">Full Name *</label>
+                  <input
+                    type="text"
+                    placeholder="Enter full name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    required
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Email *</label>
+                  <input
+                    type="email"
+                    placeholder="teacher@example.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    required
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Phone</label>
+                  <input
+                    type="text"
+                    placeholder="+1-234-567-8900"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Department *</label>
+                  <input
+                    type="text"
+                    placeholder="e.g., Mathematics, Science"
+                    value={formData.department}
+                    onChange={(e) => setFormData({...formData, department: e.target.value})}
+                    required
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Designation</label>
+                  <select
+                    value={formData.designation}
+                    onChange={(e) => setFormData({...formData, designation: e.target.value})}
+                    className="border p-2 rounded w-full"
+                  >
+                    <option value="Teacher">Teacher</option>
+                    <option value="Senior Teacher">Senior Teacher</option>
+                    <option value="Head of Department">Head of Department</option>
+                    <option value="Assistant Teacher">Assistant Teacher</option>
+                    <option value="Principal">Principal</option>
+                    <option value="Vice Principal">Vice Principal</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Joining Date</label>
+                  <input
+                    type="date"
+                    value={formData.joining_date}
+                    onChange={(e) => setFormData({...formData, joining_date: e.target.value})}
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Basic Salary</label>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    value={formData.basic_salary}
+                    onChange={(e) => setFormData({...formData, basic_salary: e.target.value})}
+                    className="border p-2 rounded w-full"
+                  />
+                </div>
               </div>
-              <p className="text-xs text-gray-500 mt-2">* Employee ID will be auto-generated (TCH001, TCH002, etc.)</p>
-              <p className="text-xs text-gray-500">* Default password: 123456</p>
-              <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mt-3">Create Teacher</button>
+              
+              <div className="mt-3 p-3 bg-blue-50 rounded">
+                <p className="text-xs text-blue-800">ℹ️ Employee ID will be auto-generated (TCH001, TCH002, etc.)</p>
+                <p className="text-xs text-blue-800">ℹ️ Default password: 123456 (teacher should change on first login)</p>
+              </div>
+              
+              <button type="submit" className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 mt-3">
+                Create Teacher
+              </button>
             </form>
           )}
 

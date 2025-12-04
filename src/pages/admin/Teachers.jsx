@@ -69,7 +69,10 @@ export default function Teachers(){
         });
         setShowForm(false);
         setSuccess('Teacher created successfully!');
-        fetchTeachers();
+        // Refetch teachers list to get updated data with populated fields
+        setTimeout(() => {
+          fetchTeachers();
+        }, 500);
         setTimeout(() => setSuccess(''), 3000);
       } else {
         setError(data.msg || data.message || 'Failed to create teacher');

@@ -18,14 +18,20 @@ export default function Teachers(){
 
   const fetchTeachers = async () => {
     setLoading(true);
+    setError('');
     try {
       const res = await fetch(`${API_BASE}/api/admin/teachers`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
+      if (!res.ok) {
+        throw new Error('Failed to fetch teachers');
+      }
       const data = await res.json();
-      setTeachers(data || []);
+      console.log('Teachers data:', data);
+      setTeachers(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Error fetching teachers:', err);
+      setError('Failed to load teachers. Please refresh the page.');
     }
     setLoading(false);
   };
@@ -78,8 +84,9 @@ export default function Teachers(){
       <div className="flex-1">
         <AdminHeader title="Teachers Management" />
         <div className="p-4">
+          {error && !showForm && <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>}
           {success && <div className="bg-green-100 text-green-700 p-3 rounded mb-4">{success}</div>}
-          <button onClick={() => setShowForm(!showForm)} className="bg-blue-600 text-white px-4 py-2 rounded mb-4 hover:bg-blue-700">
+          <button onClick={() => { setShowForm(!showForm); setError(''); }} className="bg-blue-600 text-white px-4 py-2 rounded mb-4 hover:bg-blue-700">
             {showForm ? 'Cancel' : '+ Add Teacher'}
           </button>
           

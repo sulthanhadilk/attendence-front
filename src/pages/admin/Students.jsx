@@ -18,14 +18,20 @@ export default function Students(){
 
   const fetchStudents = async () => {
     setLoading(true);
+    setError('');
     try {
       const res = await fetch(`${API_BASE}/api/admin/students`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
+      if (!res.ok) {
+        throw new Error('Failed to fetch students');
+      }
       const data = await res.json();
-      setStudents(data || []);
+      console.log('Students data:', data);
+      setStudents(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Error fetching students:', err);
+      setError('Failed to load students. Please refresh the page.');
     }
     setLoading(false);
   };
@@ -78,8 +84,9 @@ export default function Students(){
       <div className="flex-1">
         <AdminHeader title="Students Management" />
         <div className="p-4">
+          {error && !showForm && <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>}
           {success && <div className="bg-green-100 text-green-700 p-3 rounded mb-4">{success}</div>}
-          <button onClick={() => setShowForm(!showForm)} className="bg-blue-600 text-white px-4 py-2 rounded mb-4 hover:bg-blue-700">
+          <button onClick={() => { setShowForm(!showForm); setError(''); }} className="bg-blue-600 text-white px-4 py-2 rounded mb-4 hover:bg-blue-700">
             {showForm ? 'Cancel' : '+ Add Student'}
           </button>
           

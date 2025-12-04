@@ -7,7 +7,8 @@ export default function Teachers(){
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', staffCode: '', department: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', department: '', designation: 'Teacher' });
+  const [error, setError] = useState('');
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function Teachers(){
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
-      setTeachers(data.data || []);
+      setTeachers(data || []);
     } catch (err) {
       console.error('Error fetching teachers:', err);
     }
@@ -30,6 +31,7 @@ export default function Teachers(){
 
   const handleAddTeacher = async (e) => {
     e.preventDefault();
+    setError('');
     try {
       const res = await fetch(`${API_BASE}/api/admin/teachers`, {
         method: 'POST',
@@ -39,13 +41,17 @@ export default function Teachers(){
         },
         body: JSON.stringify(formData)
       });
+      const data = await res.json();
       if (res.ok) {
-        setFormData({ name: '', email: '', staffCode: '', department: '' });
+        setFormData({ name: '', email: '', phone: '', department: '', designation: 'Teacher' });
         setShowForm(false);
         fetchTeachers();
+      } else {
+        setError(data.msg || 'Failed to create teacher');
       }
     } catch (err) {
       console.error('Error adding teacher:', err);
+      setError('Network error. Please try again.');
     }
   };
 
@@ -75,6 +81,7 @@ export default function Teachers(){
           {showForm && (
             <form onSubmit={handleAddTeacher} className="bg-white p-4 rounded shadow mb-4">
               <h3 className="font-semibold mb-3">Add New Teacher</h3>
+              {error && <div className="bg-red-100 text-red-700 p-2 rounded mb-3">{error}</div>}
                 <input
                   type="text"
                   placeholder="Name"
@@ -93,10 +100,9 @@ export default function Teachers(){
                 />
                 <input
                   type="text"
-                  placeholder="Staff Code"
-                  value={formData.staffCode}
-                  onChange={(e) => setFormData({...formData, staffCode: e.target.value})}
-                  required
+                  placeholder="Phone"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
                   className="border p-2 rounded w-full mb-2"
                 />
                 <input
@@ -105,6 +111,13 @@ export default function Teachers(){
                   value={formData.department}
                   onChange={(e) => setFormData({...formData, department: e.target.value})}
                   required
+                  className="border p-2 rounded w-full mb-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Designation (e.g., Teacher, HOD)"
+                  value={formData.designation}
+                  onChange={(e) => setFormData({...formData, designation: e.target.value})}
                   className="border p-2 rounded w-full mb-2"
                 />
                 <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Create Teacher</button>
@@ -120,20 +133,22 @@ export default function Teachers(){
                   <tr>
                     <th className="px-4 py-2 text-left">Name</th>
                     <th className="px-4 py-2 text-left">Email</th>
-                    <th className="px-4 py-2 text-left">Staff Code</th>
+                    <th className="px-4 py-2 text-left">Phone</th>
+                    <th className="px-4 py-2 text-left">Employee ID</th>
                     <th className="px-4 py-2 text-left">Department</th>
                     <th className="px-4 py-2 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {teachers.length === 0 ? (
-                    <tr><td colSpan="5" className="px-4 py-8 text-center text-gray-500">No teachers found</td></tr>
+                    <tr><td colSpan="6" className="px-4 py-8 text-center text-gray-500">No teachers found</td></tr>
                   ) : (
                     teachers.map(teacher => (
                       <tr key={teacher._id} className="border-t hover:bg-gray-50">
-                        <td className="px-4 py-2">{teacher.name || 'N/A'}</td>
-                        <td className="px-4 py-2">{teacher.email || 'N/A'}</td>
-                        <td className="px-4 py-2">{teacher.staffCode || 'N/A'}</td>
+                        <td className="px-4 py-2">{teacher.user_id?.name || 'N/A'}</td>
+                        <td className="px-4 py-2">{teacher.user_id?.email || 'N/A'}</td>
+                        <td className="px-4 py-2">{teacher.user_id?.phone || 'N/A'}</td>
+                        <td className="px-4 py-2">{teacher.employee_id || 'N/A'}</td>
                         <td className="px-4 py-2">{teacher.department || 'N/A'}</td>
                         <td className="px-4 py-2">
                           <button onClick={() => handleDelete(teacher._id)} className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">Delete</button>

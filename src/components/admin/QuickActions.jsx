@@ -1,5 +1,4 @@
 import React from 'react';
-
 export default function QuickActions({ onExport, onShowReports, onShowUsers, onShowSettings, onShowFines, onShowTimetable, exporting, disabled }) {
   return (
     <div className="card mt-4">

@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 const GuardianDetails = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     fetchProfile();
   }, []);
-
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -27,7 +24,6 @@ const GuardianDetails = () => {
       setLoading(false);
     }
   };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -35,14 +31,10 @@ const GuardianDetails = () => {
       </div>
     );
   }
-
   if (!profile) return null;
-
   const guardianInfo = profile.guardian_info || {};
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
       <div className="bg-indigo-600 text-white p-6 rounded-b-3xl shadow-lg">
         <button onClick={() => navigate('/student/dashboard')} className="mb-4">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -52,9 +44,7 @@ const GuardianDetails = () => {
         <h1 className="text-2xl font-bold">Guardian Details</h1>
         <p className="text-white/80 text-sm mt-1">Parent/Guardian information</p>
       </div>
-
       <div className="p-4 space-y-4">
-        {/* Student Info Card */}
         <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg p-5 text-white">
           <div className="flex items-center">
             <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center mr-4">
@@ -69,8 +59,6 @@ const GuardianDetails = () => {
             </div>
           </div>
         </div>
-
-        {/* Father's Information */}
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <h3 className="font-bold text-gray-800 mb-4 flex items-center">
             <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -113,8 +101,6 @@ const GuardianDetails = () => {
             <p className="text-gray-500 text-sm">No father information available</p>
           )}
         </div>
-
-        {/* Mother's Information */}
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <h3 className="font-bold text-gray-800 mb-4 flex items-center">
             <svg className="w-5 h-5 mr-2 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -151,8 +137,6 @@ const GuardianDetails = () => {
             <p className="text-gray-500 text-sm">No mother information available</p>
           )}
         </div>
-
-        {/* Local Guardian Information (if different) */}
         {guardianInfo.local_guardian_name && (
           <div className="bg-white rounded-2xl shadow-sm p-5">
             <h3 className="font-bold text-gray-800 mb-4 flex items-center">
@@ -187,8 +171,6 @@ const GuardianDetails = () => {
             </div>
           </div>
         )}
-
-        {/* Emergency Contact */}
         <div className="bg-red-50 border border-red-200 rounded-2xl p-5">
           <h3 className="font-bold text-red-900 mb-3 flex items-center">
             <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -233,8 +215,6 @@ const GuardianDetails = () => {
             )}
           </div>
         </div>
-
-        {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => navigate('/student/personal-details')}
@@ -263,5 +243,4 @@ const GuardianDetails = () => {
     </div>
   );
 };
-
 export default GuardianDetails;

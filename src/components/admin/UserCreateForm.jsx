@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
 export default function UserCreateForm({ token, onCreated, disabled }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -11,9 +9,7 @@ export default function UserCreateForm({ token, onCreated, disabled }) {
   const [role, setRole] = useState('student');
   const [msg, setMsg] = useState('');
   const [loading, setLoading] = useState(false);
-
   const headers = token ? { Authorization: 'Bearer ' + token } : {};
-
   const submit = async (e) => {
     e.preventDefault();
     if (!token) {
@@ -34,7 +30,6 @@ export default function UserCreateForm({ token, onCreated, disabled }) {
       setMsg('❌ ' + (e.response?.data?.msg || e.message));
     } finally { setLoading(false); }
   };
-
   return (
     <div className="card mt-4">
       <div className="card-header">

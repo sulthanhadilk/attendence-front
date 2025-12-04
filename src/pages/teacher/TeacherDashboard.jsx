@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_ENDPOINTS, apiRequest } from '../../utils/api';
-
 export default function TeacherDashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
   useEffect(() => {
     const load = async () => {
       try {
@@ -21,12 +19,9 @@ export default function TeacherDashboard() {
     };
     load();
   }, []);
-
   if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center">Loading...</div>;
   if (error) return <div className="min-h-screen bg-gray-50 flex items-center justify-center text-red-600">{error}</div>;
-
   const { teacher, stats } = data || {};
-
   const tiles = [
     { label: 'Mark Attendance', path: '/teacher/attendance' },
     { label: 'Attendance Report', path: '/teacher/attendance/report' },
@@ -42,10 +37,8 @@ export default function TeacherDashboard() {
     { label: 'Question Bank', path: '/teacher/question-bank' },
     { label: 'Important Links', path: '/teacher/resources' },
   ];
-
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-indigo-600 text-white rounded-b-3xl p-4 flex items-center gap-4">
         <div className="w-16 h-16 rounded-full border-4 border-white bg-indigo-400 flex items-center justify-center text-2xl font-semibold">
           {teacher?.name?.[0] || 'T'}
@@ -56,9 +49,7 @@ export default function TeacherDashboard() {
           <div className="text-sm opacity-80">{teacher?.department} • {teacher?.designation}</div>
         </div>
       </div>
-
       <div className="p-4 space-y-4 max-w-5xl mx-auto">
-        {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div className="bg-white rounded-2xl shadow-sm p-4 flex flex-col">
             <div className="text-xs text-gray-500">Classes</div>
@@ -77,8 +68,6 @@ export default function TeacherDashboard() {
             <div className="text-xl font-semibold">{stats?.upcomingExams ?? 0}</div>
           </div>
         </div>
-
-        {/* Tiles */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {tiles.map(tile => (
             <button

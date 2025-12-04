@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../../utils/api';
-
 export default function Clubs() {
   const [formData, setFormData] = useState({
     name: '',
@@ -10,11 +9,9 @@ export default function Clubs() {
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-
   useEffect(() => {
     loadClubs();
   }, []);
-
   const loadClubs = async () => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/clubs`);
@@ -23,18 +20,15 @@ export default function Clubs() {
       setMessage(err.message);
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
-
     try {
       await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/clubs`, {
         method: 'POST',
         body: JSON.stringify(formData)
       });
-
       setMessage('Club created successfully');
       setFormData({ name: '', description: '', members: [] });
       loadClubs();
@@ -44,7 +38,6 @@ export default function Clubs() {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
@@ -52,9 +45,7 @@ export default function Clubs() {
           <h1 className="text-2xl font-bold text-gray-900">Clubs & Societies</h1>
           <p className="text-gray-600">Manage clubs and student societies</p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Create Club Form */}
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold mb-4">Create New Club</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -69,7 +60,6 @@ export default function Clubs() {
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea
@@ -80,12 +70,10 @@ export default function Clubs() {
                   placeholder="Describe the club's purpose and activities..."
                 />
               </div>
-
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-700">
                 <i className="fas fa-info-circle mr-2"></i>
                 You will be assigned as the club in-charge. Members can be added later.
               </div>
-
               {message && (
                 <div className={`p-3 rounded-lg text-sm ${
                   message.includes('success')
@@ -95,7 +83,6 @@ export default function Clubs() {
                   {message}
                 </div>
               )}
-
               <button
                 type="submit"
                 disabled={loading}
@@ -105,8 +92,6 @@ export default function Clubs() {
               </button>
             </form>
           </div>
-
-          {/* Clubs List */}
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold mb-4">My Clubs</h2>
             <div className="space-y-4">

@@ -1,6 +1,5 @@
 import React from 'react'
 import TimetableEditor from '../../admin/TimetableEditor'
-
 export default function TimetableModal({ open, onClose }) {
   if (!open) return null
   return (

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../../utils/api';
-
 export default function Activities() {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState('');
@@ -13,17 +12,14 @@ export default function Activities() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-
   useEffect(() => {
     loadClasses();
   }, []);
-
   useEffect(() => {
     if (selectedClass) {
       loadActivities(selectedClass);
     }
   }, [selectedClass]);
-
   const loadClasses = async () => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/classes`);
@@ -32,7 +28,6 @@ export default function Activities() {
       setMessage(err.message);
     }
   };
-
   const loadActivities = async (classId) => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/class/${classId}/activities`);
@@ -41,20 +36,16 @@ export default function Activities() {
       setMessage(err.message);
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedClass) return;
-
     setLoading(true);
     setMessage('');
-
     try {
       await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/class/${selectedClass}/activity`, {
         method: 'POST',
         body: JSON.stringify(formData)
       });
-
       setMessage('Activity added successfully');
       setFormData({ title: '', description: '', date: new Date().toISOString().slice(0, 10), attachments: [] });
       loadActivities(selectedClass);
@@ -64,7 +55,6 @@ export default function Activities() {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
@@ -72,9 +62,7 @@ export default function Activities() {
           <h1 className="text-2xl font-bold text-gray-900">Class Activities</h1>
           <p className="text-gray-600">Record and manage class activities and events</p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Add Activity Form */}
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold mb-4">Add Activity</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -92,7 +80,6 @@ export default function Activities() {
                   ))}
                 </select>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
                 <input
@@ -104,7 +91,6 @@ export default function Activities() {
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
                 <input
@@ -115,7 +101,6 @@ export default function Activities() {
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea
@@ -127,7 +112,6 @@ export default function Activities() {
                   required
                 />
               </div>
-
               {message && (
                 <div className={`p-3 rounded-lg text-sm ${
                   message.includes('success')
@@ -137,7 +121,6 @@ export default function Activities() {
                   {message}
                 </div>
               )}
-
               <button
                 type="submit"
                 disabled={loading}
@@ -147,8 +130,6 @@ export default function Activities() {
               </button>
             </form>
           </div>
-
-          {/* Activities List */}
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold mb-4">Recent Activities</h2>
             <div className="space-y-3 max-h-[600px] overflow-y-auto">

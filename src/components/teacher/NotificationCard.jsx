@@ -1,8 +1,6 @@
 import React from 'react';
-
 export default function NotificationCard({ notification, onMarkRead }) {
   const isRead = notification.isRead;
-
   const typeIcons = {
     class: '📚',
     exam: '📝',
@@ -11,7 +9,6 @@ export default function NotificationCard({ notification, onMarkRead }) {
     activity: '🎯',
     general: '📢'
   };
-
   return (
     <div className={`bg-white rounded-2xl shadow-sm p-4 border ${isRead ? 'border-gray-100' : 'border-indigo-300'} hover:border-indigo-400 transition`}>
       <div className="flex items-start gap-3">

@@ -1,29 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 const MonthlyAttendance = ({ profile, onClose }) => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().toISOString().slice(0, 7));
   const [attendanceData, setAttendanceData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
   const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
   const token = localStorage.getItem('token');
   const headers = { Authorization: 'Bearer ' + token };
-
   useEffect(() => {
     loadMonthlyAttendance();
   }, [selectedMonth]);
-
   const loadMonthlyAttendance = async () => {
     try {
       setLoading(true);
       setError('');
-      
-      // Create mock data for now - replace with actual API call
       const mockData = generateMockAttendance(selectedMonth);
       setAttendanceData(mockData);
-
       // Uncomment when backend endpoint is ready
       // const res = await axios.get(`${API}/api/student/attendance/monthly/${selectedMonth}`, { headers });
       // setAttendanceData(res.data);
@@ -34,12 +27,10 @@ const MonthlyAttendance = ({ profile, onClose }) => {
       setLoading(false);
     }
   };
-
   const generateMockAttendance = (month) => {
     const year = parseInt(month.split('-')[0]);
     const monthNum = parseInt(month.split('-')[1]) - 1;
     const daysInMonth = new Date(year, monthNum + 1, 0).getDate();
-    
     const attendanceRecords = [];
     const subjects = profile.subjects || [
       { name: 'Mathematics', code: 'MATH101' },
@@ -47,14 +38,11 @@ const MonthlyAttendance = ({ profile, onClose }) => {
       { name: 'Physics', code: 'PHY101' },
       { name: 'English', code: 'ENG101' }
     ];
-
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, monthNum, day);
       const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
-      
       // Skip weekends
       if (dayName === 'Sat' || dayName === 'Sun') continue;
-      
       const dayAttendance = {
         date: date.toISOString().split('T')[0],
         dayName,
@@ -66,10 +54,8 @@ const MonthlyAttendance = ({ profile, onClose }) => {
         })),
         overall: Math.random() > 0.1 ? 'present' : 'absent'
       };
-      
       attendanceRecords.push(dayAttendance);
     }
-
     return {
       month,
       records: attendanceRecords,
@@ -81,25 +67,20 @@ const MonthlyAttendance = ({ profile, onClose }) => {
       }
     };
   };
-
   const getStatusIcon = (status) => {
     return status === 'present' ? 'fa-check-circle text-success' : 'fa-times-circle text-danger';
   };
-
   const getStatusColor = (status) => {
     return status === 'present' ? 'success' : 'danger';
   };
-
   const monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
-
   const getCurrentMonthName = () => {
     const [year, month] = selectedMonth.split('-');
     return `${monthNames[parseInt(month) - 1]} ${year}`;
   };
-
   return (
     <div className="modal-overlay">
       <div className="modal-content large-modal">
@@ -113,7 +94,6 @@ const MonthlyAttendance = ({ profile, onClose }) => {
             </button>
           </div>
         </div>
-
         <div className="modal-body">
           {/* Month Selector */}
           <div className="month-selector mb-4">
@@ -130,20 +110,17 @@ const MonthlyAttendance = ({ profile, onClose }) => {
               />
             </div>
           </div>
-
           {loading && (
             <div className="loading-container">
               <div className="loading-spinner"></div>
               <p>Loading attendance data...</p>
             </div>
           )}
-
           {error && (
             <div className="alert alert-danger">
               <i className="fas fa-exclamation-triangle"></i> {error}
             </div>
           )}
-
           {attendanceData && !loading && (
             <>
               {/* Monthly Summary */}
@@ -188,7 +165,6 @@ const MonthlyAttendance = ({ profile, onClose }) => {
                   </div>
                 </div>
               </div>
-
               {/* Daily Attendance Records */}
               <div className="daily-attendance">
                 <h4><i className="fas fa-list"></i> Daily Attendance Records</h4>
@@ -205,7 +181,6 @@ const MonthlyAttendance = ({ profile, onClose }) => {
                           <span>{record.overall}</span>
                         </div>
                       </div>
-                      
                       <div className="subjects-attendance">
                         {record.subjects.map((subject, subIndex) => (
                           <div key={subIndex} className="subject-record">
@@ -227,33 +202,28 @@ const MonthlyAttendance = ({ profile, onClose }) => {
           )}
         </div>
       </div>
-
       <style jsx>{`
         .large-modal {
           max-width: 800px;
           max-height: 90vh;
           overflow-y: auto;
         }
-
         .month-selector {
           background: #f8f9fa;
           padding: 15px;
           border-radius: 8px;
         }
-
         .attendance-summary {
           background: #f8f9fa;
           padding: 20px;
           border-radius: 8px;
         }
-
         .summary-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
           gap: 15px;
           margin-top: 15px;
         }
-
         .summary-card {
           background: white;
           border-radius: 8px;
@@ -263,57 +233,46 @@ const MonthlyAttendance = ({ profile, onClose }) => {
           gap: 15px;
           box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
         .summary-card.success {
           border-left: 4px solid #10b981;
         }
-
         .summary-card.danger {
           border-left: 4px solid #ef4444;
         }
-
         .summary-card.primary {
           border-left: 4px solid #3b82f6;
         }
-
         .summary-card.info {
           border-left: 4px solid #8b5cf6;
         }
-
         .summary-icon {
           font-size: 1.5rem;
           opacity: 0.8;
         }
-
         .summary-value {
           font-size: 1.5rem;
           font-weight: bold;
           margin-bottom: 2px;
         }
-
         .summary-label {
           font-size: 0.9rem;
           opacity: 0.7;
         }
-
         .daily-attendance {
           margin-top: 30px;
         }
-
         .attendance-records {
           display: flex;
           flex-direction: column;
           gap: 15px;
           margin-top: 15px;
         }
-
         .attendance-day {
           background: white;
           border: 1px solid #e5e7eb;
           border-radius: 8px;
           overflow: hidden;
         }
-
         .day-header {
           background: #f9fafb;
           padding: 15px;
@@ -322,13 +281,11 @@ const MonthlyAttendance = ({ profile, onClose }) => {
           align-items: center;
           border-bottom: 1px solid #e5e7eb;
         }
-
         .day-info {
           display: flex;
           align-items: center;
           gap: 10px;
         }
-
         .day-date {
           background: #3b82f6;
           color: white;
@@ -340,12 +297,10 @@ const MonthlyAttendance = ({ profile, onClose }) => {
           justify-content: center;
           font-weight: bold;
         }
-
         .day-name {
           font-weight: 600;
           color: #374151;
         }
-
         .day-status {
           display: flex;
           align-items: center;
@@ -355,24 +310,20 @@ const MonthlyAttendance = ({ profile, onClose }) => {
           font-weight: 600;
           font-size: 0.9rem;
         }
-
         .day-status.success {
           background: #d1fae5;
           color: #065f46;
         }
-
         .day-status.danger {
           background: #fee2e2;
           color: #991b1b;
         }
-
         .subjects-attendance {
           padding: 15px;
           display: flex;
           flex-direction: column;
           gap: 10px;
         }
-
         .subject-record {
           display: flex;
           justify-content: space-between;
@@ -380,27 +331,22 @@ const MonthlyAttendance = ({ profile, onClose }) => {
           padding: 8px 0;
           border-bottom: 1px solid #f3f4f6;
         }
-
         .subject-record:last-child {
           border-bottom: none;
         }
-
         .subject-info {
           display: flex;
           flex-direction: column;
           gap: 2px;
         }
-
         .subject-name {
           font-weight: 600;
           color: #374151;
         }
-
         .subject-teacher {
           font-size: 0.85rem;
           color: #6b7280;
         }
-
         .subject-status {
           display: flex;
           align-items: center;
@@ -409,20 +355,16 @@ const MonthlyAttendance = ({ profile, onClose }) => {
           border-radius: 12px;
           font-size: 0.8rem;
         }
-
         .text-success {
           color: #10b981;
         }
-
         .text-danger {
           color: #ef4444;
         }
-
         .loading-container {
           text-align: center;
           padding: 40px;
         }
-
         .loading-spinner {
           width: 40px;
           height: 40px;
@@ -432,7 +374,6 @@ const MonthlyAttendance = ({ profile, onClose }) => {
           animation: spin 1s linear infinite;
           margin: 0 auto 20px;
         }
-
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
@@ -441,5 +382,4 @@ const MonthlyAttendance = ({ profile, onClose }) => {
     </div>
   );
 };
-
 export default MonthlyAttendance;

@@ -1,5 +1,4 @@
 import React from 'react';
-
 export default function AISection({ onShowPrediction, onShowReports, onShowChatbot }) {
   return (
     <div className="card mt-4">

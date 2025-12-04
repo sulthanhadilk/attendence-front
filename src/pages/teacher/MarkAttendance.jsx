@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../../utils/api';
-
 export default function MarkAttendance() {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState('');
@@ -10,13 +9,11 @@ export default function MarkAttendance() {
   const [statusMap, setStatusMap] = useState({});
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-
   useEffect(() => {
     apiRequest(API_ENDPOINTS.TEACHER_CLASSES)
       .then(setClasses)
       .catch(err => setMessage(err.message));
   }, []);
-
   useEffect(() => {
     if (!selectedClass) return;
     apiRequest(`${API_ENDPOINTS.TEACHER_CLASS_STUDENTS.replace(':classId', selectedClass)}`)
@@ -32,11 +29,9 @@ export default function MarkAttendance() {
       })
       .catch(err => setMessage(err.message));
   }, [selectedClass]);
-
   const handleStatusChange = (studentId, hour, value) => {
     setStatusMap(prev => ({ ...prev, [`${studentId}-${hour}`]: value }));
   };
-
   const handleSubmit = async e => {
     e.preventDefault();
     if (!selectedClass) return;
@@ -64,7 +59,6 @@ export default function MarkAttendance() {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-gray-50 p-4 max-w-5xl mx-auto">
       <h1 className="text-xl font-semibold mb-4">Mark Hour-wise Attendance</h1>
@@ -94,7 +88,6 @@ export default function MarkAttendance() {
               />
             </div>
           </div>
-
           {students.length > 0 && (
             <div className="overflow-x-auto">
               <table className="table-auto w-full text-sm">
@@ -134,7 +127,6 @@ export default function MarkAttendance() {
               </table>
             </div>
           )}
-
           <button
             type="submit"
             disabled={loading || !selectedClass}

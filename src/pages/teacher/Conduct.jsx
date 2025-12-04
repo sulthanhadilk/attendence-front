@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../../utils/api';
-
 export default function Conduct() {
   const [classes, setClasses] = useState([]);
   const [students, setStudents] = useState([]);
@@ -13,18 +12,15 @@ export default function Conduct() {
   const [remarks, setRemarks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-
   useEffect(() => {
     loadClasses();
   }, []);
-
   useEffect(() => {
     if (selectedClass) {
       loadStudents(selectedClass);
       loadRemarks(selectedClass);
     }
   }, [selectedClass]);
-
   const loadClasses = async () => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/classes`);
@@ -33,7 +29,6 @@ export default function Conduct() {
       setMessage(err.message);
     }
   };
-
   const loadStudents = async (classId) => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/classes/${classId}/students`);
@@ -42,7 +37,6 @@ export default function Conduct() {
       setMessage(err.message);
     }
   };
-
   const loadRemarks = async (classId) => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/class/${classId}/conduct`);
@@ -51,20 +45,16 @@ export default function Conduct() {
       setMessage(err.message);
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedClass) return;
-
     setLoading(true);
     setMessage('');
-
     try {
       await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/class/${selectedClass}/conduct`, {
         method: 'POST',
         body: JSON.stringify(formData)
       });
-
       setMessage('Conduct remark added successfully');
       setFormData({ studentId: '', severity: 'medium', remark: '' });
       loadRemarks(selectedClass);
@@ -74,7 +64,6 @@ export default function Conduct() {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
@@ -82,9 +71,7 @@ export default function Conduct() {
           <h1 className="text-2xl font-bold text-gray-900">Student Conduct</h1>
           <p className="text-gray-600">Add and view conduct remarks for students</p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Add Remark Form */}
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold mb-4">Add Conduct Remark</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -102,7 +89,6 @@ export default function Conduct() {
                   ))}
                 </select>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Student</label>
                 <select
@@ -120,7 +106,6 @@ export default function Conduct() {
                   ))}
                 </select>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Severity</label>
                 <select
@@ -133,7 +118,6 @@ export default function Conduct() {
                   <option value="high">High</option>
                 </select>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Remark</label>
                 <textarea
@@ -145,7 +129,6 @@ export default function Conduct() {
                   required
                 />
               </div>
-
               {message && (
                 <div className={`p-3 rounded-lg text-sm ${
                   message.includes('success')
@@ -155,7 +138,6 @@ export default function Conduct() {
                   {message}
                 </div>
               )}
-
               <button
                 type="submit"
                 disabled={loading}
@@ -165,8 +147,6 @@ export default function Conduct() {
               </button>
             </form>
           </div>
-
-          {/* Remarks List */}
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold mb-4">Recent Remarks</h2>
             <div className="space-y-3 max-h-[600px] overflow-y-auto">
@@ -181,7 +161,6 @@ export default function Conduct() {
                     medium: 'bg-yellow-100 text-yellow-700',
                     high: 'bg-red-100 text-red-700'
                   };
-
                   return (
                     <div key={remark._id} className="border border-gray-200 rounded-lg p-4">
                       <div className="flex justify-between items-start mb-2">

@@ -1,16 +1,13 @@
 import React from 'react';
-
 export default function StudentRow({ student, showAttendance = false, showFines = false, showLastMark = false, onClick }) {
   const attendancePercent = student.attendancePercent || 0;
   const finesCount = student.finesCount || 0;
   const lastMark = student.lastMark || '-';
-
   const getAttendanceColor = (percent) => {
     if (percent >= 75) return 'text-green-600';
     if (percent >= 50) return 'text-yellow-600';
     return 'text-red-600';
   };
-
   return (
     <div
       onClick={onClick}

@@ -1,9 +1,7 @@
 import React from 'react';
-
 export default function TeacherHeader({ teacher }) {
   const initial = teacher?.name?.[0] || 'T';
   const photoUrl = teacher?.photoUrl;
-
   return (
     <div className="bg-indigo-600 text-white rounded-b-3xl p-4 flex items-center gap-4">
       {photoUrl ? (

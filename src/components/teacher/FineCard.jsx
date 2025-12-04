@@ -1,18 +1,15 @@
 import React from 'react';
-
 export default function FineCard({ fine, onUpdate }) {
   const statusColors = {
     pending: 'bg-yellow-100 text-yellow-700',
     paid: 'bg-green-100 text-green-700',
     waived: 'bg-blue-100 text-blue-700'
   };
-
   const contextLabels = {
     attendance: 'Attendance',
     discipline: 'Discipline',
     other: 'Other'
   };
-
   return (
     <div className="bg-white rounded-2xl shadow-sm p-4 border border-gray-100 hover:border-indigo-200 transition">
       <div className="flex items-start justify-between mb-2">

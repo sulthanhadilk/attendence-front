@@ -1,5 +1,4 @@
 import React from 'react';
-
 export default function SettingsModal({ open, onClose, onSampleAttendance }) {
   if (!open) return null;
   return (

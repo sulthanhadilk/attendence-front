@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../../utils/api';
-
 export default function AttendanceReport() {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState('');
@@ -10,19 +9,16 @@ export default function AttendanceReport() {
   const [students, setStudents] = useState({});
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-
   useEffect(() => {
     apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/classes`)
       .then(setClasses)
       .catch(err => setMessage(err.message));
   }, []);
-
   const loadReport = async () => {
     if (!selectedClass || !fromDate || !toDate) {
       setMessage('Please select class and date range');
       return;
     }
-
     setLoading(true);
     setMessage('');
     try {
@@ -30,7 +26,6 @@ export default function AttendanceReport() {
         `${API_ENDPOINTS.TEACHER_DASHBOARD}/attendance/report?classId=${selectedClass}&from=${fromDate}&to=${toDate}`
       );
       setReport(data);
-
       // Load student details
       const studentsData = await apiRequest(
         `${API_ENDPOINTS.TEACHER_DASHBOARD}/classes/${selectedClass}/students`
@@ -46,7 +41,6 @@ export default function AttendanceReport() {
       setLoading(false);
     }
   };
-
   const exportToCSV = () => {
     const headers = ['Student Name', 'Roll No', 'Total Hours', 'Present Hours', 'Attendance %'];
     const rows = report.map(r => {
@@ -59,7 +53,6 @@ export default function AttendanceReport() {
         r.attendancePct.toFixed(2)
       ];
     });
-
     const csvContent = [headers, ...rows].map(row => row.join(',')).join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
@@ -68,7 +61,6 @@ export default function AttendanceReport() {
     a.download = `attendance-report-${selectedClass}-${Date.now()}.csv`;
     a.click();
   };
-
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
@@ -76,7 +68,6 @@ export default function AttendanceReport() {
           <h1 className="text-2xl font-bold text-gray-900">Attendance Report</h1>
           <p className="text-gray-600">View detailed attendance statistics for your classes</p>
         </div>
-
         <div className="bg-white rounded-2xl shadow-sm p-6 mb-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
             <div>
@@ -120,13 +111,11 @@ export default function AttendanceReport() {
               </button>
             </div>
           </div>
-
           {message && (
             <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
               {message}
             </div>
           )}
-
           {report.length > 0 && (
             <>
               <div className="flex justify-between items-center mb-4">
@@ -139,7 +128,6 @@ export default function AttendanceReport() {
                   Export CSV
                 </button>
               </div>
-
               <div className="overflow-x-auto">
                 <table className="table-auto w-full text-sm">
                   <thead className="bg-gray-50">
@@ -158,7 +146,6 @@ export default function AttendanceReport() {
                       const pct = r.attendancePct;
                       const statusColor = pct >= 75 ? 'text-green-600' : pct >= 60 ? 'text-yellow-600' : 'text-red-600';
                       const statusBg = pct >= 75 ? 'bg-green-100' : pct >= 60 ? 'bg-yellow-100' : 'bg-red-100';
-
                       return (
                         <tr key={r.studentId} className="border-b hover:bg-gray-50">
                           <td className="p-3 font-medium">{student?.user_id?.name || 'Unknown'}</td>

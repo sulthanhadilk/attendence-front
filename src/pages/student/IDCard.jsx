@@ -3,17 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { QRCodeSVG } from 'qrcode.react';
 import Barcode from 'react-barcode';
-
 const IDCard = () => {
   const [idCard, setIdCard] = useState(null);
   const [showQR, setShowQR] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     fetchIDCard();
   }, []);
-
   const fetchIDCard = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -30,7 +27,6 @@ const IDCard = () => {
       setLoading(false);
     }
   };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -38,12 +34,9 @@ const IDCard = () => {
       </div>
     );
   }
-
   if (!idCard) return null;
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
       <div className="bg-indigo-600 text-white p-6 rounded-b-3xl shadow-lg">
         <button onClick={() => navigate('/student/dashboard')} className="mb-4">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -53,17 +46,12 @@ const IDCard = () => {
         <h1 className="text-2xl font-bold">Virtual ID Card</h1>
         <p className="text-white/80 text-sm mt-1">Your digital identity</p>
       </div>
-
       <div className="p-4 space-y-4">
-        {/* ID Card */}
         <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl shadow-2xl p-6 text-white">
-          {/* College Logo/Header */}
           <div className="text-center mb-4 pb-4 border-b border-white/20">
             <h2 className="text-xl font-bold">Islamic College</h2>
             <p className="text-xs text-white/80 mt-1">Student Identity Card</p>
           </div>
-
-          {/* Student Photo */}
           <div className="flex items-start space-x-4 mb-4">
             <div className="w-20 h-20 rounded-xl bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/30">
               {idCard.photoUrl ? (
@@ -79,8 +67,6 @@ const IDCard = () => {
               <p className="text-xs text-white/70">{idCard.department}</p>
             </div>
           </div>
-
-          {/* Details */}
           <div className="space-y-2 bg-white/10 backdrop-blur rounded-xl p-3 text-sm">
             <div className="flex justify-between">
               <span className="text-white/80">Admission No:</span>
@@ -94,8 +80,6 @@ const IDCard = () => {
             )}
           </div>
         </div>
-
-        {/* Toggle Button */}
         <div className="bg-white rounded-2xl shadow-sm p-2 flex">
           <button
             onClick={() => setShowQR(false)}
@@ -114,8 +98,6 @@ const IDCard = () => {
             QR Code
           </button>
         </div>
-
-        {/* Barcode/QR Display */}
         <div className="bg-white rounded-2xl shadow-sm p-6">
           {!showQR ? (
             <div className="flex flex-col items-center">
@@ -147,8 +129,6 @@ const IDCard = () => {
             </div>
           )}
         </div>
-
-        {/* Instructions */}
         <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4">
           <h3 className="font-bold text-blue-900 mb-2 flex items-center">
             <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -175,8 +155,6 @@ const IDCard = () => {
             </li>
           </ul>
         </div>
-
-        {/* Download/Share Options */}
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => window.print()}
@@ -214,5 +192,4 @@ const IDCard = () => {
     </div>
   );
 };
-
 export default IDCard;

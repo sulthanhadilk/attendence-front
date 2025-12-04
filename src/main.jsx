@@ -25,7 +25,6 @@ import SettingsAdmin from './pages/admin/SettingsAdmin'
 import AdminProfile from './pages/admin/AdminProfile'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
 import { ProtectedAdminRoute, ProtectedTeacherRoute, ProtectedStudentRoute } from './utils/ProtectedRoutes'
-
 // Student Module Pages
 import StudentDashboard from './pages/student/Dashboard'
 import StudentAttendance from './pages/student/Attendance'
@@ -38,7 +37,6 @@ import StudentPersonalDetails from './pages/student/PersonalDetails'
 import StudentGuardianDetails from './pages/student/GuardianDetails'
 import StudentMyAccount from './pages/student/MyAccount'
 import StudentDepartments from './pages/student/Departments'
-
 // Teacher Module Pages
 import MarkAttendance from './pages/teacher/MarkAttendance'
 import AttendanceReport from './pages/teacher/AttendanceReport'
@@ -54,9 +52,7 @@ import Resources from './pages/teacher/Resources'
 import Clubs from './pages/teacher/Clubs'
 import Timetable from './pages/teacher/Timetable'
 import DueSheet from './pages/teacher/DueSheet'
-
 import './styles.css'
-
 function App() {
   return (
     <BrowserRouter>
@@ -100,7 +96,6 @@ function App() {
               </ProtectedTeacherRoute>
             } 
           />
-
           {/* Teacher Module Routes */}
           <Route 
             path="/teacher/attendance" 
@@ -325,5 +320,4 @@ function App() {
     </BrowserRouter>
   )
 }
-
 createRoot(document.getElementById('root')).render(<App />)

@@ -1,8 +1,6 @@
 import { useCallback, useState } from 'react';
 import axios from 'axios';
-
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
 export default function useAdminData(token) {
   const [stats, setStats] = useState({ totalStudents: 0, totalTeachers: 0, totalClasses: 0, todayAttendance: 0 });
   const [students, setStudents] = useState([]);
@@ -10,7 +8,6 @@ export default function useAdminData(token) {
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
   const authHeader = token ? { Authorization: 'Bearer ' + token } : {};
-
   const fetchStats = useCallback(async () => {
     if (!token) return;
     try {
@@ -30,7 +27,6 @@ export default function useAdminData(token) {
       setLoading(false);
     }
   }, [token]);
-
   const fetchStudents = useCallback(async () => {
     if (!token) return;
     try {
@@ -40,7 +36,6 @@ export default function useAdminData(token) {
       console.error('Failed to fetch students', e);
     }
   }, [token]);
-
   const fetchTeachers = useCallback(async () => {
     if (!token) return;
     try {
@@ -50,7 +45,6 @@ export default function useAdminData(token) {
       console.error('Failed to fetch teachers', e);
     }
   }, [token]);
-
   const fetchAttendanceReport = useCallback(async () => {
     if (!token) return;
     try {
@@ -60,7 +54,6 @@ export default function useAdminData(token) {
       console.error('Failed to fetch attendance report', e);
     }
   }, [token]);
-
   const exportAttendance = useCallback(async () => {
     if (!token) return { ok: false, message: 'Not authenticated' };
     try {
@@ -77,17 +70,14 @@ export default function useAdminData(token) {
       setLoading(false);
     }
   }, [token]);
-
   const deleteStudent = useCallback(async (studentId) => {
     if (!token) throw new Error('Not authenticated');
     await axios.delete(`${API}/api/admin/students/${studentId}`, { headers: authHeader });
   }, [token]);
-
   const deleteTeacher = useCallback(async (teacherId) => {
     if (!token) throw new Error('Not authenticated');
     await axios.delete(`${API}/api/admin/teachers/${teacherId}`, { headers: authHeader });
   }, [token]);
-
   return {
     stats,
     students,

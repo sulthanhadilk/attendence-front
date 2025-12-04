@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { apiRequest, API_ENDPOINTS } from '../utils/api';
-
 const AIPredictionDashboard = ({ studentId, userRole }) => {
   const [predictions, setPredictions] = useState(null);
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedStudent, setSelectedStudent] = useState(studentId || '');
   const [students, setStudents] = useState([]);
-
   useEffect(() => {
     if (userRole === 'admin' || userRole === 'teacher') {
       fetchStudents();
@@ -18,7 +16,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
       fetchAnalysis();
     }
   }, [selectedStudent, userRole]);
-
   const fetchStudents = async () => {
     try {
       const response = await apiRequest(API_ENDPOINTS.STUDENTS);
@@ -27,7 +24,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
       console.error('Error fetching students:', error);
     }
   };
-
   const fetchPredictions = async () => {
     setLoading(true);
     try {
@@ -35,7 +31,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
         apiRequest(`${API_ENDPOINTS.AI_BASE}/predict/${selectedStudent}`),
         apiRequest(`${API_ENDPOINTS.AI_BASE}/analyze/${selectedStudent}`)
       ]);
-      
       setPredictions(predictionResponse);
       setAnalysis(analysisResponse);
     } catch (error) {
@@ -44,7 +39,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
       setLoading(false);
     }
   };
-
   const fetchAnalysis = async () => {
     try {
       const response = await apiRequest(`${API_ENDPOINTS.AI_BASE}/analyze/${selectedStudent}`);
@@ -53,7 +47,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
       console.error('Error fetching analysis:', error);
     }
   };
-
   const getRiskColor = (riskLevel) => {
     switch (riskLevel) {
       case 'High': return '#dc3545';
@@ -62,7 +55,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
       default: return '#6c757d';
     }
   };
-
   const getRiskIcon = (riskLevel) => {
     switch (riskLevel) {
       case 'High': return 'fas fa-exclamation-triangle';
@@ -71,7 +63,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
       default: return 'fas fa-question-circle';
     }
   };
-
   if (loading) {
     return (
       <div className="ai-dashboard-loading">
@@ -82,7 +73,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
       </div>
     );
   }
-
   return (
     <div className="ai-prediction-dashboard">
       <motion.div
@@ -97,7 +87,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
         </h2>
         <p>Intelligent behavior analysis and risk assessment</p>
       </motion.div>
-
       {(userRole === 'admin' || userRole === 'teacher') && (
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -121,7 +110,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
           </select>
         </motion.div>
       )}
-
       {predictions && analysis && (
         <div className="prediction-grid">
           {/* Risk Assessment Card */}
@@ -152,7 +140,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
               </div>
             </div>
           </motion.div>
-
           {/* Attendance Prediction */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -188,7 +175,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
               </div>
             </div>
           </motion.div>
-
           {/* Academic Performance */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -226,7 +212,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
               </div>
             </div>
           </motion.div>
-
           {/* AI Recommendations */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -261,7 +246,6 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
               </div>
             </div>
           </motion.div>
-
           {/* Subject Performance Breakdown */}
           {analysis.subjectPerformance && (
             <motion.div
@@ -307,5 +291,4 @@ const AIPredictionDashboard = ({ studentId, userRole }) => {
     </div>
   );
 };
-
 export default AIPredictionDashboard;

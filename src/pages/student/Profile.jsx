@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({ photoUrl: '', phone: '' });
   const navigate = useNavigate();
-
   useEffect(() => {
     fetchProfile();
   }, []);
-
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -33,7 +30,6 @@ const Profile = () => {
       setLoading(false);
     }
   };
-
   const handleUpdate = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -48,7 +44,6 @@ const Profile = () => {
       alert('Failed to update profile');
     }
   };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -56,12 +51,9 @@ const Profile = () => {
       </div>
     );
   }
-
   if (!profile) return null;
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
       <div className="bg-indigo-600 text-white p-6 rounded-b-3xl shadow-lg">
         <button onClick={() => navigate('/student/dashboard')} className="mb-4">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -71,9 +63,7 @@ const Profile = () => {
         <h1 className="text-2xl font-bold">My Profile</h1>
         <p className="text-white/80 text-sm mt-1">View and update your details</p>
       </div>
-
       <div className="p-4 space-y-4">
-        {/* Profile Photo */}
         <div className="bg-white rounded-2xl shadow-sm p-6 text-center">
           <div className="w-24 h-24 mx-auto rounded-full bg-indigo-100 flex items-center justify-center overflow-hidden mb-4">
             {profile.photoUrl ? (
@@ -91,8 +81,6 @@ const Profile = () => {
             {editing ? 'Cancel' : 'Edit Profile'}
           </button>
         </div>
-
-        {/* Edit Form */}
         {editing && (
           <div className="bg-white rounded-2xl shadow-sm p-4 space-y-3">
             <div>
@@ -123,8 +111,6 @@ const Profile = () => {
             </button>
           </div>
         )}
-
-        {/* Basic Info */}
         <div className="bg-white rounded-2xl shadow-sm p-4">
           <h3 className="font-bold text-gray-800 mb-3">Basic Information</h3>
           <div className="space-y-3">
@@ -154,8 +140,6 @@ const Profile = () => {
             </div>
           </div>
         </div>
-
-        {/* Guardian Info */}
         {profile.guardian_info && (
           <div className="bg-white rounded-2xl shadow-sm p-4">
             <h3 className="font-bold text-gray-800 mb-3">Guardian Information</h3>
@@ -187,8 +171,6 @@ const Profile = () => {
             </div>
           </div>
         )}
-
-        {/* Enrolled Courses */}
         {profile.courseIds && profile.courseIds.length > 0 && (
           <div className="bg-white rounded-2xl shadow-sm p-4">
             <h3 className="font-bold text-gray-800 mb-3">Enrolled Courses</h3>
@@ -209,8 +191,6 @@ const Profile = () => {
             </div>
           </div>
         )}
-
-        {/* Quick Actions */}
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => navigate('/student/id-card')}
@@ -242,5 +222,4 @@ const Profile = () => {
     </div>
   );
 };
-
 export default Profile;

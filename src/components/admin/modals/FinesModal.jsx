@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import API_BASE_URL from '../../../utils/api'
 import FineForm from '../../admin/FineForm'
-
 export default function FinesModal({ open, onClose }) {
   const token = localStorage.getItem('token')
   const [loading, setLoading] = useState(false)
   const [fines, setFines] = useState([])
   const [error, setError] = useState('')
   const [creating, setCreating] = useState(false)
-
   const fetchFines = async () => {
     setLoading(true)
     setError('')
@@ -19,7 +17,6 @@ export default function FinesModal({ open, onClose }) {
       setFines(Array.isArray(data) ? data : [])
     } catch (e) { setError(e.message) } finally { setLoading(false) }
   }
-
   const markPaid = async (id) => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/admin/fines/${id}`, {
@@ -31,10 +28,8 @@ export default function FinesModal({ open, onClose }) {
       fetchFines()
     } catch (e) { alert(e.message) }
   }
-
   useEffect(()=>{ if(open) fetchFines() }, [open])
   if (!open) return null
-
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content large" onClick={(e)=>e.stopPropagation()}>
@@ -44,17 +39,14 @@ export default function FinesModal({ open, onClose }) {
         </div>
         <div className="modal-body">
           {error && <div className="alert alert-error">{error}</div>}
-
           <div className="mb-4">
             <button className="btn btn-primary" onClick={()=>setCreating(v=>!v)}>
               <i className="fas fa-plus"/> {creating ? 'Hide Form' : 'Create Fine'}
             </button>
           </div>
-
           {creating && (
             <FineForm onCreated={()=>{ setCreating(false); fetchFines() }} />
           )}
-
           <div className="card mt-4">
             <div className="card-header">
               <h3 className="card-title"><i className="fas fa-list"/> Recent Fines</h3>

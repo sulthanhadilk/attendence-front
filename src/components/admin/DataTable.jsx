@@ -1,5 +1,4 @@
 import React from 'react'
-
 export default function DataTable({ columns = [], data = [], rowKey = (row, idx) => idx, onRowClick }) {
   return (
     <div className="card">

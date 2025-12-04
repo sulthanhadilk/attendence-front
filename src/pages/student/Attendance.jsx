@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 const Attendance = () => {
   const [view, setView] = useState('course'); // course, hourly, prayer
   const [courseAttendance, setCourseAttendance] = useState([]);
@@ -11,16 +10,13 @@ const Attendance = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     fetchAttendance();
   }, [view, selectedMonth, selectedYear]);
-
   const fetchAttendance = async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      
       if (view === 'course') {
         const { data } = await axios.get('/api/student/attendance/course', {
           headers: { Authorization: `Bearer ${token}` }
@@ -46,7 +42,6 @@ const Attendance = () => {
       setLoading(false);
     }
   };
-
   const getStatusColor = (status) => {
     const colors = {
       present: 'bg-green-100 text-green-700',
@@ -57,7 +52,6 @@ const Attendance = () => {
     };
     return colors[status] || colors.unmarked;
   };
-
   const getStatusIcon = (status) => {
     if (status === 'present') return '✓';
     if (status === 'absent') return '✗';
@@ -65,10 +59,8 @@ const Attendance = () => {
     if (status === 'letoff') return '📝';
     return '—';
   };
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
       <div className="bg-indigo-600 text-white p-6 rounded-b-3xl shadow-lg">
         <button onClick={() => navigate('/student/dashboard')} className="mb-4">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -78,8 +70,6 @@ const Attendance = () => {
         <h1 className="text-2xl font-bold">Attendance</h1>
         <p className="text-white/80 text-sm mt-1">View your attendance records</p>
       </div>
-
-      {/* View Selector */}
       <div className="p-4">
         <div className="bg-white rounded-2xl shadow-sm p-2 flex space-x-2">
           <button
@@ -108,8 +98,6 @@ const Attendance = () => {
           </button>
         </div>
       </div>
-
-      {/* Month/Year Selector for Hourly */}
       {view === 'hourly' && (
         <div className="px-4 pb-4">
           <div className="bg-white rounded-2xl shadow-sm p-4 flex items-center justify-between">
@@ -151,8 +139,6 @@ const Attendance = () => {
           </div>
         </div>
       )}
-
-      {/* Content */}
       <div className="px-4 space-y-4">
         {loading ? (
           <div className="flex justify-center py-12">
@@ -160,7 +146,6 @@ const Attendance = () => {
           </div>
         ) : (
           <>
-            {/* Course View */}
             {view === 'course' && (
               <div className="space-y-3">
                 {courseAttendance.length === 0 ? (
@@ -190,8 +175,6 @@ const Attendance = () => {
                 )}
               </div>
             )}
-
-            {/* Hourly View */}
             {view === 'hourly' && (
               <div className="space-y-3">
                 {hourlyAttendance.length === 0 ? (
@@ -231,8 +214,6 @@ const Attendance = () => {
                 )}
               </div>
             )}
-
-            {/* Prayer View */}
             {view === 'prayer' && prayerAttendance && (
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-3">
@@ -257,8 +238,6 @@ const Attendance = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* Recent Prayer Records */}
                 <div className="bg-white rounded-2xl shadow-sm p-4">
                   <h3 className="font-bold text-gray-800 mb-3">Recent Records</h3>
                   <div className="space-y-2">
@@ -287,5 +266,4 @@ const Attendance = () => {
     </div>
   );
 };
-
 export default Attendance;

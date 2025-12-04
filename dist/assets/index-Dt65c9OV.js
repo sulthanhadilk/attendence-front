@@ -81,7 +81,6 @@ Error generating stack: `+i.message+`
           position: relative;
           overflow: hidden;
         }
-
         .id-card::before {
           content: '';
           position: absolute;
@@ -92,12 +91,10 @@ Error generating stack: `+i.message+`
           background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
           animation: shimmer 3s infinite;
         }
-
         @keyframes shimmer {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }
-
         .id-card-header {
           text-align: center;
           padding-bottom: 15px;
@@ -105,24 +102,20 @@ Error generating stack: `+i.message+`
           position: relative;
           z-index: 1;
         }
-
         .school-logo {
           font-size: 2rem;
           margin-bottom: 8px;
         }
-
         .school-info h3 {
           margin: 0;
           font-size: 1.2rem;
           font-weight: bold;
         }
-
         .school-info p {
           margin: 0;
           font-size: 0.8rem;
           opacity: 0.9;
         }
-
         .id-card-body {
           display: grid;
           grid-template-columns: auto 1fr auto;
@@ -131,12 +124,10 @@ Error generating stack: `+i.message+`
           position: relative;
           z-index: 1;
         }
-
         .student-photo {
           display: flex;
           align-items: center;
         }
-
         .photo-placeholder {
           width: 80px;
           height: 100px;
@@ -147,37 +138,31 @@ Error generating stack: `+i.message+`
           justify-content: center;
           font-size: 2rem;
         }
-
         .student-details {
           display: flex;
           flex-direction: column;
           justify-content: center;
           gap: 8px;
         }
-
         .detail-row {
           display: flex;
           justify-content: space-between;
           font-size: 0.9rem;
         }
-
         .label {
           font-weight: 600;
           opacity: 0.9;
         }
-
         .value {
           font-weight: bold;
           text-align: right;
         }
-
         .qr-section {
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
         }
-
         .qr-code {
           width: 80px;
           height: 80px;
@@ -188,13 +173,11 @@ Error generating stack: `+i.message+`
           justify-content: center;
           padding: 5px;
         }
-
         .qr-code img {
           width: 100%;
           height: 100%;
           border-radius: 4px;
         }
-
         .qr-placeholder {
           display: flex;
           flex-direction: column;
@@ -202,19 +185,16 @@ Error generating stack: `+i.message+`
           color: #333;
           font-size: 0.7rem;
         }
-
         .qr-placeholder i {
           font-size: 1.5rem;
           margin-bottom: 4px;
         }
-
         .qr-label {
           font-size: 0.7rem;
           margin-top: 5px;
           text-align: center;
           opacity: 0.9;
         }
-
         .id-card-footer {
           text-align: center;
           padding-top: 15px;
@@ -222,18 +202,15 @@ Error generating stack: `+i.message+`
           position: relative;
           z-index: 1;
         }
-
         .id-card-footer p {
           margin: 5px 0;
           font-size: 0.8rem;
           opacity: 0.9;
         }
-
         .emergency {
           color: #fbbf24 !important;
           font-weight: bold;
         }
-
         .medium-modal {
           max-width: 450px;
         }
@@ -243,26 +220,22 @@ Error generating stack: `+i.message+`
           max-height: 90vh;
           overflow-y: auto;
         }
-
         .month-selector {
           background: #f8f9fa;
           padding: 15px;
           border-radius: 8px;
         }
-
         .attendance-summary {
           background: #f8f9fa;
           padding: 20px;
           border-radius: 8px;
         }
-
         .summary-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
           gap: 15px;
           margin-top: 15px;
         }
-
         .summary-card {
           background: white;
           border-radius: 8px;
@@ -272,57 +245,46 @@ Error generating stack: `+i.message+`
           gap: 15px;
           box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
         .summary-card.success {
           border-left: 4px solid #10b981;
         }
-
         .summary-card.danger {
           border-left: 4px solid #ef4444;
         }
-
         .summary-card.primary {
           border-left: 4px solid #3b82f6;
         }
-
         .summary-card.info {
           border-left: 4px solid #8b5cf6;
         }
-
         .summary-icon {
           font-size: 1.5rem;
           opacity: 0.8;
         }
-
         .summary-value {
           font-size: 1.5rem;
           font-weight: bold;
           margin-bottom: 2px;
         }
-
         .summary-label {
           font-size: 0.9rem;
           opacity: 0.7;
         }
-
         .daily-attendance {
           margin-top: 30px;
         }
-
         .attendance-records {
           display: flex;
           flex-direction: column;
           gap: 15px;
           margin-top: 15px;
         }
-
         .attendance-day {
           background: white;
           border: 1px solid #e5e7eb;
           border-radius: 8px;
           overflow: hidden;
         }
-
         .day-header {
           background: #f9fafb;
           padding: 15px;
@@ -331,13 +293,11 @@ Error generating stack: `+i.message+`
           align-items: center;
           border-bottom: 1px solid #e5e7eb;
         }
-
         .day-info {
           display: flex;
           align-items: center;
           gap: 10px;
         }
-
         .day-date {
           background: #3b82f6;
           color: white;
@@ -349,12 +309,10 @@ Error generating stack: `+i.message+`
           justify-content: center;
           font-weight: bold;
         }
-
         .day-name {
           font-weight: 600;
           color: #374151;
         }
-
         .day-status {
           display: flex;
           align-items: center;
@@ -364,24 +322,20 @@ Error generating stack: `+i.message+`
           font-weight: 600;
           font-size: 0.9rem;
         }
-
         .day-status.success {
           background: #d1fae5;
           color: #065f46;
         }
-
         .day-status.danger {
           background: #fee2e2;
           color: #991b1b;
         }
-
         .subjects-attendance {
           padding: 15px;
           display: flex;
           flex-direction: column;
           gap: 10px;
         }
-
         .subject-record {
           display: flex;
           justify-content: space-between;
@@ -389,27 +343,22 @@ Error generating stack: `+i.message+`
           padding: 8px 0;
           border-bottom: 1px solid #f3f4f6;
         }
-
         .subject-record:last-child {
           border-bottom: none;
         }
-
         .subject-info {
           display: flex;
           flex-direction: column;
           gap: 2px;
         }
-
         .subject-name {
           font-weight: 600;
           color: #374151;
         }
-
         .subject-teacher {
           font-size: 0.85rem;
           color: #6b7280;
         }
-
         .subject-status {
           display: flex;
           align-items: center;
@@ -418,20 +367,16 @@ Error generating stack: `+i.message+`
           border-radius: 12px;
           font-size: 0.8rem;
         }
-
         .text-success {
           color: #10b981;
         }
-
         .text-danger {
           color: #ef4444;
         }
-
         .loading-container {
           text-align: center;
           padding: 40px;
         }
-
         .loading-spinner {
           width: 40px;
           height: 40px;
@@ -441,7 +386,6 @@ Error generating stack: `+i.message+`
           animation: spin 1s linear infinite;
           margin: 0 auto 20px;
         }
-
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }

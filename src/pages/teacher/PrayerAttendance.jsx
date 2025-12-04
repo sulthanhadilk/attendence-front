@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../../utils/api';
-
 export default function PrayerAttendance() {
   const [prayerType, setPrayerType] = useState('SUBH');
   const [classes, setClasses] = useState([]);
@@ -10,13 +9,11 @@ export default function PrayerAttendance() {
   const [statusMap, setStatusMap] = useState({});
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-
   useEffect(() => {
     apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/classes`)
       .then(setClasses)
       .catch(err => setMessage(err.message));
   }, []);
-
   useEffect(() => {
     if (!selectedClass) return;
     apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/classes/${selectedClass}/students`)
@@ -30,18 +27,15 @@ export default function PrayerAttendance() {
       })
       .catch(err => setMessage(err.message));
   }, [selectedClass]);
-
   const handleStatusChange = (studentId, value) => {
     setStatusMap(prev => ({ ...prev, [studentId]: value }));
   };
-
   const handleSubmit = async e => {
     e.preventDefault();
     if (!selectedClass) {
       setMessage('Please select a class');
       return;
     }
-
     setLoading(true);
     setMessage('');
     try {
@@ -49,12 +43,10 @@ export default function PrayerAttendance() {
         studentId: s._id,
         status: statusMap[s._id] || 'absent'
       }));
-
       await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/prayer/mark`, {
         method: 'POST',
         body: JSON.stringify({ prayerType, date, records })
       });
-
       setMessage('Prayer attendance saved successfully');
     } catch (err) {
       setMessage(err.message);
@@ -62,10 +54,8 @@ export default function PrayerAttendance() {
       setLoading(false);
     }
   };
-
   const presentCount = Object.values(statusMap).filter(v => v === 'present').length;
   const absentCount = students.length - presentCount;
-
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-5xl mx-auto">
@@ -73,8 +63,6 @@ export default function PrayerAttendance() {
           <h1 className="text-2xl font-bold text-gray-900">Prayer Attendance</h1>
           <p className="text-gray-600">Mark attendance for Subh (Fajr) and Maghrib prayers</p>
         </div>
-
-        {/* Prayer Type Tabs */}
         <div className="flex gap-2 mb-4">
           <button
             onClick={() => setPrayerType('SUBH')}
@@ -97,7 +85,6 @@ export default function PrayerAttendance() {
             Maghrib
           </button>
         </div>
-
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -126,10 +113,8 @@ export default function PrayerAttendance() {
                 />
               </div>
             </div>
-
             {students.length > 0 && (
               <>
-                {/* Summary */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-green-50 rounded-lg p-4 text-center">
                     <div className="text-2xl font-bold text-green-600">{presentCount}</div>
@@ -140,8 +125,6 @@ export default function PrayerAttendance() {
                     <div className="text-sm text-red-700">Absent</div>
                   </div>
                 </div>
-
-                {/* Student List */}
                 <div className="space-y-2">
                   {students.map(s => (
                     <div
@@ -188,7 +171,6 @@ export default function PrayerAttendance() {
                 </div>
               </>
             )}
-
             {message && (
               <div className={`mt-4 p-3 rounded-lg text-sm ${
                 message.includes('success') 
@@ -198,7 +180,6 @@ export default function PrayerAttendance() {
                 {message}
               </div>
             )}
-
             <button
               type="submit"
               disabled={loading || !selectedClass || students.length === 0}

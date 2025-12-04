@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../../utils/api';
-
 export default function QuestionBank() {
   const [formData, setFormData] = useState({
     courseId: '',
@@ -11,11 +10,9 @@ export default function QuestionBank() {
   const [questionBanks, setQuestionBanks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-
   useEffect(() => {
     loadQuestionBanks();
   }, []);
-
   const loadQuestionBanks = async () => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/question-bank`);
@@ -24,38 +21,32 @@ export default function QuestionBank() {
       setMessage(err.message);
     }
   };
-
   const addQuestion = () => {
     setFormData({
       ...formData,
       questions: [...formData.questions, { questionText: '', answerKey: '', marks: 1 }]
     });
   };
-
   const removeQuestion = (index) => {
     setFormData({
       ...formData,
       questions: formData.questions.filter((_, i) => i !== index)
     });
   };
-
   const updateQuestion = (index, field, value) => {
     const updated = [...formData.questions];
     updated[index] = { ...updated[index], [field]: value };
     setFormData({ ...formData, questions: updated });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
-
     try {
       await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/question-bank`, {
         method: 'POST',
         body: JSON.stringify(formData)
       });
-
       setMessage('Question bank created successfully');
       setFormData({
         courseId: '',
@@ -70,7 +61,6 @@ export default function QuestionBank() {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
@@ -78,9 +68,7 @@ export default function QuestionBank() {
           <h1 className="text-2xl font-bold text-gray-900">Question Bank</h1>
           <p className="text-gray-600">Create and manage question banks for your subjects</p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Create Question Bank */}
           <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold mb-4">Create Question Bank</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -109,7 +97,6 @@ export default function QuestionBank() {
                   </select>
                 </div>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
                 <input
@@ -121,8 +108,6 @@ export default function QuestionBank() {
                   required
                 />
               </div>
-
-              {/* Questions */}
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <label className="block text-sm font-medium text-gray-700">Questions</label>
@@ -134,7 +119,6 @@ export default function QuestionBank() {
                     + Add Question
                   </button>
                 </div>
-
                 <div className="space-y-3">
                   {formData.questions.map((q, index) => (
                     <div key={index} className="border border-gray-200 rounded-lg p-3">
@@ -179,7 +163,6 @@ export default function QuestionBank() {
                   ))}
                 </div>
               </div>
-
               {message && (
                 <div className={`p-3 rounded-lg text-sm ${
                   message.includes('success')
@@ -189,7 +172,6 @@ export default function QuestionBank() {
                   {message}
                 </div>
               )}
-
               <button
                 type="submit"
                 disabled={loading}
@@ -199,8 +181,6 @@ export default function QuestionBank() {
               </button>
             </form>
           </div>
-
-          {/* Question Banks List */}
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold mb-4">My Question Banks</h2>
             <div className="space-y-3 max-h-[600px] overflow-y-auto">

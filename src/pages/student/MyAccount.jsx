@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 const MyAccount = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,11 +12,9 @@ const MyAccount = () => {
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const navigate = useNavigate();
-
   useEffect(() => {
     fetchProfile();
   }, []);
-
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -34,21 +31,17 @@ const MyAccount = () => {
       setLoading(false);
     }
   };
-
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     setMessage({ type: '', text: '' });
-
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       setMessage({ type: 'error', text: 'Passwords do not match' });
       return;
     }
-
     if (passwordForm.newPassword.length < 6) {
       setMessage({ type: 'error', text: 'Password must be at least 6 characters' });
       return;
     }
-
     try {
       const token = localStorage.getItem('token');
       await axios.put('/api/student/change-password', {
@@ -57,7 +50,6 @@ const MyAccount = () => {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-
       setMessage({ type: 'success', text: 'Password changed successfully' });
       setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
       setShowPasswordForm(false);
@@ -68,17 +60,14 @@ const MyAccount = () => {
       });
     }
   };
-
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
     localStorage.removeItem('rollNo');
     navigate('/login');
   };
-
   const handleLogoutAllDevices = async () => {
     if (!confirm('Are you sure you want to logout from all devices?')) return;
-
     try {
       const token = localStorage.getItem('token');
       await axios.post('/api/student/logout-all', {}, {
@@ -89,7 +78,6 @@ const MyAccount = () => {
       console.error('Logout all error:', error);
     }
   };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -97,12 +85,9 @@ const MyAccount = () => {
       </div>
     );
   }
-
   if (!profile) return null;
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
       <div className="bg-indigo-600 text-white p-6 rounded-b-3xl shadow-lg">
         <button onClick={() => navigate('/student/dashboard')} className="mb-4">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -112,9 +97,7 @@ const MyAccount = () => {
         <h1 className="text-2xl font-bold">My Account</h1>
         <p className="text-white/80 text-sm mt-1">Manage your account settings</p>
       </div>
-
       <div className="p-4 space-y-4">
-        {/* Message */}
         {message.text && (
           <div className={`rounded-2xl p-4 ${
             message.type === 'success' ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
@@ -126,8 +109,6 @@ const MyAccount = () => {
             </p>
           </div>
         )}
-
-        {/* Profile Summary */}
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="flex items-center">
             <div className="w-16 h-16 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center mr-4 overflow-hidden">
@@ -144,8 +125,6 @@ const MyAccount = () => {
             </div>
           </div>
         </div>
-
-        {/* Account Actions */}
         <div className="bg-white rounded-2xl shadow-sm p-4">
           <h3 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wide">Account Settings</h3>
           <div className="space-y-1">
@@ -168,7 +147,6 @@ const MyAccount = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>
-
             <button
               onClick={() => setShowPasswordForm(!showPasswordForm)}
               className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition group"
@@ -190,8 +168,6 @@ const MyAccount = () => {
             </button>
           </div>
         </div>
-
-        {/* Password Change Form */}
         {showPasswordForm && (
           <div className="bg-white rounded-2xl shadow-sm p-5">
             <h3 className="font-bold text-gray-800 mb-4">Change Password</h3>
@@ -249,8 +225,6 @@ const MyAccount = () => {
             </form>
           </div>
         )}
-
-        {/* Preferences */}
         <div className="bg-white rounded-2xl shadow-sm p-4">
           <h3 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wide">Preferences</h3>
           <div className="space-y-3">
@@ -280,8 +254,6 @@ const MyAccount = () => {
             </div>
           </div>
         </div>
-
-        {/* Security */}
         <div className="bg-white rounded-2xl shadow-sm p-4">
           <h3 className="font-bold text-gray-800 mb-3 text-sm uppercase tracking-wide">Security</h3>
           <div className="space-y-1">
@@ -306,8 +278,6 @@ const MyAccount = () => {
             </button>
           </div>
         </div>
-
-        {/* Danger Zone */}
         <div className="bg-red-50 border border-red-200 rounded-2xl p-5">
           <h3 className="font-bold text-red-900 mb-2 flex items-center">
             <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -332,5 +302,4 @@ const MyAccount = () => {
     </div>
   );
 };
-
 export default MyAccount;

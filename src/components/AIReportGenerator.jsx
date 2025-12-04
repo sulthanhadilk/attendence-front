@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { apiRequest, API_ENDPOINTS } from '../utils/api';
-
 const AIReportGenerator = ({ userRole }) => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -9,7 +8,6 @@ const AIReportGenerator = ({ userRole }) => {
   const [students, setStudents] = useState([]);
   const [reportType, setReportType] = useState('student');
   const [adminInsights, setAdminInsights] = useState(null);
-
   useEffect(() => {
     if (userRole === 'admin' || userRole === 'teacher') {
       fetchStudents();
@@ -18,7 +16,6 @@ const AIReportGenerator = ({ userRole }) => {
       fetchAdminInsights();
     }
   }, [userRole]);
-
   const fetchStudents = async () => {
     try {
       const response = await apiRequest(API_ENDPOINTS.STUDENTS);
@@ -27,7 +24,6 @@ const AIReportGenerator = ({ userRole }) => {
       console.error('Error fetching students:', error);
     }
   };
-
   const fetchAdminInsights = async () => {
     try {
       const response = await apiRequest(`${API_ENDPOINTS.AI_BASE}/admin-insights`);
@@ -36,21 +32,17 @@ const AIReportGenerator = ({ userRole }) => {
       console.error('Error fetching admin insights:', error);
     }
   };
-
   const generateReport = async () => {
     if (reportType === 'student' && !selectedStudent) {
       alert('Please select a student');
       return;
     }
-
     setLoading(true);
     try {
       const endpoint = reportType === 'student' 
         ? `${API_ENDPOINTS.AI_BASE}/generate-report/${selectedStudent}`
         : `${API_ENDPOINTS.AI_BASE}/admin-insights`;
-      
       const response = await apiRequest(endpoint);
-      
       if (reportType === 'student') {
         setReports(prev => [
           {
@@ -70,7 +62,6 @@ const AIReportGenerator = ({ userRole }) => {
       setLoading(false);
     }
   };
-
   const downloadReport = (report) => {
     const reportContent = generateReportContent(report);
     const blob = new Blob([reportContent], { type: 'text/plain' });
@@ -83,35 +74,29 @@ const AIReportGenerator = ({ userRole }) => {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-
   const generateReportContent = (report) => {
     let content = `AI-POWERED ACADEMIC REPORT
 =====================================
 Report Type: ${report.type === 'student' ? 'Student Performance' : 'Administrative Insights'}
 Generated: ${report.timestamp.toLocaleString()}
 `;
-
     if (report.type === 'student') {
       content += `
 Student: ${report.studentName}
-
 AI SUMMARY
 ----------
 ${report.data.aiSummary}
-
 PERFORMANCE METRICS
 ------------------
 Overall Grade: ${report.data.overallGrade}
 Attendance Rate: ${Math.round(report.data.attendanceRate * 100)}%
 Risk Level: ${report.data.riskLevel}
-
 SUBJECT BREAKDOWN
 ----------------
 `;
       report.data.subjectPerformance.forEach(subject => {
         content += `${subject.name}: ${subject.grade} (${subject.average}% avg, ${Math.round(subject.attendance * 100)}% attendance)\n`;
       });
-
       content += `
 RECOMMENDATIONS
 --------------
@@ -120,10 +105,8 @@ RECOMMENDATIONS
         content += `${index + 1}. ${rec}\n`;
       });
     }
-
     return content;
   };
-
   return (
     <div className="ai-report-generator">
       <motion.div
@@ -137,7 +120,6 @@ RECOMMENDATIONS
         </h2>
         <p>Generate comprehensive AI-powered academic reports</p>
       </motion.div>
-
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
@@ -155,7 +137,6 @@ RECOMMENDATIONS
             {userRole === 'admin' && <option value="admin">Administrative Insights</option>}
           </select>
         </div>
-
         {reportType === 'student' && (
           <div className="control-group">
             <label>Select Student:</label>
@@ -173,7 +154,6 @@ RECOMMENDATIONS
             </select>
           </div>
         )}
-
         <button
           onClick={generateReport}
           disabled={loading || (reportType === 'student' && !selectedStudent)}
@@ -192,7 +172,6 @@ RECOMMENDATIONS
           )}
         </button>
       </motion.div>
-
       {/* Admin Insights Dashboard */}
       {userRole === 'admin' && adminInsights && (
         <motion.div
@@ -205,7 +184,6 @@ RECOMMENDATIONS
             <i className="fas fa-chart-pie mr-2"></i>
             Administrative Insights
           </h3>
-          
           <div className="insights-grid">
             <div className="insight-card">
               <div className="insight-header">
@@ -227,7 +205,6 @@ RECOMMENDATIONS
                 </div>
               </div>
             </div>
-
             <div className="insight-card">
               <div className="insight-header">
                 <i className="fas fa-exclamation-triangle"></i>
@@ -250,7 +227,6 @@ RECOMMENDATIONS
                 </div>
               </div>
             </div>
-
             <div className="insight-card full-width">
               <div className="insight-header">
                 <i className="fas fa-lightbulb"></i>
@@ -270,7 +246,6 @@ RECOMMENDATIONS
           </div>
         </motion.div>
       )}
-
       {/* Generated Reports */}
       {reports.length > 0 && (
         <motion.div
@@ -283,7 +258,6 @@ RECOMMENDATIONS
             <i className="fas fa-history mr-2"></i>
             Generated Reports
           </h3>
-          
           <div className="reports-list">
             {reports.map((report) => (
               <motion.div
@@ -305,13 +279,11 @@ RECOMMENDATIONS
                     Download
                   </button>
                 </div>
-                
                 <div className="report-preview">
                   <div className="ai-summary">
                     <h5>AI Summary:</h5>
                     <p>{report.data.aiSummary}</p>
                   </div>
-                  
                   <div className="key-metrics">
                     <div className="metric">
                       <span>Overall Grade:</span>
@@ -339,5 +311,4 @@ RECOMMENDATIONS
     </div>
   );
 };
-
 export default AIReportGenerator;

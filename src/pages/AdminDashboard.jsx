@@ -9,11 +9,9 @@ import SettingsModal from '../components/admin/modals/SettingsModal'
 import FinesModal from '../components/admin/modals/FinesModal'
 import TimetableModal from '../components/admin/modals/TimetableModal'
 import AISection from '../components/admin/AISection'
-
 const AIChatbot = lazy(()=> import('../components/AIChatbot'))
 const AIPredictionDashboard = lazy(()=> import('../components/AIPredictionDashboard'))
 const AIReportGenerator = lazy(()=> import('../components/AIReportGenerator'))
-
 export default function AdminDashboard(){
   const [token,setToken]=useState(()=>localStorage.getItem('token'))
   const [authMsg,setAuthMsg]=useState('')
@@ -27,7 +25,6 @@ export default function AdminDashboard(){
   const [showPrediction,setShowPrediction]=useState(false)
   const [showAIReports,setShowAIReports]=useState(false)
   const [exporting,setExporting]=useState(false)
-
   // Auth check (non-blocking)
   useEffect(()=>{
     const raw=localStorage.getItem('user');
@@ -35,18 +32,14 @@ export default function AdminDashboard(){
     if(!raw||!t){ setAuthMsg('⚠️ Not authenticated. Login to unlock actions.'); return; }
     try{ const u=JSON.parse(raw); if(u.role!=='admin'){ setAuthMsg('⚠️ Admin role required. Limited view.'); return; } setToken(t); setAuthMsg(''); }catch{ setAuthMsg('⚠️ Session invalid. Please login again.'); }
   },[])
-
   const { stats, students, teachers, reportData, loading, fetchStats, fetchStudents, fetchTeachers, fetchAttendanceReport, exportAttendance, deleteStudent, deleteTeacher } = useAdminData(token)
-
   useEffect(()=>{ fetchStats() },[token])
-
   const handleExport = async () => {
     setExporting(true)
     const res = await exportAttendance()
     setGlobalMsg(res.ok ? `✅ Exported attendance (${res.count} records)` : `❌ ${res.message}`)
     setExporting(false)
   }
-
   const markSampleAttendance = async () => {
     if(!students.length){ setGlobalMsg('⚠️ No students to mark sample attendance.'); return; }
     const present = students.filter((_,i)=> i%5!==0).length
@@ -54,32 +47,25 @@ export default function AdminDashboard(){
     setGlobalMsg(`✅ Sample attendance (demo only): ${present} present, ${absent} absent`)
     setTimeout(()=> fetchStats(),800)
   }
-
   const logout = () => { localStorage.clear(); setToken(null); setAuthMsg('⚠️ Logged out. Please login again.'); }
-
   return (
     <div className="page-container fade-in">
       <Header userRole="admin" userName="Administrator" />
       <div className="container">
         <h1 className="login-title text-primary"><i className="fas fa-tachometer-alt"/> Admin Dashboard</h1>
         <p className="text-muted">Administrative control center</p>
-
         {(authMsg || globalMsg) && (
           <div className={`alert ${(authMsg||globalMsg).startsWith('❌')?'alert-error':(authMsg||globalMsg).startsWith('⚠️')?'alert-warning':'alert-success'}`}>
             {authMsg || globalMsg}
             <button type="button" onClick={()=>{setAuthMsg('');setGlobalMsg('')}} style={{background:'none',border:'none',cursor:'pointer',fontSize:'1.1rem',float:'right'}}>×</button>
           </div>
         )}
-
-        {/* Stats */}
         <div className="dashboard-grid mb-4">
           <div className="stats-card"><div className="stats-header"><div className="stats-icon primary"><i className="fas fa-user-graduate"/></div><div><div className="stats-value">{stats.totalStudents}</div><div className="stats-label">Students</div></div></div></div>
           <div className="stats-card"><div className="stats-header"><div className="stats-icon success"><i className="fas fa-chalkboard-teacher"/></div><div><div className="stats-value">{stats.totalTeachers}</div><div className="stats-label">Teachers</div></div></div></div>
           <div className="stats-card"><div className="stats-header"><div className="stats-icon warning"><i className="fas fa-book"/></div><div><div className="stats-value">{stats.totalClasses}</div><div className="stats-label">Classes</div></div></div></div>
           <div className="stats-card"><div className="stats-header"><div className="stats-icon info"><i className="fas fa-chart-line"/></div><div><div className="stats-value">{stats.todayAttendance}%</div><div className="stats-label">Today Attendance</div></div></div></div>
         </div>
-
-        {/* Actions */}
         <div className="card">
           <div className="card-header"><h2 className="card-title"><i className="fas fa-sync"/> Core Actions</h2></div>
           <div className="card-body">
@@ -90,18 +76,10 @@ export default function AdminDashboard(){
             {!token && <p className="text-muted mt-3">Login (admin) to enable creation & exports.</p>}
           </div>
         </div>
-
-        {/* User Create Form */}
         <UserCreateForm token={token} disabled={!token} onCreated={()=> { fetchStats(); if(showUsers){ fetchStudents(); fetchTeachers(); } }} />
-
-        {/* AI Section */}
         <AISection onShowPrediction={()=>setShowPrediction(true)} onShowReports={()=>setShowAIReports(true)} onShowChatbot={()=>setShowChatbot(true)} />
-
-        {/* Quick Actions */}
         <QuickActions onExport={handleExport} onShowReports={()=>setShowReports(true)} onShowUsers={()=>{ setShowUsers(true); fetchStudents(); fetchTeachers(); }} onShowSettings={()=>setShowSettings(true)} onShowFines={()=>setShowFines(true)} onShowTimetable={()=>setShowTimetable(true)} exporting={exporting} disabled={!token} />
       </div>
-
-      {/* Modals */}
       <UserManagementModal 
         open={showUsers} 
         onClose={()=>setShowUsers(false)} 
@@ -117,8 +95,6 @@ export default function AdminDashboard(){
       <SettingsModal open={showSettings} onClose={()=>setShowSettings(false)} onSampleAttendance={markSampleAttendance} />
       <FinesModal open={showFines} onClose={()=>setShowFines(false)} />
       <TimetableModal open={showTimetable} onClose={()=>setShowTimetable(false)} />
-
-      {/* AI Modals */}
       <Suspense fallback={<div className="modal-overlay"><div className="modal-content"><div className="spinner"/> Loading AI...</div></div>}>
         {showChatbot && <AIChatbot isOpen={showChatbot} onClose={()=>setShowChatbot(false)} userRole="admin" />}
         {showPrediction && (
@@ -140,8 +116,6 @@ export default function AdminDashboard(){
           </div>
         )}
       </Suspense>
-
-      {/* Floating AI Button */}
       <button className="ai-floating-btn pulse" onClick={()=>setShowChatbot(true)} title="Ask AI Assistant"><i className="fas fa-robot"/></button>
     </div>
   )

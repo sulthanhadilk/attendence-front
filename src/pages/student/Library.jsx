@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 const Library = () => {
   const [books, setBooks] = useState([]);
   const [myIssues, setMyIssues] = useState([]);
@@ -11,7 +10,6 @@ const Library = () => {
   const [category, setCategory] = useState('all');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     if (activeTab === 'books') {
       fetchBooks();
@@ -19,14 +17,12 @@ const Library = () => {
       fetchMyIssues();
     }
   }, [activeTab, searchQuery, category]);
-
   const fetchBooks = async () => {
     try {
       const token = localStorage.getItem('token');
       const params = new URLSearchParams();
       if (searchQuery) params.append('search', searchQuery);
       if (category !== 'all') params.append('category', category);
-      
       const { data } = await axios.get(`/api/student/library/books?${params}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -40,7 +36,6 @@ const Library = () => {
       setLoading(false);
     }
   };
-
   const fetchMyIssues = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -58,9 +53,7 @@ const Library = () => {
       setLoading(false);
     }
   };
-
   const categories = ['all', 'Islamic Studies', 'Science', 'Mathematics', 'Language', 'History', 'Literature', 'Reference'];
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -68,10 +61,8 @@ const Library = () => {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
       <div className="bg-indigo-600 text-white p-6 rounded-b-3xl shadow-lg">
         <button onClick={() => navigate('/student/dashboard')} className="mb-4">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -81,9 +72,7 @@ const Library = () => {
         <h1 className="text-2xl font-bold">Library</h1>
         <p className="text-white/80 text-sm mt-1">Browse and manage books</p>
       </div>
-
       <div className="p-4 space-y-4">
-        {/* Stats (if on myIssues tab) */}
         {activeTab === 'myIssues' && stats && (
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-white rounded-2xl shadow-sm p-3 text-center">
@@ -100,8 +89,6 @@ const Library = () => {
             </div>
           </div>
         )}
-
-        {/* Tab Selector */}
         <div className="bg-white rounded-2xl shadow-sm p-2 flex">
           <button
             onClick={() => setActiveTab('books')}
@@ -120,11 +107,8 @@ const Library = () => {
             My Issues
           </button>
         </div>
-
-        {/* Search and Filter (for books tab) */}
         {activeTab === 'books' && (
           <div className="space-y-3">
-            {/* Search Bar */}
             <div className="bg-white rounded-2xl shadow-sm p-3 flex items-center">
               <svg className="w-5 h-5 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -144,8 +128,6 @@ const Library = () => {
                 </button>
               )}
             </div>
-
-            {/* Category Filter */}
             <div className="flex overflow-x-auto space-x-2 pb-2">
               {categories.map((cat) => (
                 <button
@@ -163,8 +145,6 @@ const Library = () => {
             </div>
           </div>
         )}
-
-        {/* Books List */}
         {activeTab === 'books' && (
           <div className="space-y-3">
             {books.length === 0 ? (
@@ -216,8 +196,6 @@ const Library = () => {
             )}
           </div>
         )}
-
-        {/* My Issues List */}
         {activeTab === 'myIssues' && (
           <div className="space-y-3">
             {myIssues.length === 0 ? (
@@ -234,7 +212,6 @@ const Library = () => {
                   issue.status === 'returned' ? 'bg-green-100 text-green-700' :
                   isOverdue ? 'bg-red-100 text-red-700' :
                   'bg-blue-100 text-blue-700';
-
                 return (
                   <div key={issue._id} className="bg-white rounded-2xl shadow-sm p-4">
                     <div className="flex items-start justify-between mb-3">
@@ -280,5 +257,4 @@ const Library = () => {
     </div>
   );
 };
-
 export default Library;

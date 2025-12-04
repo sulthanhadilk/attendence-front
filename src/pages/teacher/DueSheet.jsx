@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
 import { API_ENDPOINTS } from '../../utils/api';
-
 function DueSheet() {
   const [dueData, setDueData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filter, setFilter] = useState('all'); // all, unpaid, waived
   const [searchQuery, setSearchQuery] = useState('');
-
   useEffect(() => {
     fetchDueSheet();
   }, []);
-
   const fetchDueSheet = async () => {
     try {
       setLoading(true);
@@ -21,13 +18,11 @@ function DueSheet() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.msg || 'Failed to fetch fines');
-
       // Aggregate by student
       const studentMap = {};
       data.forEach(fine => {
         const studentId = fine.student?._id || fine.studentId;
         if (!studentId) return;
-
         if (!studentMap[studentId]) {
           studentMap[studentId] = {
             studentId,
@@ -40,7 +35,6 @@ function DueSheet() {
             totalWaived: 0
           };
         }
-
         if (fine.status === 'unpaid') {
           studentMap[studentId].unpaidFines.push(fine);
           studentMap[studentId].totalUnpaid += fine.amount || 0;
@@ -49,7 +43,6 @@ function DueSheet() {
           studentMap[studentId].totalWaived += fine.amount || 0;
         }
       });
-
       const aggregated = Object.values(studentMap);
       setDueData(aggregated);
       setError('');
@@ -60,7 +53,6 @@ function DueSheet() {
       setLoading(false);
     }
   };
-
   const filteredData = dueData
     .filter(student => {
       if (filter === 'unpaid' && student.unpaidFines.length === 0) return false;
@@ -71,10 +63,8 @@ function DueSheet() {
       student.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       student.rollNumber.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
   const grandTotalUnpaid = dueData.reduce((sum, s) => sum + s.totalUnpaid, 0);
   const grandTotalWaived = dueData.reduce((sum, s) => sum + s.totalWaived, 0);
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center p-6">
@@ -85,11 +75,9 @@ function DueSheet() {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
@@ -105,14 +93,11 @@ function DueSheet() {
             </button>
           </div>
         </div>
-
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
             <p className="text-red-700">⚠️ {error}</p>
           </div>
         )}
-
-        {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div className="bg-gradient-to-br from-red-500 to-red-600 text-white rounded-2xl shadow-lg p-6">
             <div className="text-sm opacity-90 mb-2">Total Unpaid Amount</div>
@@ -130,8 +115,6 @@ function DueSheet() {
             <div className="text-sm opacity-75 mt-1">across all classes</div>
           </div>
         </div>
-
-        {/* Filters */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
@@ -177,8 +160,6 @@ function DueSheet() {
             </div>
           </div>
         </div>
-
-        {/* Due Sheet Table */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           {filteredData.length === 0 ? (
             <div className="p-12 text-center">
@@ -239,5 +220,4 @@ function DueSheet() {
     </div>
   );
 }
-
 export default DueSheet;

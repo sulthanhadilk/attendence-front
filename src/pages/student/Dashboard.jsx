@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 const StudentDashboard = () => {
   const [dashboard, setDashboard] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     fetchDashboard();
   }, []);
-
   const fetchDashboard = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -27,7 +24,6 @@ const StudentDashboard = () => {
       setLoading(false);
     }
   };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -35,14 +31,10 @@ const StudentDashboard = () => {
       </div>
     );
   }
-
   if (!dashboard) return null;
-
   const { student, stats, courses } = dashboard;
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header Banner */}
       <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-b-3xl p-6 shadow-lg">
         <div className="flex items-center space-x-4">
           <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center overflow-hidden">
@@ -58,8 +50,6 @@ const StudentDashboard = () => {
             <p className="text-white/80 text-xs">{student.department}</p>
           </div>
         </div>
-
-        {/* Quick Stats */}
         <div className="grid grid-cols-2 gap-4 mt-6">
           <div className="bg-white/10 backdrop-blur rounded-2xl p-4">
             <div className="text-3xl font-bold">{stats.attendancePercentage}%</div>
@@ -71,10 +61,7 @@ const StudentDashboard = () => {
           </div>
         </div>
       </div>
-
-      {/* Main Content */}
       <div className="p-4 space-y-4 mt-4">
-        {/* Today's Overview */}
         <div className="bg-white rounded-2xl shadow-sm p-4">
           <h2 className="text-lg font-bold text-gray-800 mb-3">Today's Overview</h2>
           <div className="grid grid-cols-2 gap-3">
@@ -88,8 +75,6 @@ const StudentDashboard = () => {
             </div>
           </div>
         </div>
-
-        {/* Quick Actions */}
         <div className="bg-white rounded-2xl shadow-sm p-4">
           <h2 className="text-lg font-bold text-gray-800 mb-3">Quick Actions</h2>
           <div className="grid grid-cols-3 gap-3">
@@ -104,7 +89,6 @@ const StudentDashboard = () => {
               </div>
               <span className="text-xs font-medium text-gray-700">Attendance</span>
             </button>
-
             <button
               onClick={() => navigate('/student/fees')}
               className="flex flex-col items-center p-3 bg-green-50 rounded-xl hover:bg-green-100 transition"
@@ -116,7 +100,6 @@ const StudentDashboard = () => {
               </div>
               <span className="text-xs font-medium text-gray-700">Fees</span>
             </button>
-
             <button
               onClick={() => navigate('/student/assessment')}
               className="flex flex-col items-center p-3 bg-purple-50 rounded-xl hover:bg-purple-100 transition"
@@ -128,7 +111,6 @@ const StudentDashboard = () => {
               </div>
               <span className="text-xs font-medium text-gray-700">Results</span>
             </button>
-
             <button
               onClick={() => navigate('/student/library')}
               className="flex flex-col items-center p-3 bg-yellow-50 rounded-xl hover:bg-yellow-100 transition"
@@ -140,7 +122,6 @@ const StudentDashboard = () => {
               </div>
               <span className="text-xs font-medium text-gray-700">Library</span>
             </button>
-
             <button
               onClick={() => navigate('/student/id-card')}
               className="flex flex-col items-center p-3 bg-red-50 rounded-xl hover:bg-red-100 transition"
@@ -152,7 +133,6 @@ const StudentDashboard = () => {
               </div>
               <span className="text-xs font-medium text-gray-700">ID Card</span>
             </button>
-
             <button
               onClick={() => navigate('/student/profile')}
               className="flex flex-col items-center p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition"
@@ -166,8 +146,6 @@ const StudentDashboard = () => {
             </button>
           </div>
         </div>
-
-        {/* Enrolled Courses */}
         {courses && courses.length > 0 && (
           <div className="bg-white rounded-2xl shadow-sm p-4">
             <h2 className="text-lg font-bold text-gray-800 mb-3">My Courses</h2>
@@ -189,8 +167,6 @@ const StudentDashboard = () => {
           </div>
         )}
       </div>
-
-      {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-3">
         <div className="flex justify-around">
           <button className="flex flex-col items-center text-indigo-600">
@@ -222,5 +198,4 @@ const StudentDashboard = () => {
     </div>
   );
 };
-
 export default StudentDashboard;

@@ -1,13 +1,11 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
 /**
  * Base ProtectedRoute component - requires authentication
  */
 export const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -18,20 +16,16 @@ export const ProtectedRoute = ({ children }) => {
       </div>
     );
   }
-
   if (!isAuthenticated()) {
     return <Navigate to="/" replace />;
   }
-
   return children;
 };
-
 /**
  * AdminRoute - requires admin role
  */
 export const ProtectedAdminRoute = ({ children }) => {
   const { isAuthenticated, hasRole, loading } = useAuth();
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -42,11 +36,9 @@ export const ProtectedAdminRoute = ({ children }) => {
       </div>
     );
   }
-
   if (!isAuthenticated()) {
     return <Navigate to="/" replace />;
   }
-
   if (!hasRole('admin')) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -71,16 +63,13 @@ export const ProtectedAdminRoute = ({ children }) => {
       </div>
     );
   }
-
   return children;
 };
-
 /**
  * TeacherRoute - requires teacher role
  */
 export const ProtectedTeacherRoute = ({ children }) => {
   const { isAuthenticated, hasRole, loading } = useAuth();
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -91,11 +80,9 @@ export const ProtectedTeacherRoute = ({ children }) => {
       </div>
     );
   }
-
   if (!isAuthenticated()) {
     return <Navigate to="/" replace />;
   }
-
   if (!hasRole('teacher')) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -120,16 +107,13 @@ export const ProtectedTeacherRoute = ({ children }) => {
       </div>
     );
   }
-
   return children;
 };
-
 /**
  * StudentRoute - requires student role
  */
 export const ProtectedStudentRoute = ({ children }) => {
   const { isAuthenticated, hasRole, loading } = useAuth();
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -140,11 +124,9 @@ export const ProtectedStudentRoute = ({ children }) => {
       </div>
     );
   }
-
   if (!isAuthenticated()) {
     return <Navigate to="/" replace />;
   }
-
   if (!hasRole('student')) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -169,8 +151,6 @@ export const ProtectedStudentRoute = ({ children }) => {
       </div>
     );
   }
-
   return children;
 };
-
 export default ProtectedRoute;

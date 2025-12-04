@@ -1,32 +1,26 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 const Assessment = () => {
   const [view, setView] = useState('all'); // all, internal, external
   const [results, setResults] = useState([]);
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     fetchResults();
   }, [view]);
-
   const fetchResults = async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      
       let endpoint = '/api/student/assessment/results';
       if (view === 'internal') endpoint = '/api/student/assessment/internal';
       if (view === 'external') endpoint = '/api/student/assessment/external';
-      
       const [resultsRes, summaryRes] = await Promise.all([
         axios.get(endpoint, { headers: { Authorization: `Bearer ${token}` } }),
         axios.get('/api/student/assessment/summary', { headers: { Authorization: `Bearer ${token}` } })
       ]);
-      
       setResults(resultsRes.data.results || []);
       setSummary(summaryRes.data.summary);
     } catch (error) {
@@ -38,7 +32,6 @@ const Assessment = () => {
       setLoading(false);
     }
   };
-
   const getGradeColor = (grade) => {
     const colors = {
       'A': 'bg-green-100 text-green-700',
@@ -49,10 +42,8 @@ const Assessment = () => {
     };
     return colors[grade] || 'bg-gray-100 text-gray-700';
   };
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
       <div className="bg-purple-600 text-white p-6 rounded-b-3xl shadow-lg">
         <button onClick={() => navigate('/student/dashboard')} className="mb-4">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -62,8 +53,6 @@ const Assessment = () => {
         <h1 className="text-2xl font-bold">Assessment Results</h1>
         <p className="text-white/80 text-sm mt-1">View your academic performance</p>
       </div>
-
-      {/* Summary Cards */}
       {summary && (
         <div className="p-4 space-y-3">
           <div className="grid grid-cols-2 gap-3">
@@ -84,7 +73,6 @@ const Assessment = () => {
               </div>
             </div>
           </div>
-
           <div className="bg-white rounded-2xl shadow-sm p-4">
             <h3 className="font-bold text-gray-800 mb-3">Performance by Type</h3>
             <div className="grid grid-cols-2 gap-4">
@@ -102,8 +90,6 @@ const Assessment = () => {
           </div>
         </div>
       )}
-
-      {/* View Selector */}
       <div className="px-4 pb-4">
         <div className="bg-white rounded-2xl shadow-sm p-2 flex space-x-2">
           <button
@@ -132,8 +118,6 @@ const Assessment = () => {
           </button>
         </div>
       </div>
-
-      {/* Results List */}
       <div className="px-4 space-y-3">
         {loading ? (
           <div className="flex justify-center py-12">
@@ -157,7 +141,6 @@ const Assessment = () => {
                   {result.grade}
                 </span>
               </div>
-              
               <div className="grid grid-cols-3 gap-3 pt-3 border-t">
                 <div className="text-center">
                   <div className="text-xs text-gray-600 mb-1">Marks</div>
@@ -174,8 +157,6 @@ const Assessment = () => {
                   <div className="font-bold text-gray-800">{result.grade}</div>
                 </div>
               </div>
-
-              {/* Progress Bar */}
               <div className="mt-3">
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div 
@@ -189,7 +170,6 @@ const Assessment = () => {
                   ></div>
                 </div>
               </div>
-
               <div className="flex items-center justify-between text-xs text-gray-500 mt-3">
                 <span>{new Date(result.createdAt).toLocaleDateString()}</span>
                 {result.enteredByTeacherId?.user_id?.name && (
@@ -200,8 +180,6 @@ const Assessment = () => {
           ))
         )}
       </div>
-
-      {/* AI Insights */}
       <div className="px-4 py-4">
         <button
           onClick={() => navigate('/student/ai-insights')}
@@ -226,5 +204,4 @@ const Assessment = () => {
     </div>
   );
 };
-
 export default Assessment;

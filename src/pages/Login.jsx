@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
 export default function Login() {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
@@ -9,7 +8,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login, isAuthenticated, role } = useAuth();
-
   // Check if user is already logged in
   useEffect(() => {
     if (isAuthenticated()) {
@@ -19,15 +17,12 @@ export default function Login() {
       else if (role === 'student') navigate('/student');
     }
   }, [isAuthenticated, role, navigate]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-
     try {
       const result = await login(identifier.trim(), password);
-      
       if (result.success) {
         // Redirect based on role
         if (result.role === 'admin') navigate('/admin');
@@ -42,13 +37,10 @@ export default function Login() {
   };
         localStorage.setItem('token', data.token);
         localStorage.setItem('role', data.role);
-
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
-        {/* Card Container */}
         <div className="bg-white p-8 rounded-2xl shadow-lg">
-          {/* Logo & Header */}
           <div className="text-center mb-8">
             <div className="mx-auto h-16 w-16 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center mb-4">
               <svg className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -58,10 +50,7 @@ export default function Login() {
             <h1 className="text-3xl font-bold text-gray-900">Islamic College</h1>
             <p className="mt-2 text-sm text-gray-600">Attendance & Exam Management System</p>
           </div>
-
-          {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email/Roll No/Staff Code Input */}
             <div>
               <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 mb-2">
                 Email / Roll No / Staff Code
@@ -87,8 +76,6 @@ export default function Login() {
                 Students: Use Roll No • Teachers: Use Staff Code • Admins: Use Email
               </p>
             </div>
-
-            {/* Password Input */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Password
@@ -111,8 +98,6 @@ export default function Login() {
                 />
               </div>
             </div>
-
-            {/* Error Message */}
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-start">
                 <svg className="h-5 w-5 text-red-500 mr-2 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -121,8 +106,6 @@ export default function Login() {
                 <span className="text-sm">{error}</span>
               </div>
             )}
-
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
@@ -146,8 +129,6 @@ export default function Login() {
               )}
             </button>
           </form>
-
-          {/* Footer Info */}
           <div className="mt-6 space-y-4">
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <div className="flex items-start">
@@ -160,8 +141,6 @@ export default function Login() {
                 </div>
               </div>
             </div>
-
-            {/* Demo Credentials */}
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
               <p className="text-xs font-semibold text-gray-700 mb-2">Demo Admin Login:</p>
               <div className="text-xs text-gray-600 space-y-1">
@@ -171,8 +150,6 @@ export default function Login() {
             </div>
           </div>
         </div>
-
-        {/* Copyright */}
         <p className="mt-8 text-center text-sm text-gray-500">
           © 2025 Islamic College Management System. All rights reserved.
         </p>

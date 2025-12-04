@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 const StudentProfile = ({ profile, onUpdate, onClose, editMode, setEditMode }) => {
   const [formData, setFormData] = useState({
     guardianInfo: {
@@ -25,7 +24,6 @@ const StudentProfile = ({ profile, onUpdate, onClose, editMode, setEditMode }) =
     gender: profile.studentDetails?.gender || '',
     phone: profile.studentDetails?.phone || '',
   });
-
   const handleInputChange = (section, field, value) => {
     if (section) {
       setFormData(prev => ({
@@ -42,12 +40,10 @@ const StudentProfile = ({ profile, onUpdate, onClose, editMode, setEditMode }) =
       }));
     }
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     onUpdate(formData);
   };
-
   return (
     <div className="modal-overlay">
       <div className="modal-content large-modal">
@@ -69,7 +65,6 @@ const StudentProfile = ({ profile, onUpdate, onClose, editMode, setEditMode }) =
             </button>
           </div>
         </div>
-
         <div className="modal-body">
           {/* Basic Information */}
           <div className="profile-section">
@@ -124,7 +119,6 @@ const StudentProfile = ({ profile, onUpdate, onClose, editMode, setEditMode }) =
               </div>
             </div>
           </div>
-
           {/* Address / Residence */}
           <div className="profile-section">
             <h4><i className="fas fa-home"></i> Address / Residence</h4>
@@ -171,7 +165,6 @@ const StudentProfile = ({ profile, onUpdate, onClose, editMode, setEditMode }) =
               </div>
             </div>
           </div>
-
           {/* Guardian Information */}
           <div className="profile-section">
             <h4><i className="fas fa-users"></i> Guardian Information</h4>
@@ -233,9 +226,7 @@ const StudentProfile = ({ profile, onUpdate, onClose, editMode, setEditMode }) =
               </div>
             </div>
           </div>
-
           {/* (Removed separate address block; merged above) */}
-
           {/* Medical Information */}
           <div className="profile-section">
             <h4><i className="fas fa-heartbeat"></i> Medical Information</h4>
@@ -261,7 +252,6 @@ const StudentProfile = ({ profile, onUpdate, onClose, editMode, setEditMode }) =
               </div>
             </div>
           </div>
-
           {/* Academic Information */}
           <div className="profile-section">
             <h4><i className="fas fa-graduation-cap"></i> Academic Information</h4>
@@ -281,7 +271,6 @@ const StudentProfile = ({ profile, onUpdate, onClose, editMode, setEditMode }) =
             </div>
           </div>
         </div>
-
         {editMode && (
           <div className="modal-footer">
             <button 
@@ -302,5 +291,4 @@ const StudentProfile = ({ profile, onUpdate, onClose, editMode, setEditMode }) =
     </div>
   );
 };
-
 export default StudentProfile;

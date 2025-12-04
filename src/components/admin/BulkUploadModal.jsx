@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
 import API_BASE_URL from '../../utils/api'
-
 export default function BulkUploadModal({ open, onClose, onImported }) {
   const [file, setFile] = useState(null)
   const [preview, setPreview] = useState(null)
   const [loading, setLoading] = useState(false)
   const token = localStorage.getItem('token')
-
   if (!open) return null
-
   const upload = async (commit) => {
     if (!file) return
     setLoading(true)
@@ -28,7 +25,6 @@ export default function BulkUploadModal({ open, onClose, onImported }) {
       setPreview({ error: e.message })
     } finally { setLoading(false) }
   }
-
   return (
     <div className="modal-overlay">
       <div className="modal-content">

@@ -1,17 +1,14 @@
 import React from 'react'
-
 export default function Header({ userRole, userName }) {
   const handleLogout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('role')
     window.location.href = '/'
   }
-
   const getInitials = (name) => {
     if (!name) return userRole ? userRole.charAt(0).toUpperCase() : 'U'
     return name.split(' ').map(n => n.charAt(0)).join('').toUpperCase()
   }
-
   const getRoleDisplay = (role) => {
     switch(role) {
       case 'admin': return 'Administrator'
@@ -20,7 +17,6 @@ export default function Header({ userRole, userName }) {
       default: return 'User'
     }
   }
-
   return (
     <header className="app-header">
       <div className="header-content">
@@ -33,7 +29,6 @@ export default function Header({ userRole, userName }) {
             <div className="logo-subtitle">Attendance Management</div>
           </div>
         </a>
-
         {userRole && (
           <div className="user-menu">
             <div className="user-info">

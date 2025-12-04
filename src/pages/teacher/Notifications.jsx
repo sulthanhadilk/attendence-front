@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../../utils/api';
-
 export default function Notifications() {
   const [classes, setClasses] = useState([]);
   const [students, setStudents] = useState([]);
@@ -14,18 +13,15 @@ export default function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-
   useEffect(() => {
     loadClasses();
     loadNotifications();
   }, []);
-
   useEffect(() => {
     if (formData.classId && formData.targetType === 'student') {
       loadStudents(formData.classId);
     }
   }, [formData.classId, formData.targetType]);
-
   const loadClasses = async () => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/classes`);
@@ -34,7 +30,6 @@ export default function Notifications() {
       setMessage(err.message);
     }
   };
-
   const loadStudents = async (classId) => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/classes/${classId}/students`);
@@ -43,7 +38,6 @@ export default function Notifications() {
       setMessage(err.message);
     }
   };
-
   const loadNotifications = async () => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/notifications`);
@@ -52,18 +46,15 @@ export default function Notifications() {
       setMessage(err.message);
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
-
     try {
       await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/notifications`, {
         method: 'POST',
         body: JSON.stringify(formData)
       });
-
       setMessage('Notification sent successfully');
       setFormData({ targetType: 'class', studentId: '', classId: '', title: '', body: '' });
       loadNotifications();
@@ -73,7 +64,6 @@ export default function Notifications() {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
@@ -81,9 +71,7 @@ export default function Notifications() {
           <h1 className="text-2xl font-bold text-gray-900">Student Notifications</h1>
           <p className="text-gray-600">Send notifications to individual students or entire classes</p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Compose Notification */}
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold mb-4">Compose Notification</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -114,7 +102,6 @@ export default function Notifications() {
                   </label>
                 </div>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Class</label>
                 <select
@@ -129,7 +116,6 @@ export default function Notifications() {
                   ))}
                 </select>
               </div>
-
               {formData.targetType === 'student' && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Student</label>
@@ -149,7 +135,6 @@ export default function Notifications() {
                   </select>
                 </div>
               )}
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
                 <input
@@ -161,7 +146,6 @@ export default function Notifications() {
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
                 <textarea
@@ -173,7 +157,6 @@ export default function Notifications() {
                   required
                 />
               </div>
-
               {message && (
                 <div className={`p-3 rounded-lg text-sm ${
                   message.includes('success')
@@ -183,7 +166,6 @@ export default function Notifications() {
                   {message}
                 </div>
               )}
-
               <button
                 type="submit"
                 disabled={loading}
@@ -193,8 +175,6 @@ export default function Notifications() {
               </button>
             </form>
           </div>
-
-          {/* Sent Notifications */}
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold mb-4">Sent Notifications</h2>
             <div className="space-y-3 max-h-[600px] overflow-y-auto">

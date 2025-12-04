@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 const PersonalDetails = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     fetchProfile();
   }, []);
-
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -27,7 +24,6 @@ const PersonalDetails = () => {
       setLoading(false);
     }
   };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -35,15 +31,11 @@ const PersonalDetails = () => {
       </div>
     );
   }
-
   if (!profile) return null;
-
   const academicInfo = profile.academic_info || {};
   const medicalInfo = profile.medical_info || {};
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
       <div className="bg-indigo-600 text-white p-6 rounded-b-3xl shadow-lg">
         <button onClick={() => navigate('/student/dashboard')} className="mb-4">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -53,9 +45,7 @@ const PersonalDetails = () => {
         <h1 className="text-2xl font-bold">Personal Details</h1>
         <p className="text-white/80 text-sm mt-1">Your personal information</p>
       </div>
-
       <div className="p-4 space-y-4">
-        {/* Profile Photo and Basic Info */}
         <div className="bg-white rounded-2xl shadow-sm p-6 text-center">
           <div className="w-24 h-24 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden">
             {profile.photoUrl ? (
@@ -70,8 +60,6 @@ const PersonalDetails = () => {
             <p className="text-sm text-gray-500 mt-1">Admission No: {profile.admissionNo}</p>
           )}
         </div>
-
-        {/* Personal Information */}
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <h3 className="font-bold text-gray-800 mb-4 flex items-center">
             <svg className="w-5 h-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -118,8 +106,6 @@ const PersonalDetails = () => {
             )}
           </div>
         </div>
-
-        {/* Academic Information */}
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <h3 className="font-bold text-gray-800 mb-4 flex items-center">
             <svg className="w-5 h-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -173,8 +159,6 @@ const PersonalDetails = () => {
             )}
           </div>
         </div>
-
-        {/* Medical Information */}
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <h3 className="font-bold text-gray-800 mb-4 flex items-center">
             <svg className="w-5 h-5 mr-2 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -207,8 +191,6 @@ const PersonalDetails = () => {
             <p className="text-gray-500 text-sm">No medical information available</p>
           )}
         </div>
-
-        {/* Documents */}
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <h3 className="font-bold text-gray-800 mb-4 flex items-center">
             <svg className="w-5 h-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -249,8 +231,6 @@ const PersonalDetails = () => {
             </div>
           </div>
         </div>
-
-        {/* Edit Button */}
         <button
           onClick={() => navigate('/student/profile')}
           className="w-full bg-indigo-600 text-white py-4 rounded-2xl font-medium shadow-lg hover:bg-indigo-700 transition flex items-center justify-center"
@@ -264,5 +244,4 @@ const PersonalDetails = () => {
     </div>
   );
 };
-
 export default PersonalDetails;

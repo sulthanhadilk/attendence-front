@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import API_BASE_URL from '../../utils/api'
-
 export default function FineForm({ onCreated }) {
   const token = localStorage.getItem('token')
   const [studentId, setStudentId] = useState('')
@@ -8,7 +7,6 @@ export default function FineForm({ onCreated }) {
   const [reason, setReason] = useState('Custom')
   const [custom, setCustom] = useState('')
   const [loading, setLoading] = useState(false)
-
   const submit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -24,7 +22,6 @@ export default function FineForm({ onCreated }) {
       setStudentId(''); setAmount(''); setCustom('')
     } catch (e) { alert(e.message) } finally { setLoading(false) }
   }
-
   return (
     <form onSubmit={submit} className="card">
       <div className="card-header"><h3 className="card-title"><i className="fas fa-plus"/> Create Fine</h3></div>

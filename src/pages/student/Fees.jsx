@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 const Fees = () => {
   const [tab, setTab] = useState('due'); // due, payments, fines
   const [dueData, setDueData] = useState(null);
@@ -9,16 +8,13 @@ const Fees = () => {
   const [fines, setFines] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     fetchData();
   }, [tab]);
-
   const fetchData = async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      
       if (tab === 'due') {
         const { data } = await axios.get('/api/student/fees/due', {
           headers: { Authorization: `Bearer ${token}` }
@@ -44,10 +40,8 @@ const Fees = () => {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
       <div className="bg-green-600 text-white p-6 rounded-b-3xl shadow-lg">
         <button onClick={() => navigate('/student/dashboard')} className="mb-4">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,8 +51,6 @@ const Fees = () => {
         <h1 className="text-2xl font-bold">Fees & Fines</h1>
         <p className="text-white/80 text-sm mt-1">Manage your finances</p>
       </div>
-
-      {/* Tab Selector */}
       <div className="p-4">
         <div className="bg-white rounded-2xl shadow-sm p-2 flex space-x-2">
           <button
@@ -87,8 +79,6 @@ const Fees = () => {
           </button>
         </div>
       </div>
-
-      {/* Content */}
       <div className="px-4 space-y-4">
         {loading ? (
           <div className="flex justify-center py-12">
@@ -96,10 +86,8 @@ const Fees = () => {
           </div>
         ) : (
           <>
-            {/* Due Tab */}
             {tab === 'due' && dueData && (
               <>
-                {/* Summary Card */}
                 <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl shadow-lg p-6">
                   <div className="text-sm opacity-90 mb-2">Total Fees</div>
                   <div className="text-3xl font-bold mb-4">₹{dueData.totalFees?.toLocaleString()}</div>
@@ -114,8 +102,6 @@ const Fees = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* Fee Structures */}
                 <div className="space-y-3">
                   <h3 className="font-bold text-gray-800">Fee Details</h3>
                   {dueData.structures?.map((structure, index) => (
@@ -146,8 +132,6 @@ const Fees = () => {
                 </div>
               </>
             )}
-
-            {/* Payments Tab */}
             {tab === 'payments' && (
               <div className="space-y-3">
                 <h3 className="font-bold text-gray-800">Payment History</h3>
@@ -181,8 +165,6 @@ const Fees = () => {
                 )}
               </div>
             )}
-
-            {/* Fines Tab */}
             {tab === 'fines' && (
               <div className="space-y-3">
                 <h3 className="font-bold text-gray-800">Fines</h3>
@@ -193,7 +175,6 @@ const Fees = () => {
                   </div>
                 ) : (
                   <>
-                    {/* Summary */}
                     <div className="bg-red-50 border border-red-200 rounded-2xl p-4">
                       <div className="flex items-center justify-between">
                         <div>
@@ -205,8 +186,6 @@ const Fees = () => {
                         <div className="text-4xl">⚠️</div>
                       </div>
                     </div>
-
-                    {/* Fine List */}
                     {fines.map((fine, index) => (
                       <div key={index} className="bg-white rounded-2xl shadow-sm p-4">
                         <div className="flex items-start justify-between mb-2">
@@ -242,5 +221,4 @@ const Fees = () => {
     </div>
   );
 };
-
 export default Fees;

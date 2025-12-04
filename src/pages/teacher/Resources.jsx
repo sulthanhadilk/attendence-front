@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../../utils/api';
-
 export default function Resources() {
   const [formData, setFormData] = useState({
     title: '',
@@ -13,11 +12,9 @@ export default function Resources() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [filterType, setFilterType] = useState('all');
-
   useEffect(() => {
     loadResources();
   }, []);
-
   const loadResources = async () => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/resources`);
@@ -26,18 +23,15 @@ export default function Resources() {
       setMessage(err.message);
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
-
     try {
       await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/resources`, {
         method: 'POST',
         body: JSON.stringify(formData)
       });
-
       setMessage('Resource link added successfully');
       setFormData({ title: '', url: '', type: 'REFERENCE', courseId: '', description: '' });
       loadResources();
@@ -47,11 +41,9 @@ export default function Resources() {
       setLoading(false);
     }
   };
-
   const filteredResources = resources.filter(r => 
     filterType === 'all' || r.type === filterType
   );
-
   const getTypeIcon = (type) => {
     switch(type) {
       case 'LMS': return 'fa-graduation-cap';
@@ -60,7 +52,6 @@ export default function Resources() {
       default: return 'fa-link';
     }
   };
-
   const getTypeColor = (type) => {
     switch(type) {
       case 'LMS': return 'bg-purple-100 text-purple-700';
@@ -69,7 +60,6 @@ export default function Resources() {
       default: return 'bg-gray-100 text-gray-700';
     }
   };
-
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
@@ -77,9 +67,7 @@ export default function Resources() {
           <h1 className="text-2xl font-bold text-gray-900">Resources & LMS Links</h1>
           <p className="text-gray-600">Manage learning resources and important links</p>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Add Resource Form */}
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold mb-4">Add Resource</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -94,7 +82,6 @@ export default function Resources() {
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">URL</label>
                 <input
@@ -106,7 +93,6 @@ export default function Resources() {
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
                 <select
@@ -121,7 +107,6 @@ export default function Resources() {
                   <option value="OTHER">Other</option>
                 </select>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Course ID (Optional)</label>
                 <input
@@ -132,7 +117,6 @@ export default function Resources() {
                   placeholder="Link to specific course/subject"
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Description (Optional)</label>
                 <textarea
@@ -143,7 +127,6 @@ export default function Resources() {
                   placeholder="Brief description of the resource..."
                 />
               </div>
-
               {message && (
                 <div className={`p-3 rounded-lg text-sm ${
                   message.includes('success')
@@ -153,7 +136,6 @@ export default function Resources() {
                   {message}
                 </div>
               )}
-
               <button
                 type="submit"
                 disabled={loading}
@@ -163,8 +145,6 @@ export default function Resources() {
               </button>
             </form>
           </div>
-
-          {/* Resources List */}
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">My Resources</h2>
@@ -181,7 +161,6 @@ export default function Resources() {
                 <option value="OTHER">Other</option>
               </select>
             </div>
-
             <div className="space-y-3 max-h-[600px] overflow-y-auto">
               {filteredResources.length === 0 ? (
                 <div className="text-center py-8 text-gray-500">No resources found</div>

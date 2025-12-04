@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../../utils/api';
-
 export default function Exams() {
   const [tab, setTab] = useState('internal'); // 'internal' or 'external'
   const [classes, setClasses] = useState([]);
@@ -11,18 +10,15 @@ export default function Exams() {
   const [marks, setMarks] = useState({});
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-
   useEffect(() => {
     loadClasses();
     loadExams();
   }, []);
-
   useEffect(() => {
     if (selectedClass) {
       loadStudents(selectedClass);
     }
   }, [selectedClass]);
-
   const loadClasses = async () => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/classes`);
@@ -31,7 +27,6 @@ export default function Exams() {
       setMessage(err.message);
     }
   };
-
   const loadExams = async () => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/exams`);
@@ -40,12 +35,10 @@ export default function Exams() {
       setMessage(err.message);
     }
   };
-
   const loadStudents = async (classId) => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/classes/${classId}/students`);
       setStudents(data);
-      
       // Initialize marks state
       const initialMarks = {};
       data.forEach(s => {
@@ -56,7 +49,6 @@ export default function Exams() {
       setMessage(err.message);
     }
   };
-
   const handleMarksChange = (studentId, field, value) => {
     setMarks(prev => ({
       ...prev,
@@ -66,17 +58,14 @@ export default function Exams() {
       }
     }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedExam) {
       setMessage('Please select an exam');
       return;
     }
-
     setLoading(true);
     setMessage('');
-
     try {
       const results = students.map(s => ({
         studentId: s._id,
@@ -86,12 +75,10 @@ export default function Exams() {
         maxMarks: Number(marks[s._id]?.maxMarks || 100),
         type: tab
       })).filter(r => r.marksObtained > 0);
-
       await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/exams/results`, {
         method: 'POST',
         body: JSON.stringify(results)
       });
-
       setMessage(`Successfully saved ${results.length} ${tab} marks`);
     } catch (err) {
       setMessage(err.message);
@@ -99,7 +86,6 @@ export default function Exams() {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
@@ -107,8 +93,6 @@ export default function Exams() {
           <h1 className="text-2xl font-bold text-gray-900">Exam Marks Entry</h1>
           <p className="text-gray-600">Enter and manage internal and external exam marks</p>
         </div>
-
-        {/* Tabs */}
         <div className="flex gap-2 mb-4">
           <button
             onClick={() => setTab('internal')}
@@ -131,10 +115,8 @@ export default function Exams() {
             External Marks
           </button>
         </div>
-
         <form onSubmit={handleSubmit}>
           <div className="bg-white rounded-2xl shadow-sm p-6">
-            {/* Filters */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Class</label>
@@ -167,7 +149,6 @@ export default function Exams() {
                 </select>
               </div>
             </div>
-
             {students.length > 0 && (
               <>
                 <div className="overflow-x-auto">
@@ -186,7 +167,6 @@ export default function Exams() {
                         const obtained = Number(marks[s._id]?.marksObtained || 0);
                         const max = Number(marks[s._id]?.maxMarks || 100);
                         const percentage = max > 0 ? ((obtained / max) * 100).toFixed(1) : 0;
-
                         return (
                           <tr key={s._id} className="border-b hover:bg-gray-50">
                             <td className="p-3 text-gray-600">{s.user_id?.roll_no || 'N/A'}</td>
@@ -226,7 +206,6 @@ export default function Exams() {
                     </tbody>
                   </table>
                 </div>
-
                 {message && (
                   <div className={`mt-4 p-3 rounded-lg text-sm ${
                     message.includes('Success')
@@ -236,7 +215,6 @@ export default function Exams() {
                     {message}
                   </div>
                 )}
-
                 <button
                   type="submit"
                   disabled={loading}

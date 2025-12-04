@@ -1,5 +1,4 @@
 import React from 'react';
-
 export default function ReportsModal({ open, onClose, onLoadAttendance, reportData, onExportAttendance, onShowAIReports }) {
   if (!open) return null;
   return (

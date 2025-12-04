@@ -1,5 +1,4 @@
 import React from 'react'
-
 export default function AnalyticsCharts({ stats = {} }) {
   const cards = [
     { label: 'Attendance', value: stats.attendancePct ?? 0, color: '#6366f1' },

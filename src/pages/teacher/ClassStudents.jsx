@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../../utils/api';
-
 export default function ClassStudents() {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState('');
@@ -8,17 +7,14 @@ export default function ClassStudents() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-
   useEffect(() => {
     loadClasses();
   }, []);
-
   useEffect(() => {
     if (selectedClass) {
       loadStudents(selectedClass);
     }
   }, [selectedClass]);
-
   const loadClasses = async () => {
     try {
       const data = await apiRequest(`${API_ENDPOINTS.TEACHER_DASHBOARD}/classes`);
@@ -27,7 +23,6 @@ export default function ClassStudents() {
       setMessage(err.message);
     }
   };
-
   const loadStudents = async (classId) => {
     setLoading(true);
     try {
@@ -39,14 +34,12 @@ export default function ClassStudents() {
       setLoading(false);
     }
   };
-
   const filteredStudents = students.filter(s => {
     const name = s.user_id?.name?.toLowerCase() || '';
     const roll = s.user_id?.roll_no?.toLowerCase() || '';
     const term = searchTerm.toLowerCase();
     return name.includes(term) || roll.includes(term);
   });
-
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-6xl mx-auto">
@@ -54,9 +47,7 @@ export default function ClassStudents() {
           <h1 className="text-2xl font-bold text-gray-900">Class Students</h1>
           <p className="text-gray-600">View and manage students in your classes</p>
         </div>
-
         <div className="bg-white rounded-2xl shadow-sm p-6">
-          {/* Filters */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Class</label>
@@ -82,13 +73,11 @@ export default function ClassStudents() {
               />
             </div>
           </div>
-
           {message && (
             <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
               {message}
             </div>
           )}
-
           {loading ? (
             <div className="text-center py-12">
               <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
@@ -103,7 +92,6 @@ export default function ClassStudents() {
               <div className="mb-4 text-sm text-gray-600">
                 Showing {filteredStudents.length} student{filteredStudents.length !== 1 ? 's' : ''}
               </div>
-              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {filteredStudents.map(s => (
                   <div key={s._id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
@@ -115,8 +103,6 @@ export default function ClassStudents() {
                         <h3 className="font-semibold text-gray-900">{s.user_id?.name || 'Student'}</h3>
                         <p className="text-sm text-gray-600">Roll No: {s.user_id?.roll_no || 'N/A'}</p>
                         <p className="text-sm text-gray-600">Email: {s.user_id?.email || 'N/A'}</p>
-                        
-                        {/* Quick Stats */}
                         <div className="mt-3 flex gap-2">
                           <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
                             Active
@@ -127,7 +113,6 @@ export default function ClassStudents() {
                         </div>
                       </div>
                     </div>
-
                     <div className="mt-4 pt-4 border-t border-gray-200 grid grid-cols-3 gap-2 text-center">
                       <div>
                         <div className="text-xs text-gray-500">Attendance</div>

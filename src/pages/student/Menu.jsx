@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 const Menu = () => {
   const [profile] = useState({
     name: localStorage.getItem('userName') || 'Student',
     rollNo: localStorage.getItem('rollNo') || 'N/A'
   });
   const navigate = useNavigate();
-
   const menuSections = [
     {
       title: 'Academic',
@@ -75,17 +73,14 @@ const Menu = () => {
       ]
     }
   ];
-
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
     localStorage.removeItem('rollNo');
     navigate('/login');
   };
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
       <div className="bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-6 rounded-b-3xl shadow-lg">
         <button onClick={() => navigate('/student/dashboard')} className="mb-4">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -102,9 +97,7 @@ const Menu = () => {
           </div>
         </div>
       </div>
-
       <div className="p-4 space-y-4">
-        {/* Menu Sections */}
         {menuSections.map((section, index) => (
           <div key={index} className="bg-white rounded-2xl shadow-sm p-4">
             <h3 className="font-bold text-gray-800 mb-3 flex items-center text-sm uppercase tracking-wide">
@@ -132,8 +125,6 @@ const Menu = () => {
             </div>
           </div>
         ))}
-
-        {/* Quick Stats */}
         <div className="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl shadow-lg p-5 text-white">
           <h3 className="font-bold mb-3 flex items-center">
             <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -165,8 +156,6 @@ const Menu = () => {
             </button>
           </div>
         </div>
-
-        {/* App Info */}
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <h3 className="font-bold text-gray-800 mb-3 text-sm">App Information</h3>
           <div className="space-y-2 text-sm">
@@ -184,8 +173,6 @@ const Menu = () => {
             </div>
           </div>
         </div>
-
-        {/* Support Links */}
         <div className="bg-white rounded-2xl shadow-sm p-4">
           <h3 className="font-bold text-gray-800 mb-3 text-sm">Support & Help</h3>
           <div className="space-y-1">
@@ -224,8 +211,6 @@ const Menu = () => {
             </button>
           </div>
         </div>
-
-        {/* Logout Button */}
         <button
           onClick={handleLogout}
           className="w-full bg-red-600 text-white py-4 rounded-2xl font-medium shadow-lg hover:bg-red-700 transition flex items-center justify-center"
@@ -239,5 +224,4 @@ const Menu = () => {
     </div>
   );
 };
-
 export default Menu;

@@ -4,17 +4,14 @@ Report Type: ${s.type==="student"?"Student Performance":"Administrative Insights
 Generated: ${s.timestamp.toLocaleString()}
 `;return s.type==="student"&&(a+=`
 Student: ${s.studentName}
-
 AI SUMMARY
 ----------
 ${s.data.aiSummary}
-
 PERFORMANCE METRICS
 ------------------
 Overall Grade: ${s.data.overallGrade}
 Attendance Rate: ${Math.round(s.data.attendanceRate*100)}%
 Risk Level: ${s.data.riskLevel}
-
 SUBJECT BREAKDOWN
 ----------------
 `,s.data.subjectPerformance.forEach(t=>{a+=`${t.name}: ${t.grade} (${t.average}% avg, ${Math.round(t.attendance*100)}% attendance)

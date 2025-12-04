@@ -1,5 +1,4 @@
 import React from 'react';
-
 export default function ExamMarksTable({ students, examType, onMarksChange, marks = {} }) {
   return (
     <div className="overflow-x-auto">
@@ -18,7 +17,6 @@ export default function ExamMarksTable({ students, examType, onMarksChange, mark
             const currentMarks = marks[studentId] || { marks: '', grade: '' };
             const marksValue = currentMarks.marks || currentMarks.marksObtained || '';
             const gradeValue = currentMarks.grade || '';
-
             return (
               <tr key={studentId} className="border-b hover:bg-indigo-50">
                 <td className="p-2">{student.roll_number || '-'}</td>

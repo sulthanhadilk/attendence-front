@@ -15,7 +15,6 @@ export default function AdminHeader({ title, user }) {
   );
 }import React from 'react'
 import Header from '../../components/Header'
-
 export default function AdminHeader({ title }) {
   return (
     <div className="mb-4">

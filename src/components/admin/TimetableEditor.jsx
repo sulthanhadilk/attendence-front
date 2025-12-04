@@ -1,9 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import API_BASE_URL from '../../utils/api'
-
 const days = ['Mon','Tue','Wed','Thu','Fri','Sat']
 const hours = Array.from({length:7}, (_,i)=> i+1)
-
 export default function TimetableEditor() {
   const token = localStorage.getItem('token')
   const [entries, setEntries] = useState([]) // {id, dayOfWeek, hourIndex, room, teacherId, startTime, endTime, title}
@@ -12,7 +10,6 @@ export default function TimetableEditor() {
     for (const e of entries) m[`${e.dayOfWeek}-${e.hourIndex}`] = e
     return m
   }, [entries])
-
   const onCellClick = (d, h) => {
     const key = `${d}-${h}`
     const existing = map[key]
@@ -25,7 +22,6 @@ export default function TimetableEditor() {
       return next
     })
   }
-
   const save = async () => {
     const res = await fetch(`${API_BASE_URL}/api/admin/timetable`, {
       method: 'POST',
@@ -35,7 +31,6 @@ export default function TimetableEditor() {
     if (!res.ok) alert('Save failed')
     else alert('Timetable saved')
   }
-
   return (
     <div className="card">
       <div className="card-header"><h3 className="card-title"><i className="fas fa-calendar"/> Timetable</h3></div>

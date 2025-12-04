@@ -1,5 +1,4 @@
 import React from 'react';
-
 export default function PrayerToggleRow({ prayer, value, onChange, disabled = false }) {
   return (
     <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-200 hover:bg-indigo-50 transition">

@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { apiRequest, API_ENDPOINTS } from '../utils/api';
-
 const AIChatbot = ({ isOpen, onClose, _userRole }) => {
   const [messages, setMessages] = useState([
     {
@@ -13,43 +12,35 @@ const AIChatbot = ({ isOpen, onClose, _userRole }) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
   const sendMessage = async (e) => {
     e.preventDefault();
     if (!inputMessage.trim() || isLoading) return;
-
     const userMessage = {
       id: Date.now(),
       text: inputMessage,
       sender: 'user',
       timestamp: new Date().toISOString()
     };
-
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setIsLoading(true);
-
     try {
       const response = await apiRequest(`${API_ENDPOINTS.AI_BASE}/chatbot`, {
         method: 'POST',
         body: JSON.stringify({ message: inputMessage })
       });
-
       const botMessage = {
         id: Date.now() + 1,
         text: response.bot_response,
         sender: 'bot',
         timestamp: response.timestamp
       };
-
       setMessages(prev => [...prev, botMessage]);
     } catch (_error) {
       const errorMessage = {
@@ -63,7 +54,6 @@ const AIChatbot = ({ isOpen, onClose, _userRole }) => {
       setIsLoading(false);
     }
   };
-
   const quickQuestions = [
     "What's my attendance?",
     "Show my grades",
@@ -71,13 +61,10 @@ const AIChatbot = ({ isOpen, onClose, _userRole }) => {
     "When's my next exam?",
     "How can I improve?"
   ];
-
   const handleQuickQuestion = (question) => {
     setInputMessage(question);
   };
-
   if (!isOpen) return null;
-
   return (
     <div className="ai-chatbot-overlay">
       <div className="ai-chatbot-container">
@@ -97,7 +84,6 @@ const AIChatbot = ({ isOpen, onClose, _userRole }) => {
             <i className="fas fa-times"></i>
           </button>
         </div>
-
         <div className="chatbot-messages">
           {messages.map((message) => (
             <div
@@ -122,7 +108,6 @@ const AIChatbot = ({ isOpen, onClose, _userRole }) => {
               </div>
             </div>
           ))}
-          
           {isLoading && (
             <div className="message message-bot">
               <div className="message-content">
@@ -136,10 +121,8 @@ const AIChatbot = ({ isOpen, onClose, _userRole }) => {
               </div>
             </div>
           )}
-          
           <div ref={messagesEndRef} />
         </div>
-
         <div className="chatbot-quick-questions">
           <p>Quick questions:</p>
           <div className="quick-questions-grid">
@@ -155,7 +138,6 @@ const AIChatbot = ({ isOpen, onClose, _userRole }) => {
             ))}
           </div>
         </div>
-
         <form className="chatbot-input-form" onSubmit={sendMessage}>
           <div className="input-group">
             <input
@@ -179,5 +161,4 @@ const AIChatbot = ({ isOpen, onClose, _userRole }) => {
     </div>
   );
 };
-
 export default AIChatbot;

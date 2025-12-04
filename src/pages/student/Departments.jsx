@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
 const Departments = () => {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     fetchDepartments();
   }, []);
-
   const fetchDepartments = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -27,7 +24,6 @@ const Departments = () => {
       setLoading(false);
     }
   };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -35,10 +31,8 @@ const Departments = () => {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
       <div className="bg-indigo-600 text-white p-6 rounded-b-3xl shadow-lg">
         <button onClick={() => navigate('/student/dashboard')} className="mb-4">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -48,9 +42,7 @@ const Departments = () => {
         <h1 className="text-2xl font-bold">Departments</h1>
         <p className="text-white/80 text-sm mt-1">Academic departments in our college</p>
       </div>
-
       <div className="p-4 space-y-4">
-        {/* Stats */}
         <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg p-5 text-white">
           <div className="flex items-center justify-between">
             <div>
@@ -64,8 +56,6 @@ const Departments = () => {
             </div>
           </div>
         </div>
-
-        {/* Departments List */}
         <div className="space-y-3">
           {departments.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-sm p-8 text-center">
@@ -91,8 +81,6 @@ const Departments = () => {
                     {dept.description && (
                       <p className="text-sm text-gray-600 mt-2 leading-relaxed">{dept.description}</p>
                     )}
-                    
-                    {/* Department Stats */}
                     <div className="grid grid-cols-3 gap-3 mt-4">
                       {dept.hodId && (
                         <div className="bg-blue-50 rounded-xl p-3 text-center">
@@ -116,8 +104,6 @@ const Departments = () => {
                         </div>
                       )}
                     </div>
-
-                    {/* Department Contact */}
                     {(dept.email || dept.phone) && (
                       <div className="mt-4 pt-4 border-t border-gray-100">
                         <p className="text-xs text-gray-500 mb-2">Contact Information:</p>
@@ -153,8 +139,6 @@ const Departments = () => {
             ))
           )}
         </div>
-
-        {/* Information Card */}
         <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5">
           <h3 className="font-bold text-blue-900 mb-2 flex items-center">
             <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -172,5 +156,4 @@ const Departments = () => {
     </div>
   );
 };
-
 export default Departments;

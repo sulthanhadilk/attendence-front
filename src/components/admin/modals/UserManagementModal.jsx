@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-
 export default function UserManagementModal({ open, onClose, students, teachers, onRefreshStudents, onRefreshTeachers, onDeleteStudent, onDeleteTeacher, loading }) {
   if (!open) return null;
   return (

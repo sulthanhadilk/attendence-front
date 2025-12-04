@@ -1,11 +1,9 @@
 import React from 'react';
-
 export default function AttendanceGrid({ students, hours = [1, 2, 3, 4, 5], records, onStatusChange }) {
   const getStatus = (studentId, hourIndex) => {
     const rec = records?.find(r => String(r.studentId) === String(studentId) && r.hourIndex === hourIndex);
     return rec?.status || 'unmarked';
   };
-
   const statusColors = {
     present: 'bg-green-100 text-green-700',
     absent: 'bg-red-100 text-red-700',
@@ -13,7 +11,6 @@ export default function AttendanceGrid({ students, hours = [1, 2, 3, 4, 5], reco
     letoff: 'bg-blue-100 text-blue-700',
     unmarked: 'bg-gray-100 text-gray-500'
   };
-
   return (
     <div className="overflow-x-auto">
       <table className="table-auto w-full text-sm">

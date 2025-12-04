@@ -2,7 +2,6 @@ import React from 'react';
 import AdminHeader from '../../components/admin/AdminHeader';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 import StatCard from '../../components/admin/StatCard';
-
 export default function Dashboard() {
   const user = { name: 'Admin' };
   return (
